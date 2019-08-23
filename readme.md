@@ -1,13 +1,12 @@
 SumoLogic Recorded Futures Integration
 ======================================
 
-This script, config files, and instructions allow a client of Recorded Futures
-to add their data into SumoLogic.
+This script, config files, and instructions allow a client of Recorded Futures to add their data into SumoLogic.
 
 Installing the Scripts
 =======================
 
-The script are command line based, designed to be used within a batch script or DevOPs tool such as Cher or Ansible.
+The scripts are command line based, designed to be used within a batch script or DevOPs tool such as Cher or Ansible.
 Each script is a python3 script, and the complete list of the python modules will be provided to aid people using a pip install.
 
 You will need to use Python 3.6 or higher and the modules listed in the dependency section.  
@@ -47,14 +46,20 @@ Script Names and Purposes
 
 Scripts and Functions:
 
-    1. rfslsync.py - designed as a stand alone script or a lambda function.
+    1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
+
+    2. rfget.py - This is a helper script. It retrieves Recorded Futures files and saves them to a local cache.
+
+    3. rfput.py - This is a helper script. It pushes all Recorded Futures file from a directory to SumoLogic
                    
 To Do List:
 ===========
 
 * Build an Ansible wrapper for script and extend the download/upload functions.
 
-* Add depdndency checking for pip modules
+* Add ability to map different data to different collectors.
+
+* Extend support for a config file to contain options
 
 License
 =======
