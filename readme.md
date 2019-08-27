@@ -1,7 +1,7 @@
-SumoLogic Recorded Futures Integration
-======================================
+SumoLogic Recorded Future Integration
+=====================================
 
-This script, config files, and instructions allow a client of Recorded Futures to add their data into SumoLogic.
+This script, config files, and instructions allow a client of Recorded Future to add their data into SumoLogic.
 
 Installing the Scripts
 =======================
@@ -48,9 +48,9 @@ Scripts and Functions:
 
     1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
 
-    2. rfget.py - This is a helper script. It retrieves Recorded Futures files and saves them to a local cache.
+    2. rfget.py - This is a helper script. It retrieves Recorded Future files and saves them to a local cache.
 
-    3. rfput.py - This is a helper script. It pushes all Recorded Futures file from a directory to SumoLogic
+    3. rfput.py - This is a helper script. It pushes all Recorded Future file from a directory to SumoLogic
                    
 To Do List:
 ===========
