@@ -2,8 +2,9 @@
 # -*- coding: utf-8 -*-
 
 """
-Explanation: gets a list of csv files from the recorded futures website
-Publish this to the SumoLogic website.
+Explanation: 
+This will take SV files obtained from the Recorded Future website
+and publish this to the SumoLogic website.
 
 Usage:
     $ python  rfget [ options ]
@@ -35,7 +36,7 @@ sys.dont_write_bytecode = 1
 
 PARSER = argparse.ArgumentParser(description="""
 
-This script will push Recorded Futures files from a local cache to Sumologic Hosted Web Collector.
+This script will push Recorded Future files from a local cache to Sumologic Hosted Web Collector.
 
 """)
 
