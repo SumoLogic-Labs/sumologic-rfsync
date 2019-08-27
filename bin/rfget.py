@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Explanation: gets a list of csv files from the recorded futures website
+Explanation: gets a list of csv files from the Recorded Future website
 Publish this to the SumoLogic website.
 
 Usage:
@@ -36,7 +36,7 @@ sys.dont_write_bytecode = 1
 
 PARSER = argparse.ArgumentParser(description="""
 
-This script retrieves Recorded Futures Data and saves then into a local cache.
+This script retrieves Recorded Future Data and saves then into a local cache.
 
 """)
 
@@ -100,7 +100,7 @@ def main():
 
 def retrieve_rfitem(rfitem):
     """
-    This retrieves the files from Recorded Futures
+    This retrieves the files from the Recorded Future website
     """
     targeturl = '%s/%s/%s' % (URLBASE, rfitem, URLTAIL)
     getrequest = urllib.request.Request(targeturl, None, {'X-RFToken': APIKEY})
@@ -111,7 +111,7 @@ def retrieve_rfitem(rfitem):
 
 def persist_rfitem(getresults, rfitem):
     """
-    This persists the Recoorded Futures files to a local directory
+    This persists the Recoorded Future files to a local directory
     """
     basedir = os.path.abspath((os.path.join(ARGS.outputdir)))
     csvdir = '%s/%s/%s' % (basedir, SRCTAG, DSTAMP)
