@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 
 """
-Explanation: gets a list of csv files from the recorded futures website
-Publish this to the SumoLogic website.
+Explanation: 
+
+This will collect CSV files from the Recorded Future website
+save this into a cache, and then Publish this to the SumoLogic website.
+
+This script allows the client to choose how to publish as well.
 
 Usage:
     $ python  rfslsync [ options ]
@@ -35,8 +39,8 @@ sys.dont_write_bytecode = 1
 
 PARSER = argparse.ArgumentParser(description="""
 
-This script connects Recorded Futures to SumoLogic in the following manner.
-Retrieves the information from Recorded Futures in CSV format
+This script connects Recorded Future to SumoLogic in the following manner.
+Retrieves the information from Recorded Future in CSV format
 Pushes the files to Sumologic hosted Web collector.
 
 """)
@@ -104,7 +108,7 @@ def main():
 
 def sync_rfitem(rfitem):
     """
-    This retrieves the files from Recorded Futures
+    This retrieves the files from Recorded Future API server
     """
     targeturl = '%s/%s/%s' % (URLBASE, rfitem, URLTAIL)
     getrequest = requests.get(targeturl, headers=({'X-RFToken': APIKEY}), stream=True)
@@ -118,7 +122,7 @@ def sync_rfitem(rfitem):
 
 def persist_rfitem(getrequest, rfitem):
     """
-    This persists the Recorded Futures files to a local directory
+    This persists the Recorded Future files to a local directory
     """
     basedir = os.path.abspath((os.path.join(ARGS.outputdir)))
     csvdir = '%s/%s/%s' % (basedir, SRCTAG, DSTAMP)
