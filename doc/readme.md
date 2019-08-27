@@ -7,16 +7,19 @@ This document will walk through specific steps in deployment options.
 Installing the Collectors
 =========================
 
-You can run Recorded Futures integration by uploading to a HTTP hosted collector or an installed collector.
-Each of the two will require to download the script from the github, and set up the configuration file.
+You can run Recorded Futures integration by uploading 
+to a HTTP hosted collector or an installed collector.
 
-The sections below will talk about setting up the collectors, and configuring SumoLogic to accept the data.
+Each of the two will require to download the script 
+from the github, and set up the configuration file.
+
+The sections below will talk about setting up the 
+collectors, and configuring SumoLogic to accept the data.
 
 SumoLogic Preparation Work
 ==========================
-    1. Decide how you want to see the Threat Intelligence data by choosing a SourceCategory for the data.
+    1. Choose a source category for the threat intelligence. Examples:
 
-       Examples of this are:
            _sourceCategory = recordedfutures/ip
            _sourceCategory = recordedfutures/hash
            _sourceCategory = recordedfutures/url
@@ -27,21 +30,22 @@ Recorded Futures Preparation Work
 =================================
 
 
-    1. Please obtain a Recorded Futues API key, as part of a paid subscription
-       Please refer to this web page for the API, as this is part of a paid subscription.
+    1. Please obtain a Recorded Futues API key from Recorded Futures.
+       For reference this web page should help with the subscription process.
 
            https://www.recordedfuture.com/api-announcement/
 
-    2. Once you have the API key, then please place this into the configuration file.
+    2. Once you have the API key, then place this into the configuration file.
        Please see an example of the configuration file format here:
 
            https://github.com/wks-sumo-logic/sumologic-rfsync/tree/master/etc
 
-    3. Confirm what threat intelligence maps you have subscribed for. Place that also in the configuration file.
+    3. Confirm ths list of threat intelligence maps you have requested.
+       Edit the configuration file if required to reflect your subscription.
 
-    4. confirm you have read about the download best practices for Recorded Futures here (requires registering):
+    4. confirm you have read about the download best practices:
 
-           https://support.recordedfuture.com/hc/en-us/articles/115010401968-Risk-List-Download-Recommendations
+           https://go.recordedfuture.com/applying-threat-intelligence
 
 Hosted Collector Installation
 =============================
