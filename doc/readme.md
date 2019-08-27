@@ -1,5 +1,5 @@
-SumoLogic Recorded Futures Integration
-======================================
+SumoLogic Recorded Future Integration
+=====================================
 
 This document will walk through specific steps in deployment options.
 
@@ -7,7 +7,7 @@ This document will walk through specific steps in deployment options.
 Installing the Collectors
 =========================
 
-You can run Recorded Futures integration by uploading 
+You can run Recorded Future integration by uploading 
 to a HTTP hosted collector or an installed collector.
 
 Each of the two will require to download the script 
@@ -26,11 +26,11 @@ SumoLogic Preparation Work
            _sourceCategory = recordedfutures/vunlerability
            _sourceCategory = recordedfutures/domain
 
-Recorded Futures Preparation Work
+Recorded Future Preparation Work
 =================================
 
 
-    1. Please obtain a Recorded Futues API key from Recorded Futures.
+    1. Please obtain a Recorded Futues API key from Recorded Future.
        For reference this web page should help with the subscription process.
 
            https://www.recordedfuture.com/api-announcement/
