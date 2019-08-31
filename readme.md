@@ -3,8 +3,8 @@ SumoLogic Recorded Future Integration
 
 This script, config files, and instructions allow a client of Recorded Future to add their data into SumoLogic.
 
-Installing the Scripts
-=======================
+Installing the Project
+======================
 
 The scripts are command line based, designed to be used within a batch script or DevOPs tool such as Cher or Ansible.
 Each script is a python3 script, and the complete list of the python modules will be provided to aid people using a pip install.
@@ -36,6 +36,14 @@ The steps are as follows:
 
         pipenv install
         
+Setting up the SumoLogic Recorded Future Integration
+====================================================
+
+Designed to be completed in minimal steps, the integration can be setup within minutes.
+Please refer to these configuration instructions located:
+
+[Configuring you SumoLogic Recorded Future Integration](doc/readme.md)
+
 Dependencies
 ============
 
