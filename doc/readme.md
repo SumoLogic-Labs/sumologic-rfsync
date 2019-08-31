@@ -1,57 +1,32 @@
 SumoLogic Recorded Future Integration
 =====================================
 
-This document will walk through specific steps in deployment options.
+The installation of the SumoLogic Recorded Future integration is easy.
+There are in 5 easy steps, starting with setting up your SumoLogic 
+environment, getting your Recorded Future API key, and then organizing 
+how you want to see your threat intelligence data.
 
+Setup Steps
+===========
 
-Installing the Collectors
-=========================
+    1) [SumoLogic Source Setup](01_sources/readme.md)
 
-You can run Recorded Future integration by uploading 
-to a HTTP hosted collector or an installed collector.
+    2) [SumoLogic Ingest Setup](02_ingest/readme.md)
 
-Each of the two will require to download the script 
-from the github, and set up the configuration file.
+    3) [Recorded Future Setup](03_config/readme.md)
 
-The sections below will talk about setting up the 
-collectors, and configuring SumoLogic to accept the data.
+    4) [SumoLogic Script Setup](04_script/readme.md)
 
-SumoLogic Preparation Work
-==========================
-    1. Choose a source category for the threat intelligence. Examples:
+    5) [SumoLogic Query Setup](05_queries/readme.md)
 
-           _sourceCategory = recordedfutures/ip
-           _sourceCategory = recordedfutures/hash
-           _sourceCategory = recordedfutures/url
-           _sourceCategory = recordedfutures/vunlerability
-           _sourceCategory = recordedfutures/domain
+As an overview, the first two steps plan how you want to import, 
+or ingest, the data into SumoLogic. 
 
-Recorded Future Preparation Work
-=================================
+Then, the next two steps show how to get the information from 
+both Recorded Future and SumoLogic to drive the script.
 
-
-    1. Please obtain a Recorded Futues API key from Recorded Future.
-       For reference this web page should help with the subscription process.
-
-           https://www.recordedfuture.com/api-announcement/
-
-    2. Once you have the API key, then place this into the configuration file.
-       Please see an example of the configuration file format here:
-
-           https://github.com/wks-sumo-logic/sumologic-rfsync/tree/master/etc
-
-    3. Confirm ths list of threat intelligence maps you have requested.
-       Edit the configuration file if required to reflect your subscription.
-
-    4. confirm you have read about the download best practices:
-
-           https://go.recordedfuture.com/applying-threat-intelligence
-
-Hosted Collector Installation
-=============================
-
-Installed Collector Installation
-================================
+The last step pulls all of this together, and makes your threat
+intelligence import automatic.
 
 License
 =======
