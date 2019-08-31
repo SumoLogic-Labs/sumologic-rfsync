@@ -9,15 +9,15 @@ how you want to see your threat intelligence data.
 Setup Steps
 ===========
 
-    1) [SumoLogic Source Setup](01_sources/readme.md)
+[SumoLogic Source Setup](01_sources/readme.md)
 
-    2) [SumoLogic Ingest Setup](02_ingest/readme.md)
+[SumoLogic Ingest Setup](02_ingest/readme.md)
 
-    3) [Recorded Future Setup](03_config/readme.md)
+[Recorded Future Setup](03_config/readme.md)
 
-    4) [SumoLogic Script Setup](04_script/readme.md)
+[SumoLogic Script Setup](04_script/readme.md)
 
-    5) [SumoLogic Query Setup](05_queries/readme.md)
+[SumoLogic Query Setup](05_queries/readme.md)
 
 As an overview, the first two steps plan how you want to import, 
 or ingest, the data into SumoLogic. 
