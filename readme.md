@@ -42,7 +42,7 @@ Setting up the SumoLogic Recorded Future Integration
 Designed to be completed in minimal steps, the integration can be setup within minutes.
 Please refer to these configuration instructions located:
 
-[Configuring you SumoLogic Recorded Future Integration](doc/readme.md)
+[Configuring your SumoLogic Recorded Future Integration](doc/readme.md)
 
 Dependencies
 ============
