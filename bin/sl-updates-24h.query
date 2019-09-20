@@ -1,0 +1,46 @@
+/*
+
+Query a SourceCategory and look for updates within a given time
+This becomes a scheduled query, executed once a day.
+
+Specifying a time range such as the last 24 hours allows us to check on updates.
+The purpose of this query is to have a conditional cron entry to download
+
+*/
+
+// this is a parameter. set to any and use for source categories
+_sourceCategory="{{sourcecategory}}" 
+
+// look over the expanse of 1 day
+| timeslice 1d 
+
+// count by source category and _timeslice
+| count by _sourceCategory, _timeslice 
+
+// sort by the largest count, and take the 1st ( largest) value
+| sort by _count 
+| topk(1, _count)
+
+// now construct a time delta from the bucket and now
+| _timeslice as lastdate
+| now() as currentdate
+
+// define the constants we will use to calculate a day
+| 60 as sec2min
+| 60 as min2hrs
+| 24 as hrs2day
+| 1000 as mil2sec
+| mil2sec * sec2min * min2hrs * hrs2day as mill2day
+
+// look at the time delta issue this if the value is greater than 0 ( 1 or greater )
+| int( ( currentdate - lastdate ) / mill2day )  as days
+
+// look for the condition to list the output
+| where days > 0
+
+/*
+
+We schedule this query and alert on the results being more than 0
+Our choice of response is to use a scripted action and call the python script.
+
+*/
