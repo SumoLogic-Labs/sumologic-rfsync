@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Explanation: 
+Explanation:
 
 This will collect CSV files from the Recorded Future website
 save this into a cache, and then Publish this to the SumoLogic website.
@@ -17,22 +17,25 @@ Style:
     http://google.github.io/styleguide/pyguide.html
 
     @name           rfslsync
-    @version        0.8.00
+    @version        1.0.0
     @author-name    Wayne Schmidt
     @author-email   wschmidt@sumologic.com
     @license-name   GNU GPL
     @license-url    http://www.gnu.org/licenses/gpl.html
 """
 
-__version__ = 0.40
+__version__ = '1.0.0'
 __author__ = "Wayne Schmidt (wschmidt@sumologic.com)"
 
 import argparse
 import configparser
 import datetime
 import json
+import pprint
+import re
 import os
 import sys
+import urllib.request
 import requests
 
 sys.dont_write_bytecode = 1
@@ -45,93 +48,146 @@ Pushes the files to Sumologic hosted Web collector.
 
 """)
 
-PARSER.add_argument('-w', metavar='<weburl>', dest='weburl', help='specify hosted weburl')
-PARSER.add_argument('-k', metavar='<apikey>', dest='apikey', help='specify API key')
-PARSER.add_argument('-r', metavar='<rfmaps>', dest='rfmaps', default='all', help='specify rfmap')
-PARSER.add_argument('-o', metavar='<outputdir>', dest='outputdir', help='specify output directory')
-PARSER.add_argument('-c', metavar='<cfgfile>', dest='cfgfile', help='specify a config file')
+PARSER.add_argument('-k', metavar='<key>', dest='key', help='set API key')
+PARSER.add_argument('-d', metavar='<dir>', dest='dir', help='set directory')
+PARSER.add_argument('-c', metavar='<cfg>', dest='cfg', help='set config file')
+PARSER.add_argument('-u', metavar='<url>', nargs='*', dest='url', help='set url: <map#urlname>')
+PARSER.add_argument('-m', metavar='<map>', nargs='*', dest='map', default=['all'], help='set maps')
+PARSER.add_argument('-v', '--verbose', help='verbose', action="store_true")
 
 ARGS = PARSER.parse_args()
-
-if ARGS.cfgfile:
-    CFGFILE = os.path.abspath(ARGS.cfgfile)
-    CONFIG = configparser.ConfigParser()
-    CONFIG.read(CFGFILE)
-    WEBURL = json.loads(CONFIG.get("Default", "WEBURL"))
-    os.environ['WEBURL'] = WEBURL
-    APIKEY = json.loads(CONFIG.get("Default", "APIKEY"))
-    os.environ['APIKEY'] = APIKEY
-    RFMAPS = json.loads(CONFIG.get("Default", "RFMAPS"))
-    os.environ['RFMAPS'] = RFMAPS
-else:
-    if ARGS.weburl:
-        os.environ["WEBURL"] = ARGS.weburl
-    if ARGS.apikey:
-        os.environ["APIKEY"] = ARGS.apikey
-    if ARGS.rfmaps:
-        os.environ["RFMAPS"] = ARGS.rfmaps
-
+DEFAULTMAP = ('domain', 'hash', 'ip', 'url', 'vulnerability')
+FILEMAP = dict()
+WEBMAP = dict()
 SRCTAG = 'recordedfuture'
-
 CURRENT = datetime.datetime.now()
 DSTAMP = CURRENT.strftime("%Y%m%d")
 TSTAMP = CURRENT.strftime("%H%M%S")
 LSTAMP = DSTAMP + '.' + TSTAMP
-
 URLBASE = 'https://api.recordedfuture.com/v2'
 URLTAIL = 'risklist?format=csv%2Fsplunk'
+CSVDIR = 'unset'
+MAPLIST = DEFAULTMAP
+
+if ARGS.cfg:
+    CFGFILE = os.path.abspath(ARGS.cfg)
+    CONFIG = configparser.ConfigParser()
+    CONFIG.read(CFGFILE)
+
+    APIKEY = json.loads(CONFIG.get("Default", "APIKEY"))
+    os.environ['APIKEY'] = APIKEY
+
+    URLLIST = json.loads(CONFIG.get("Default", "URLLIST"))
+    MAPLIST = json.loads(CONFIG.get("Default", "MAPLIST"))
+    if CONFIG.has_option('Default', 'CSVDIR'):
+        CSVDIR = os.path.abspath(json.loads(CONFIG.get("Default", "CSVDIR")))
+else:
+    if ARGS.url:
+        URLLIST = ARGS.url
+    if ARGS.map:
+        MAPLIST = ARGS.map
+    if ARGS.key:
+        os.environ['APIKEY'] = ARGS.key
+    if ARGS.dir:
+        BASEDIR = os.path.abspath((os.path.join(ARGS.dir)))
+        CSVDIR = os.path.abspath(ARGS.dir)
+
+if CSVDIR == 'unset':
+    HOMEDIR = os.path.abspath((os.path.expanduser('~')))
+    BASEDIR = os.path.abspath((os.path.join(HOMEDIR, 'var', 'tmp')))
+
+    CSVDIR = '%s/%s/%s' % (BASEDIR, SRCTAG, DSTAMP)
+
+for mapname in MAPLIST:
+    if mapname == 'all':
+        for mapitem in DEFAULTMAP:
+            filename = '%s_%s_%s.%s' % ('rf', mapitem, 'risklist', 'csv')
+            dstfile = os.path.join(CSVDIR, filename)
+            FILEMAP[mapitem] = dstfile
+    if mapname != 'all':
+        filename = '%s_%s_%s.%s' % ('rf', mapname, 'risklist', 'csv')
+        dstfile = os.path.join(CSVDIR, filename)
+        FILEMAP[mapname] = dstfile
+
+if URLLIST is not None:
+    for urlname in URLLIST:
+        if ARGS.verbose:
+            print('PRIOR-URLNAME: ' + urlname)
+        matchObject = re.search(r"^(\w+\#.*)", urlname)
+        if not matchObject:
+            urlname = 'all' + '#' + urlname
+        if ARGS.verbose:
+            print('AFTER-URLNAME: ' + urlname)
+        (targetmap, targeturl) = urlname.split('#')
+        if targetmap == 'all':
+            for mapname in DEFAULTMAP:
+                if mapname in FILEMAP:
+                    WEBMAP[mapname] = targeturl
+        if targetmap != 'all':
+            if targetmap in FILEMAP:
+                WEBMAP[targetmap] = targeturl
 
 try:
-    WEBURL = os.environ['WEBURL']
     APIKEY = os.environ['APIKEY']
-    RFMAPS = os.environ['RFMAPS']
 except KeyError as myerror:
     print('Environment Variable Not Set :: {} '.format(myerror.args[0]))
-
-RFITEMLIST = list()
-RFITEMLIST = ('ip', 'domain', 'url', 'hash', 'vulnerability')
 
 def main():
     """
     This is the wrapper for the retreival and the publish modules.
     """
 
-    starttime = datetime.datetime.now()
+    if ARGS.verbose:
+        print('DATASTRUCTURES:')
+        pprint.pprint(FILEMAP)
+        pprint.pprint(WEBMAP)
 
-    for rfitem in RFITEMLIST:
-        if RFMAPS in (rfitem, 'all'):
-            sync_rfitem(rfitem)
+    if ARGS.verbose:
+        print('CSVDIR: ' + CSVDIR)
 
-    finaltime = datetime.datetime.now()
-    totaltime = finaltime - starttime
-    print(totaltime.total_seconds())
+    ### for targetkey, targetfile in FILEMAP.items():
+    ###     retrieve_mapitem(targetkey, targetfile)
 
-def sync_rfitem(rfitem):
+    for targetkey, localfile in FILEMAP.items():
+        sumologicurl = WEBMAP[targetkey]
+        publish_mapitem(localfile, sumologicurl)
+
+
+def retrieve_mapitem(targetkey, targetfile):
     """
-    This retrieves the files from Recorded Future API server
+    This retrieves the files from the Recorded Future website
     """
-    targeturl = '%s/%s/%s' % (URLBASE, rfitem, URLTAIL)
-    getrequest = requests.get(targeturl, headers=({'X-RFToken': APIKEY}), stream=True)
-    if getrequest.status_code == 200:
-        getrequest.raw.decode_content = True
-        info = {'fieldname': ('filename', getrequest.raw, getrequest.headers['Content-Type'])}
-        requests.post(WEBURL, files=info)
+    if ARGS.verbose:
+        print('FILEKEY: ' + targetkey)
+        print('FILEFILE:' + targetfile)
 
-    if ARGS.outputdir:
-        persist_rfitem(getrequest, rfitem)
+    maptarget = '%s/%s/%s' % (URLBASE, targetkey, URLTAIL)
+    getrequest = urllib.request.Request(maptarget, None, {'X-RFToken': APIKEY})
+    getresults = urllib.request.urlopen(getrequest)
 
-def persist_rfitem(getrequest, rfitem):
+    os.makedirs(CSVDIR, exist_ok=True)
+
+    if ARGS.verbose:
+        print("Starting: " +  targetkey)
+
+    with open(targetfile, mode="wb") as outputfile:
+        outputfile.write(getresults.read())
+
+    if ARGS.verbose:
+        print("Finished: " + targetkey)
+
+def publish_mapitem(localfile, sumologicurl):
     """
-    This persists the Recorded Future files to a local directory
+    This is the wrapper for publishing the files from Recorded Future to SumoLogic
     """
-    basedir = os.path.abspath((os.path.join(ARGS.outputdir)))
-    csvdir = '%s/%s/%s' % (basedir, SRCTAG, DSTAMP)
-    os.makedirs(csvdir, exist_ok=True)
+    if ARGS.verbose:
+        print('LOCALFILE: ' + localfile)
+        print('SUMOLOGIC: ' + sumologicurl)
 
-    filename = '%s_%s_%s.%s' % ('rf', rfitem, 'risklist', 'csv')
-    dstfile = os.path.join(csvdir, filename)
-    with open(dstfile, mode="wb") as outputfile:
-        outputfile.write(getrequest.content)
+    ### with open(localfile, mode='r') as outputfile:
+    ###     slrfmap8 = (outputfile.read().encode('utf-8'))
+    ###     postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
+    ###     postresponse = urllib.request.urlopen(postrequest)
 
 if __name__ == '__main__':
     main()
