@@ -36,7 +36,6 @@ import re
 import os
 import sys
 import urllib.request
-import requests
 
 sys.dont_write_bytecode = 1
 
@@ -188,6 +187,8 @@ def publish_mapitem(localfile, sumologicurl):
         slrfmap8 = (outputfile.read().encode('utf-8'))
         postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
         postresponse = urllib.request.urlopen(postrequest)
+        if ARGS.verbose:
+            print('RESPONSE: ' + postresponse)
 
 if __name__ == '__main__':
     main()
