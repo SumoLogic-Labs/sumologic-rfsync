@@ -145,8 +145,8 @@ def main():
     if ARGS.verbose:
         print('CSVDIR: ' + CSVDIR)
 
-    ### for targetkey, targetfile in FILEMAP.items():
-    ###     retrieve_mapitem(targetkey, targetfile)
+    for targetkey, targetfile in FILEMAP.items():
+        retrieve_mapitem(targetkey, targetfile)
 
     for targetkey, localfile in FILEMAP.items():
         sumologicurl = WEBMAP[targetkey]
@@ -184,10 +184,10 @@ def publish_mapitem(localfile, sumologicurl):
         print('LOCALFILE: ' + localfile)
         print('SUMOLOGIC: ' + sumologicurl)
 
-    ### with open(localfile, mode='r') as outputfile:
-    ###     slrfmap8 = (outputfile.read().encode('utf-8'))
-    ###     postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
-    ###     postresponse = urllib.request.urlopen(postrequest)
+    with open(localfile, mode='r') as outputfile:
+        slrfmap8 = (outputfile.read().encode('utf-8'))
+        postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
+        postresponse = urllib.request.urlopen(postrequest)
 
 if __name__ == '__main__':
     main()
