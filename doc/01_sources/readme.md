@@ -18,40 +18,38 @@ collectors, and configuring SumoLogic to accept the data.
 
 SumoLogic Preparation Work
 ==========================
-    1. Choose a source category for the threat intelligence. Examples:
 
-           _sourceCategory = recordedfutures/ip
-           _sourceCategory = recordedfutures/hash
-           _sourceCategory = recordedfutures/url
-           _sourceCategory = recordedfutures/vunlerability
-           _sourceCategory = recordedfutures/domain
+    1. Implement an installed collector for your deployment.
 
-Recorded Future Preparation Work
-=================================
+[SumoLogic Installled Collector Information](https://help.sumologic.com/03Send-Data/Installed-Collectors)
 
+This is where we will run the script to download the Recorded Future threat intelligence files.
+Our script we use will be a python3 script, so for now it is recommended to have a Linux build
+with the latest python3 and python modules to install the script.
 
-    1. Please obtain a Recorded Futues API key from Recorded Future.
-       For reference this web page should help with the subscription process.
+Later support will be for Windows and other operating systems using a binary created from Pyinstaller.
 
-           https://www.recordedfuture.com/api-announcement/
+    2. Choose a source category or Categories for the threat intelligence.
+       Suggested Examples:
 
-    2. Once you have the API key, then place this into the configuration file.
-       Please see an example of the configuration file format here:
+           _sourceCategory = recordedfutures/installed/ip
+           _sourceCategory = recordedfutures/installed/hash
+           _sourceCategory = recordedfutures/installed/url
+           _sourceCategory = recordedfutures/installed/vunlerability
+           _sourceCategory = recordedfutures/installed/domain
 
-           https://github.com/wks-sumo-logic/sumologic-rfsync/tree/master/etc
+    3. When setting up a source, you can also optionally to setup a hosted HTTP collector. 
 
-    3. Confirm ths list of threat intelligence maps you have requested.
-       Edit the configuration file if required to reflect your subscription.
+       As an example, navigating to the following URL.
 
-    4. confirm you have read about the download best practices:
+       https://service.jp.sumologic.com/ui/#/collection/collection
 
-           https://go.recordedfuture.com/applying-threat-intelligence
+       and then choose to add a collector. You will be prompted to add sources as well.
 
-Hosted Collector Installation
-=============================
+       when done, we can use the URL that is generated for the collector to publish to:
 
-Installed Collector Installation
-================================
+       https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_sumologic>
+
 
 License
 =======
