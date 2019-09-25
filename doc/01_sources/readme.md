@@ -50,6 +50,15 @@ Later support will be for Windows and other operating systems using a binary cre
 
        https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_sumologic>
 
+    4. Choose a source category or Categories for the threat intelligence.
+       Suggested Examples:
+
+           _sourceCategory = recordedfutures/hosted/ip
+           _sourceCategory = recordedfutures/hosted/hash
+           _sourceCategory = recordedfutures/hosted/url
+           _sourceCategory = recordedfutures/hosted/vunlerability
+           _sourceCategory = recordedfutures/hosted/domain
+
 
 License
 =======
