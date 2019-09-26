@@ -9,21 +9,17 @@ how you want to see your threat intelligence data.
 Setup Steps
 ===========
 
-[Step-1: SumoLogic Source Setup](01_sources/readme.md)
+[Step-1: SumoLogic Preparation](01_sumologic/readme.md)
 
-[Step-2: SumoLogic Ingest Setup](02_ingest/readme.md)
+[Step-2: Recorded Future Preparation](02_recordedfuture/readme.md)
 
-[Step-3: Recorded Future Setup](03_config/readme.md)
+[Step-3: Integration Setup](03_integration/readme.md)
 
-[Step-4: SumoLogic Script Setup](04_script/readme.md)
-
-[Step-5: SumoLogic Query Setup](05_queries/readme.md)
-
-As an overview, the first two steps plan how you want to import, 
+As an overview, the first step plan how you want to import, 
 or ingest, the data into SumoLogic. 
 
-Then, the next two steps show how to get the information from 
-both Recorded Future and SumoLogic to drive the script.
+The next step ensures we have the right subscription and setup
+for Recorded Future.
 
 The last step pulls all of this together, and makes your threat
 intelligence import automatic.
