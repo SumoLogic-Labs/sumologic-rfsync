@@ -133,9 +133,9 @@ Installation Steps
 
 | Recorded Future Map | Source Category | Regular Path Expression |
 |:------------------- |:----------------|:------------------------|
-| domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/*/*domain* |
-| hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/*/*hash* |
-| ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/*/*ip* |
+| domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/`*`/`*domain*` |
+| hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/`*`/`*hash*` |
+| ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/`*`/`*ip*` |
 | url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/`*`/`*url`* |
 | vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/`*`/`*vuln*` |
 
