@@ -41,56 +41,86 @@ Later support will be for Windows and other operating systems using a binary cre
 
     2.2. Choose a source category or Categories for the threat intelligence. Examples:
 
-           _sourceCategory = recordedfutures/cached/ip
-           _sourceCategory = recordedfutures/cached/hash
-           _sourceCategory = recordedfutures/cached/url
-           _sourceCategory = recordedfutures/cached/vunlerability
-           _sourceCategory = recordedfutures/cached/domain
+_sourceCategory = recordedfutures/cached/ip
+_sourceCategory = recordedfutures/cached/hash
+_sourceCategory = recordedfutures/cached/url
+_sourceCategory = recordedfutures/cached/vunlerability
+_sourceCategory = recordedfutures/cached/domain
 
     3.1. You can also optionally to setup a hosted HTTP collector. 
 
-       As an example, navigating to the following URL.
+As an example, navigating to the following URL.
 
-       https://service.jp.sumologic.com/ui/#/collection/collection
+https://service.jp.sumologic.com/ui/#/collection/collection
 
-       and then choose to add a collector. You will be prompted to add sources as well.
+and then choose to add a collector. You will be prompted to add sources as well.
 
-       when done, you can see there is a unique URL for each of the sources you have created.
-       We will use this URL to optionally publish to Sumologic as well.
+when done, you can see there is a unique URL for each of the sources you have created.
+We will use this URL to optionally publish to Sumologic as well.
 
-       https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_sumologic>
+https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_sumologic>
 
     3.2. Choose a source category or Categories for the threat intelligence. Examples:
 
-           _sourceCategory = recordedfutures/hosted/ip
-           _sourceCategory = recordedfutures/hosted/hash
-           _sourceCategory = recordedfutures/hosted/url
-           _sourceCategory = recordedfutures/hosted/vunlerability
-           _sourceCategory = recordedfutures/hosted/domain
-
+_sourceCategory = recordedfutures/hosted/ip
+_sourceCategory = recordedfutures/hosted/hash
+_sourceCategory = recordedfutures/hosted/url
+_sourceCategory = recordedfutures/hosted/vunlerability
+_sourceCategory = recordedfutures/hosted/domain
 
 Installation Steps
 ==================
 
+    1. Navigate to the collection management page in your organization
+
 ![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step1.png "Collection Management")
 
-![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step2.png "Collection Management")
+    2. Add a collector by clicking on add collectors. We start with an installed collector.
 
-![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step3.png "Collection Management")
+![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step2.png "Add Collector")
 
-![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step4.png "Collection Management")
+    3. There are two types of collectors: hosted and installed. We will choose installed for the 1st collector
 
-![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step5.png "Collection Management")
+![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step3.png "Choose Type - Installed")
 
-![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step6.png "Collection Management")
+    4. The installed collector needs to have the software runninbg on the host you choose. Please choose the OS type for the package.
 
-![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step7.png "Collection Management")
+![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step4.png "Select Installation Package")
 
-![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step8.png "Collection Management")
+    5. The installed collector needs to establish connection to sumologic. We want to create an access key for this collector.
 
-![Step09](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step9.png "Collection Management")
+![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step5.png "Navigate to Access Key")
 
-![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Collection Management")
+    6. Create a name for the key you will use. If thee installed collector is only for Recorded Future, then name the key: recordedfuture
+
+       This will have a accesskey ID and the access key string. Save both as we will use this in our installation process.
+
+![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step6.png "Access Key Details")
+
+    7. The instaled collector shoulw show up a running and have a green status connection. 
+
+       We want to confirm the collector is running, and communicating with SumoLogic.
+
+![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step7.png "Verify Installed Collector")
+
+    8. Now click on the collector to either add sources or script actions. We choose sources now and will choose scripted actions later.
+
+![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step8.png "Add Sources")
+
+    9. Choose local files for the sources. You will be asked for a path to specific files, and the source category.
+
+![Step09](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step9.png "Choose Source Type - Local Files")
+
+     10. Now specify the path to the files, and the source category. 
+
+         By default the directory the files are cached into is under the home directory of the user running it.
+         Default: $USER_HOME_DIR/var/tmp/recordedfuture/<YYYYMMDD>
+         
+         If running as root, this will put the directory into /var/tmp/recordedfuture.
+
+![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Specify Path for Files")
+
+
 
 
 License
