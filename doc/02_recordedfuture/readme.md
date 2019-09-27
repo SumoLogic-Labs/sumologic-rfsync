@@ -4,51 +4,24 @@ SumoLogic Recorded Future Integration
 This document will walk through specific steps in deployment options.
 
 
-Installing the Collectors
-=========================
+Recorded Future Steps
+=====================
 
-You can run Recorded Future integration by uploading 
-to a HTTP hosted collector or an installed collector.
+Key for Recorded Future is to contact them to register for your threat feeds.
+Specify the threat feeds, the granularity of feed, and the frequency of updates.
 
-Each of the two will require to download the script 
-from the github, and set up the configuration file.
+From this you should have the following items:
 
-The sections below will talk about setting up the 
-collectors, and configuring SumoLogic to accept the data.
-
-SumoLogic Preparation Work
-==========================
-    1. Choose a source category for the threat intelligence. Examples:
-
-           _sourceCategory = recordedfutures/ip
-           _sourceCategory = recordedfutures/hash
-           _sourceCategory = recordedfutures/url
-           _sourceCategory = recordedfutures/vunlerability
-           _sourceCategory = recordedfutures/domain
-
-Recorded Future Preparation Work
-=================================
+1. List of threat feeds you want. Below is a sample of the size of the uncompressed CSV files
 
 
-    1. Please obtain a Recorded Futues API key from Recorded Future.
-       For reference this web page should help with the subscription process.
-
-           https://www.recordedfuture.com/api-announcement/
-
-    2. Once you have the API key, then place this into the configuration file.
-       Please see an example of the configuration file format here:
-
-           https://github.com/wks-sumo-logic/sumologic-rfsync/tree/master/etc
-
-    3. Confirm ths list of threat intelligence maps you have requested.
-       Edit the configuration file if required to reflect your subscription.
-
-    4. confirm you have read about the download best practices:
-
-           https://go.recordedfuture.com/applying-threat-intelligence
-
-Hosted Collector Installation
-=============================
+| Threat Map          | Size in Kbytes  | Size in Lines | Sample File Name |
+|:------------------- |:----------------|:--------------|:-----------------|
+| domain | 18076 | 25632 | rf_domain_risklist.csv |
+| hash | 91124 | 100001 | rf_hash_risklist.csv |
+| ip | 15696 | 14127 | rf_ip_risklist.csv |
+| url | 143160 | 100001 | rf_url_risklist.csv |
+| vulnerability | 23748 | 43684 | rf_vulnerability_risklist.csv |
 
 Installed Collector Installation
 ================================
