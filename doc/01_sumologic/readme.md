@@ -136,14 +136,14 @@ Installation Steps
 | domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/*/*domain* |
 | hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/*/*hash* |
 | ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/*/*ip* |
-| url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/*/*url* |
-| vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/*/*vuln* |
+| url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/`*`/`*url`* |
+| vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/`*`/`*vuln*` |
 
           Suggested Settings for Consolidated Installed Collector Sources:
 
 | Recorded Future Map | Source Category | Regular Path Expression |
 |:------------------- |:----------------|:------------------------|
-| all | recordedfuture/hosted/all | $USERDIR/var/tmp/recordedfuture/*/* |
+| all | recordedfuture/hosted/all | $USERDIR/var/tmp/recordedfuture/`*`/`*` |
 
 License
 =======
