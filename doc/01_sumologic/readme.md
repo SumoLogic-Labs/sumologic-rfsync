@@ -134,7 +134,7 @@ Suggested Settings
 
           Suggested Settings for Individual Installed Collector Sources:
 
-| Recorded Future Map | Source Category | Regular Path Expression |
+| Threat Map          | Source Category | Regular Path Expression |
 |:------------------- |:----------------|:------------------------|
 | domain | recordedfuture/cached/domain | $USERDIR/var/tmp/recordedfuture/`*`/`*domain*` |
 | hash | recordedfuture/cached/hash | $USERDIR/var/tmp/recordedfuture/`*`/`*hash*` |
@@ -144,13 +144,13 @@ Suggested Settings
 
           Suggested Settings for Consolidated Installed Collector Sources:
 
-| Recorded Future Map | Source Category | Regular Path Expression |
+| Threat Map          | Source Category | Regular Path Expression |
 |:------------------- |:----------------|:------------------------|
 | all | recordedfuture/cached/consolidated | $USERDIR/var/tmp/recordedfuture/`*`/`*` |
 
           Suggested Settings for Individual Hosted Collector Sources:
 
-| Recorded Future Map | Source Category | UrlName |
+| Threat Map          | Source Category | Hosted Collector URL    |
 |:------------------- |:----------------|:------------------------|
 | domain | recordedfuture/hosted/domain | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_domain_url> |
 | hash | recordedfuture/hosted/hash | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_hash_url> |
@@ -160,7 +160,7 @@ Suggested Settings
 
           Suggested Settings for Consolidated Hosted Collector Sources:
 
-| Recorded Future Map | Source Category | Regular Path Expression |
+| Threat Map          | Source Category | Hosted Collector URL    |
 |:------------------- |:----------------|:------------------------|
 | all | recordedfuture/hosted/consolidated | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_all_url> |
 
