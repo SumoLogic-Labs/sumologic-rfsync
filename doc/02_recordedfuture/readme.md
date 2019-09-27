@@ -23,8 +23,11 @@ From this you should have the following items:
 | url | 143160 | 100001 | rf_url_risklist.csv |
 | vulnerability | 23748 | 43684 | rf_vulnerability_risklist.csv |
 
-Installed Collector Installation
-================================
+2. As part of the registration, you will obtain an API key. Please save this information.
+   Test our your access using this key, to ensure you are able to download the threat maps.
+
+When successful, you will be using this information as well as other information 
+in a configuration file to automate your download and publish to SumoLogic.
 
 License
 =======
