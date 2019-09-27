@@ -129,14 +129,21 @@ Installation Steps
 
 ![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Specify Path for Files")
 
-          Suggested Settings for sources:
-| Recorded Future Map | Source Category | Default cached directory |
-|:------------------- |:----------------|:-------------------------|
-| ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
-| hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
-| url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
-| vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
-| domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
+          Suggested Settings for Individual Installed Collector Sources:
+
+| Recorded Future Map | Source Category | Regular Path Expression |
+|:------------------- |:----------------|:------------------------|
+| domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/*/*domain* |
+| hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/*/*hash* |
+| ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/*/*ip* |
+| url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/*/*url* |
+| vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/*/*vuln* |
+
+          Suggested Settings for Consolidated Installed Collector Sources:
+
+| Recorded Future Map | Source Category | Regular Path Expression |
+|:------------------- |:----------------|:------------------------|
+| all | recordedfuture/hosted/all | $USERDIR/var/tmp/recordedfuture/*/* |
 
 License
 =======
