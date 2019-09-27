@@ -75,51 +75,61 @@ Installation Steps
 
 ![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step1.png "Collection Management")
 
-    2. Add a collector by clicking on add collectors. We start with an installed collector.
+    2. Add a collector by clicking on add collectors. 
+       We start with an installed collector.
 
 ![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step2.png "Add Collector")
 
-    3. There are two types of collectors: hosted and installed. We will choose installed for the 1st collector
+    3. There are two types of collectors: hosted and installed. 
+       We will choose installed for the 1st collector
 
 ![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step3.png "Choose Type - Installed")
 
-    4. The installed collector needs to have the software runninbg on the host you choose. Please choose the OS type for the package.
+    4. The installed collector needs to have the software runninbg on the host you choose. 
+       Please choose the correct OS type for your machine to install the right package.
 
 ![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step4.png "Select Installation Package")
 
-    5. The installed collector needs to establish connection to sumologic. We want to create an access key for this collector.
+    5. The installed collector needs to establish connection to sumologic. 
+       We want to create an access key for this collector.
 
 ![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step5.png "Navigate to Access Key")
 
-    6. Create a name for the key you will use. If thee installed collector is only for Recorded Future, then name the key: recordedfuture
+    6. Create a name for the key you will use. If thee installed collector is only 
+       for Recorded Future, then name the key: recordedfuture
 
-       This will have a accesskey ID and the access key string. Save both as we will use this in our installation process.
+       This will have a accesskey ID and the access key string. 
+       Save both strings as we will use this in our installation process.
 
 ![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step6.png "Access Key Details")
 
-    7. The instaled collector shoulw show up a running and have a green status connection. 
+    7. The instaled collector should be running and have a green status connection. 
 
        We want to confirm the collector is running, and communicating with SumoLogic.
 
 ![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step7.png "Verify Installed Collector")
 
-    8. Now click on the collector to either add sources or script actions. We choose sources now and will choose scripted actions later.
+    8. Now click on the collector to either add sources or script actions. 
+       We choose sources now and will choose scripted actions later.
 
 ![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step8.png "Add Sources")
 
-    9. Choose local files for the sources. You will be asked for a path to specific files, and the source category.
+    9. Choose local files for the sources. 
+       You will be asked for a path to specific files, and the source category.
 
 ![Step09](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step9.png "Choose Source Type - Local Files")
 
      10. Now specify the path to the files, and the source category. 
 
-         By default the directory the files are cached into is under the home directory of the user running it.
+         By default the directory the files are cached into is 
+         under the home directory of the user running it.
+
          Default: $USER_HOME_DIR/var/tmp/recordedfuture/<YYYYMMDD>
-         
          If running as root, this will put the directory into /var/tmp/recordedfuture.
 
 ![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Specify Path for Files")
 
+          Suggested Settings for sources:
 
 
 
