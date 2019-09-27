@@ -41,11 +41,11 @@ Later support will be for Windows and other operating systems using a binary cre
 
     2.2. Choose a source category or Categories for the threat intelligence. Examples:
 
-_sourceCategory = recordedfutures/cached/ip
-_sourceCategory = recordedfutures/cached/hash
-_sourceCategory = recordedfutures/cached/url
-_sourceCategory = recordedfutures/cached/vunlerability
-_sourceCategory = recordedfutures/cached/domain
+_sourceCategory = recordedfuture/cached/ip
+_sourceCategory = recordedfuture/cached/hash
+_sourceCategory = recordedfuture/cached/url
+_sourceCategory = recordedfuture/cached/vunlerability
+_sourceCategory = recordedfuture/cached/domain
 
     3.1. You can also optionally to setup a hosted HTTP collector. 
 
@@ -62,11 +62,11 @@ https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_su
 
     3.2. Choose a source category or Categories for the threat intelligence. Examples:
 
-_sourceCategory = recordedfutures/hosted/ip
-_sourceCategory = recordedfutures/hosted/hash
-_sourceCategory = recordedfutures/hosted/url
-_sourceCategory = recordedfutures/hosted/vunlerability
-_sourceCategory = recordedfutures/hosted/domain
+_sourceCategory = recordedfuture/hosted/ip
+_sourceCategory = recordedfuture/hosted/hash
+_sourceCategory = recordedfuture/hosted/url
+_sourceCategory = recordedfuture/hosted/vunlerability
+_sourceCategory = recordedfuture/hosted/domain
 
 Installation Steps
 ==================
@@ -130,8 +130,13 @@ Installation Steps
 ![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Specify Path for Files")
 
           Suggested Settings for sources:
-
-
+| Recorded Future Map | Source Category | Default cached directory |
+|:------------------- |:----------------|:-------------------------|
+| ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
+| hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
+| url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
+| vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
+| domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/*YYYYMMDD*/ |
 
 License
 =======
