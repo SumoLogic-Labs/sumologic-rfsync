@@ -129,21 +129,40 @@ Installation Steps
 
 ![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Specify Path for Files")
 
+Suggested Settings
+===================
+
           Suggested Settings for Individual Installed Collector Sources:
 
 | Recorded Future Map | Source Category | Regular Path Expression |
 |:------------------- |:----------------|:------------------------|
-| domain | recordedfuture/hosted/domain | $USERDIR/var/tmp/recordedfuture/`*`/`*domain*` |
-| hash | recordedfuture/hosted/hash | $USERDIR/var/tmp/recordedfuture/`*`/`*hash*` |
-| ip | recordedfuture/hosted/ip | $USERDIR/var/tmp/recordedfuture/`*`/`*ip*` |
-| url | recordedfuture/hosted/url | $USERDIR/var/tmp/recordedfuture/`*`/`*url`* |
-| vulnerability | recordedfuture/hosted/vunlerability | $USERDIR/var/tmp/recordedfuture/`*`/`*vuln*` |
+| domain | recordedfuture/cached/domain | $USERDIR/var/tmp/recordedfuture/`*`/`*domain*` |
+| hash | recordedfuture/cached/hash | $USERDIR/var/tmp/recordedfuture/`*`/`*hash*` |
+| ip | recordedfuture/cached/ip | $USERDIR/var/tmp/recordedfuture/`*`/`*ip*` |
+| url | recordedfuture/cached/url | $USERDIR/var/tmp/recordedfuture/`*`/`*url`* |
+| vulnerability | recordedfuture/cached/vunlerability | $USERDIR/var/tmp/recordedfuture/`*`/`*vuln*` |
 
           Suggested Settings for Consolidated Installed Collector Sources:
 
 | Recorded Future Map | Source Category | Regular Path Expression |
 |:------------------- |:----------------|:------------------------|
-| all | recordedfuture/hosted/all | $USERDIR/var/tmp/recordedfuture/`*`/`*` |
+| all | recordedfuture/cached/consolidated | $USERDIR/var/tmp/recordedfuture/`*`/`*` |
+
+          Suggested Settings for Individual Hosted Collector Sources:
+
+| Recorded Future Map | Source Category | UrlName |
+|:------------------- |:----------------|:------------------------|
+| domain | recordedfuture/hosted/domain | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_domain_url> |
+| hash | recordedfuture/hosted/hash | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_hash_url> |
+| ip | recordedfuture/hosted/ip | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_ip_url> |
+| url | recordedfuture/hosted/url | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_urls_url> |
+| vulnerability | recordedfuture/hosted/vunlerability | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_vuln_url> |
+
+          Suggested Settings for Consolidated Hosted Collector Sources:
+
+| Recorded Future Map | Source Category | Regular Path Expression |
+|:------------------- |:----------------|:------------------------|
+| all | recordedfuture/hosted/consolidated | https://collectors.jp.sumologic.com/receiver/v1/http/<unique_all_url> |
 
 License
 =======
