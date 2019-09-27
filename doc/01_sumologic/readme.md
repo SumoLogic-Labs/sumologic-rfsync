@@ -39,8 +39,6 @@ with the latest python3 and python modules to install the script.
 
 Later support will be for Windows and other operating systems using a binary created from Pyinstaller.
 
-
-
     2.2. Choose a source category or Categories for the threat intelligence. Examples:
 
            _sourceCategory = recordedfutures/cached/ip
@@ -74,14 +72,16 @@ Later support will be for Windows and other operating systems using a binary cre
 Installation Steps
 ==================
 
-[Step-1: SumoLogic Preparation](01_sumologic/readme.md)
-
-[Step-2: Recorded Future Preparation](02_recordedfuture/readme.md)
-
-[Step-3: Integration Setup](03_integration/readme.md)
-
-
-
+[Step-1](./steps/sumologic_setup.step1.png)
+[Step-2](./steps/sumologic_setup.step2.png)
+[Step-3](./steps/sumologic_setup.step3.png)
+[Step-4](./steps/sumologic_setup.step4.png)
+[Step-5](./steps/sumologic_setup.step5.png)
+[Step-6](./steps/sumologic_setup.step6.png)
+[Step-7](./steps/sumologic_setup.step7.png)
+[Step-8](./steps/sumologic_setup.step8.png)
+[Step-9](./steps/sumologic_setup.step9.png)
+[Step-10](./steps/sumologic_setup.step10.png)
 
 License
 =======
