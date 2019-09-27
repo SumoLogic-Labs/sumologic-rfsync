@@ -63,7 +63,7 @@ Sample of the configuration file used for the script is:
 
 `MAPLIST = [ "domain", "hash", "ip", "vulnerability", "url" ]`
 
-`URLLIST = [ "all#https://collectors.jp.sumologic.com/receiver/v1/http/registered-sumologic-collector-url==" ]`
+`URLLIST = [ "all#https://collectors.jp.sumologic.com/receiver/v1/http/sumologic-hosted-collector==" ]`
 
 Setting up Scripted Action
 ==========================
