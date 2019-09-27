@@ -72,16 +72,26 @@ Later support will be for Windows and other operating systems using a binary cre
 Installation Steps
 ==================
 
-[Step-1](./steps/sumologic_setup.step1.png)
-[Step-2](./steps/sumologic_setup.step2.png)
-[Step-3](./steps/sumologic_setup.step3.png)
-[Step-4](./steps/sumologic_setup.step4.png)
-[Step-5](./steps/sumologic_setup.step5.png)
-[Step-6](./steps/sumologic_setup.step6.png)
-[Step-7](./steps/sumologic_setup.step7.png)
-[Step-8](./steps/sumologic_setup.step8.png)
-[Step-9](./steps/sumologic_setup.step9.png)
-[Step-10](./steps/sumologic_setup.step10.png)
+![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step1.png "Collection Management")
+
+![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step2.png "Collection Management")
+
+![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step3.png "Collection Management")
+
+![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step4.png "Collection Management")
+
+![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step5.png "Collection Management")
+
+![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step6.png "Collection Management")
+
+![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step7.png "Collection Management")
+
+![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step8.png "Collection Management")
+
+![Step09](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step9.png "Collection Management")
+
+![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Collection Management")
+
 
 License
 =======
