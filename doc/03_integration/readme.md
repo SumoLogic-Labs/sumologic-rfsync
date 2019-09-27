@@ -37,13 +37,13 @@ https://github.com/wks-sumo-logic/sumologic-rfsync
 
 When downloaded and unpacked, the directory structure will be:
 
-./bin/rfslsync.py
-./bin/sl-updates-24h.query
-./etc/rfslsync.cfg
+`./bin/rfslsync.py`
+`./bin/sl-updates-24h.query`
+`/etc/rfslsync.cfg`
 
 Confirm you can run the following command:
 
-prompt> ./bin/rfslsync.py -h
+`prompt> ./bin/rfslsync.py -h`
 
 If you are able to run the command, then we can configure the script.
 
@@ -55,13 +55,10 @@ Add the following information into the configuration file.
 
 Sample of the configuration file used for the script is:
 
-`
-[Default]
-APIKEY = "please-insert-your-recorded-future-api-key"
-MAPLIST = [ "domain", "hash", "ip", "vulnerability", "url" ]
-URLLIST = [ "all#https://collectors.jp.sumologic.com/receiver/v1/http/registered-sumologic-collector-url==" ]
-`
-
+`[Default]`
+`APIKEY = "please-insert-your-recorded-future-api-key"`
+`MAPLIST = [ "domain", "hash", "ip", "vulnerability", "url" ]`
+`URLLIST = [ "all#https://collectors.jp.sumologic.com/receiver/v1/http/registered-sumologic-collector-url==" ]`
 
 Setting up Scripted Action
 ==========================
