@@ -4,54 +4,17 @@ SumoLogic Recorded Future Integration
 This document will walk through specific steps in deployment options.
 
 
-Installing the Collectors
-=========================
-
-You can run Recorded Future integration by uploading 
-to a HTTP hosted collector or an installed collector.
-
-Each of the two will require to download the script 
-from the github, and set up the configuration file.
-
-The sections below will talk about setting up the 
-collectors, and configuring SumoLogic to accept the data.
-
-SumoLogic Preparation Work
-==========================
-    1. Choose a source category for the threat intelligence. Examples:
-
-           _sourceCategory = recordedfutures/ip
-           _sourceCategory = recordedfutures/hash
-           _sourceCategory = recordedfutures/url
-           _sourceCategory = recordedfutures/vunlerability
-           _sourceCategory = recordedfutures/domain
-
-Recorded Future Preparation Work
+Installing the Script and Modules
 =================================
 
+Setting up the Directory and Configuration File
+===============================================
 
-    1. Please obtain a Recorded Futues API key from Recorded Future.
-       For reference this web page should help with the subscription process.
+Setting up Scripted Action
+==========================
 
-           https://www.recordedfuture.com/api-announcement/
-
-    2. Once you have the API key, then place this into the configuration file.
-       Please see an example of the configuration file format here:
-
-           https://github.com/wks-sumo-logic/sumologic-rfsync/tree/master/etc
-
-    3. Confirm ths list of threat intelligence maps you have requested.
-       Edit the configuration file if required to reflect your subscription.
-
-    4. confirm you have read about the download best practices:
-
-           https://go.recordedfuture.com/applying-threat-intelligence
-
-Hosted Collector Installation
-=============================
-
-Installed Collector Installation
-================================
+Setting up Scheduled Query
+==========================
 
 License
 =======
