@@ -188,7 +188,7 @@ def publish_mapitem(localfile, sumologicurl):
         postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
         postresponse = urllib.request.urlopen(postrequest)
         if ARGS.verbose:
-            print('RESPONSE: ' + postresponse)
+            print('RESPONSE: ' + str(postresponse.status) )
 
 if __name__ == '__main__':
     main()
