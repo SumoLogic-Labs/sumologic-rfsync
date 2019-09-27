@@ -152,17 +152,17 @@ Suggested Settings
 
 | Threat Map          | Source Category | Hosted Collector URL    |
 |:------------------- |:----------------|:------------------------|
-| domain | recordedfuture/hosted/domain | https://collectors.jp.sumologic.com/receiver/v1/http/`<string>` |
-| hash | recordedfuture/hosted/hash | https://collectors.jp.sumologic.com/receiver/v1/http/`<string>` |
-| ip | recordedfuture/hosted/ip | https://collectors.jp.sumologic.com/receiver/v1/http/`<string>` |
-| url | recordedfuture/hosted/url | https://collectors.jp.sumologic.com/receiver/v1/http/`<string>` |
-| vulnerability | recordedfuture/hosted/vunlerability | https://collectors.jp.sumologic.com/receiver/v1/http/`<string>` |
+| domain | recordedfuture/hosted/domain | https://collectors.jp.sumologic.com/receiver/v1/http/`genurl` |
+| hash | recordedfuture/hosted/hash | https://collectors.jp.sumologic.com/receiver/v1/http/`genurl` |
+| ip | recordedfuture/hosted/ip | https://collectors.jp.sumologic.com/receiver/v1/http/`string` |
+| url | recordedfuture/hosted/url | https://collectors.jp.sumologic.com/receiver/v1/http/`genurl` |
+| vulnerability | recordedfuture/hosted/vunlerability | https://collectors.jp.sumologic.com/receiver/v1/http/`genurl` |
 
           Suggested Settings for Consolidated Hosted Collector Sources:
 
 | Threat Map          | Source Category | Hosted Collector URL    |
 |:------------------- |:----------------|:------------------------|
-| all | recordedfuture/hosted/consolidated | https://collectors.jp.sumologic.com/receiver/v1/http/`<string>` |
+| all | recordedfuture/hosted/consolidated | https://collectors.jp.sumologic.com/receiver/v1/http/`genurl` |
 
 License
 =======
