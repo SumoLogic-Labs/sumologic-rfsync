@@ -56,18 +56,21 @@ Scripts and Functions:
 
     1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
 
-    2. rfget.py - This is a helper script. It retrieves Recorded Future files and saves them to a local cache.
-
-    3. rfput.py - This is a helper script. It pushes all Recorded Future file from a directory to SumoLogic
+    2. sl-updates-24h.query - This is a query we configure to trigger the script.
                    
 To Do List:
 ===========
 
-* Build an Ansible wrapper for script and extend the download/upload functions.
+* Build an Ansible wrapper for script to automatically complete configuration
 
-* Add ability to map different data to different collectors.
+* extend the download/upload functions
 
-* Extend support for a config file to contain options
+* implement unique headers when publishing
+
+* implement unique signatures when querying
+
+* downkoiad gzipped data use for installed collector
+
 
 License
 =======
