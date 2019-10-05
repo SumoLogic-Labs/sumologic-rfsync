@@ -1,4 +1,6 @@
-// this is a parameter. set to any and use for source categories
+// schedule the query for every 2 hours
+// set the query duration for 2 days
+// Set the following parameter to the Recorded Future
 _sourceCategory="{{sourcecategory}}" 
 // this is a unique marker
 | now() as timestamp
@@ -8,8 +10,8 @@ _sourceCategory="{{sourcecategory}}"
 // count by source category and _timeslice
 | count by _sourceCategory, _timeslice 
 // sort by the largest count, and take the 1st ( largest) value
-| sort by _count 
-| topk(1, _count)
+| sort by _timeslice, _count 
+| topk(1, _timeslice)
 // now construct a time delta from the bucket and now
 | _timeslice as lastdate
 | now() as currentdate
@@ -19,8 +21,8 @@ _sourceCategory="{{sourcecategory}}"
 | 60 as min2hrs
 | 24 as hrs2day
 | 1000 as mil2sec
-| mil2sec * sec2min * min2hrs * hrs2day as mill2day
-// look at the time delta issue this if the value is greater than 0 ( 1 or greater )
-| int( ( currentdate - lastdate ) / mill2day )  as days
+| mil2sec * sec2min * min2hrs * hrs2day as mill2hours
+// look at the time delta issue this if the value is greater than 24 hours
+| int( ( currentdate - lastdate ) / mill2hours )  as hours
 // look for the condition to list the output
-| where days > 0
+| where hours > 24 
