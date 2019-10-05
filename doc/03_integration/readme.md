@@ -22,16 +22,15 @@ Default:
 
 `$USER`/var/tmp/recordedfuture/*YYYYMMDD*/
 
-The script will not remove the downloaded files, so archiving, backups,
-and file system maintenance are important items to consider.
+The script will not remove the downloaded files.
+Archiving, backups, and file system maintenance must be considered.
 
-While later versions will implement a switch to compress/remove older
-threat intelligence maps, this choice is left to you how best to manage space.
+Later versions will support data management. 
+That said, it is important to decide how best to manage the data/space.
 
 2. Download the script and sample configuration file.
 
-the easiest way to do this is to download the github project either by 
-cloning the project or downloading a zip file.
+The best way to do this is to clone the github project.
 
 https://github.com/wks-sumo-logic/sumologic-rfsync
 
@@ -41,7 +40,9 @@ When downloaded and unpacked, the directory structure will be:
 
 `./bin/sl-updates-24h.query`
 
-`/etc/rfslsync.cfg`
+`./bin/sl-download-wrapper.bash`
+
+`./etc/rfslsync.cfg`
 
 Confirm you can run the following command:
 
@@ -69,9 +70,9 @@ Setting up the download Script
 ==============================
 
 Sumologic supports the ability to run a script of your choosing, called a scripted action.
-We will be putting such a script into a difrectory on the host where the installed collector is running.
+We will put that script into a local directory on the install collector host.
 
-That script, coupled with the query is how the SumoLogic will pull down the Recorded Future files.
+That script, coupled with the query is how SumoLogic will pull the Recorded Future files.
 A script sample is located in the bin directory of the git project, and is called:
 
 * sl-download-wrapper.bash
@@ -103,7 +104,7 @@ Setting up the Scripted Action
 ![Step1](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_integration/steps/sl.step1.png "Navigate to the Installed Collector")
 
 1) Go to the installed collector you have setup, and add a scripted action.
-   The action is a command or script that can run as a command based on a query.
+   The action is a command/script that can run as a command based on a query.
 
 ![Step2](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_integration/steps/sl.step2.png "Click on Add Scripted Action")
 
