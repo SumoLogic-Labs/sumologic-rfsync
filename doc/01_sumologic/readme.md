@@ -129,6 +129,15 @@ Installation Steps
 
 ![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step10.png "Specify Path for Files")
 
+     11. The installed collector will be running software, so we need to enable this feature.
+
+         We need to add this into the resources for the installed collector.
+
+         "enableActionSource=true"
+
+         Adding this to the user.properties files and then stopping and restarting the collector.
+      
+
 Suggested Settings
 ===================
 
