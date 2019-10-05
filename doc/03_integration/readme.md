@@ -100,17 +100,17 @@ the query that drives the downloads.
 Setting up the Scripted Action
 ==============================
 
-![Step1](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_sumologic/steps/sl.step1.png "Navigate to the Installed Collector")
+![Step1](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_integration/steps/sl.step1.png "Navigate to the Installed Collector")
 
 1) Go to the installed collector you have setup, and add a scripted action.
    The action is a command or script that can run as a command based on a query.
 
-![Step2](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_sumologic/steps/sl.step2.png "Click on Add Scripted Action")
+![Step2](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_integration/steps/sl.step2.png "Click on Add Scripted Action")
 
 2) When adding the scripted action, we need to specify the type of script,
    the full path of the script, and the directory this will run in.
 
-![Step3](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_sumologic/steps/sl.step3.png "Fill in Values")
+![Step3](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_integration/steps/sl.step3.png "Fill in Values")
 
 3) This is an example of the filled in values. 
 
