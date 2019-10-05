@@ -39,7 +39,8 @@ The steps are as follows:
 Setting up the SumoLogic Recorded Future Integration
 ====================================================
 
-Designed to be completed in minimal steps, the integration can be setup within minutes.
+Designed to be completed in minimal steps, the integration can be setup easily.
+
 Please refer to these configuration instructions located:
 
 [Configuring your SumoLogic Recorded Future Integration](doc/readme.md)
