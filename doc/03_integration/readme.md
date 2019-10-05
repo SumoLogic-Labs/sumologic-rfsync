@@ -65,10 +65,61 @@ Sample of the configuration file used for the script is:
 
 `URLLIST = [ "all#https://collectors.jp.sumologic.com/receiver/v1/http/sumologic-hosted-collector==" ]`
 
-Setting up Scripted Action
-==========================
+Setting up the download Script
+==============================
 
+Sumologic supports the ability to run a script of your choosing, called a scripted action.
+We will be putting such a script into a difrectory on the host where the installed collector is running.
 
+That script, coupled with the query is how the SumoLogic will pull down the Recorded Future files.
+A script sample is located in the bin directory of the git project, and is called:
+
+* sl-download-wrapper.bash
+
+Steps to set up the hosted collector would be:
+
+1) cd /var/tmp
+
+2) Confirm the path to the rfsync.py script. <git-repository-dir>/bin/rflsync.py
+
+3) Confirm the path to the rfslsync.cfg config file. <git-repository-dir>/etc/rfslsync.cfg
+
+2) cp <git-repository-dir>/bin/sl-download-wrapper.bash /var/tmp/sl-download-wrapper.bash
+
+3) Confirm the contents of the wrapper script is correct /var/tmp/sl-download-wrapper.bash
+
+* cmdname
+
+* cfgname
+
+4) Confirm the script can be executed.
+
+The next step is setting up the scripted action, and then finally configure 
+the query that drives the downloads.
+
+Setting up the Scripted Action
+==============================
+
+![Step1](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_sumologic/steps/sl.step1.png "Navigate to the Installed Collector")
+
+1) Go to the installed collector you have setup, and add a scripted action.
+   The action is a command or script that can run as a command based on a query.
+
+![Step2](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_sumologic/steps/sl.step2.png "Click on Add Scripted Action")
+
+2) When adding the scripted action, we need to specify the type of script,
+   the full path of the script, and the directory this will run in.
+
+![Step3](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/03_sumologic/steps/sl.step3.png "Fill in Values")
+
+3) This is an example of the filled in values. 
+
+| Key Name p          | Hosted Collector URL                                  |
+|:------------------- |:------------------------------------------------------|
+| Script Action Name | download-recorded-future-maps |
+| Script Description | Download Threat Intelligence from Recorded Future |
+| Path to script | /var/tmp/sl-download-wrapper.bash |
+| Script type | /bin/bash |
 
 Setting up Scheduled Query
 ==========================
