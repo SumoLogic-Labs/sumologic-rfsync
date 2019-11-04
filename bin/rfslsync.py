@@ -54,6 +54,7 @@ PARSER.add_argument('-u', metavar='<url>', nargs='*', dest='url', help='set url:
 PARSER.add_argument('-m', metavar='<map>', nargs='*', dest='map', default=['all'], help='set maps')
 PARSER.add_argument('-v', '--verbose', help='verbose', action="store_true")
 
+URLLIST = ''
 ARGS = PARSER.parse_args()
 DEFAULTMAP = ('domain', 'hash', 'ip', 'url', 'vulnerability')
 FILEMAP = dict()
@@ -76,8 +77,11 @@ if ARGS.cfg:
     APIKEY = json.loads(CONFIG.get("Default", "APIKEY"))
     os.environ['APIKEY'] = APIKEY
 
-    URLLIST = json.loads(CONFIG.get("Default", "URLLIST"))
     MAPLIST = json.loads(CONFIG.get("Default", "MAPLIST"))
+
+    if CONFIG.has_option('Default', 'URLLIST'):
+        URLLIST = json.loads(CONFIG.get("Default", "URLLIST"))
+
     if CONFIG.has_option('Default', 'CSVDIR'):
         CSVDIR = os.path.abspath(json.loads(CONFIG.get("Default", "CSVDIR")))
 else:
@@ -148,9 +152,9 @@ def main():
         retrieve_mapitem(targetkey, targetfile)
 
     for targetkey, localfile in FILEMAP.items():
-        sumologicurl = WEBMAP[targetkey]
-        publish_mapitem(localfile, sumologicurl)
-
+        if targetkey in WEBMAP:
+            sumologicurl = WEBMAP[targetkey]
+            publish_mapitem(localfile, sumologicurl)
 
 def retrieve_mapitem(targetkey, targetfile):
     """
@@ -161,7 +165,8 @@ def retrieve_mapitem(targetkey, targetfile):
         print('FILEFILE:' + targetfile)
 
     maptarget = '%s/%s/%s' % (URLBASE, targetkey, URLTAIL)
-    getrequest = urllib.request.Request(maptarget, None, {'X-RFToken': APIKEY})
+    getrequest = urllib.request.Request(maptarget, None, \
+        {'X-RFToken': APIKEY, 'X-RF-User-Agent' : 'SumoLogic+v1.0'})
     getresults = urllib.request.urlopen(getrequest)
 
     os.makedirs(CSVDIR, exist_ok=True)
@@ -188,7 +193,7 @@ def publish_mapitem(localfile, sumologicurl):
         postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
         postresponse = urllib.request.urlopen(postrequest)
         if ARGS.verbose:
-            print('RESPONSE: ' + str(postresponse.status) )
+            print('RESPONSE: ' + str(postresponse.status))
 
 if __name__ == '__main__':
     main()
