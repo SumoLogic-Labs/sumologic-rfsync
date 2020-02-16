@@ -1,5 +1,5 @@
-SumoLogic Recorded Future Integration
-=====================================
+Sumo Logic Recorded Future Integration
+======================================
 
 This document will walk through specific steps in deployment options.
 
@@ -14,9 +14,9 @@ Each of the two will require to download the script
 from the github, and set up the configuration file.
 
 The sections below will talk about setting up the 
-collectors, and configuring SumoLogic to accept the data.
+collectors, and configuring Sumo Logic to accept the data.
 
-SumoLogic Preparation Work
+Sumo Logic Preparation Work
 ==========================
 
     1. Configure collectors for your deployments, along with sources.
@@ -26,7 +26,7 @@ SumoLogic Preparation Work
 
 An overview of the installation is we setup an installed collector, sources, and create an access key.
 The collector and the access key are used to securely establish communication to Sumologic.
-The sources are definitions for your data, where you want the files to show up in your SumoLogic query.
+The sources are definitions for your data, where you want the files to show up in your Sumo Logic query.
 
 An installed collector is required; this allows you run the integration script the easiest.
 The hosted collector allows you to republish to other sources if you need it giving you flexibility.
@@ -105,7 +105,7 @@ Installation Steps
 
     7. The instaled collector should be running and have a green status connection. 
 
-       We want to confirm the collector is running, and communicating with SumoLogic.
+       We want to confirm the collector is running, and communicating with Sumo Logic.
 
 ![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step7.png "Verify Installed Collector")
 

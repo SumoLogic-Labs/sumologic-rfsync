@@ -1,5 +1,5 @@
-SumoLogic Recorded Future Integration
-=====================================
+Sumo Logic Recorded Future Integration
+======================================
 
 This document will walk through specific steps in deployment options.
 
@@ -72,7 +72,7 @@ Setting up the download Script
 Sumologic supports the ability to run a script of your choosing, called a scripted action.
 We will put that script into a local directory on the install collector host.
 
-That script, coupled with the query is how SumoLogic will pull the Recorded Future files.
+That script, coupled with the query is how Sumo Logic will pull the Recorded Future files.
 A script sample is located in the bin directory of the git project, and is called:
 
 * sl-download-wrapper.bash

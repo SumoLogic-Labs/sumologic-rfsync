@@ -1,7 +1,7 @@
-SumoLogic Recorded Future Integration
-=====================================
+Sumo Logic Recorded Future Integration
+======================================
 
-This script, config files, and instructions allow a client of Recorded Future to add their data into SumoLogic.
+This script, config files, and instructions allow a client of Recorded Future to add their data into Sumo Logic.
 
 Installing the Project
 ======================
@@ -36,14 +36,14 @@ The steps are as follows:
 
         pipenv install
         
-Setting up the SumoLogic Recorded Future Integration
-====================================================
+Setting up the Sumo Logic Recorded Future Integration
+=====================================================
 
 Designed to be completed in minimal steps, the integration can be setup easily.
 
 Please refer to these configuration instructions located:
 
-[Configuring your SumoLogic Recorded Future Integration](doc/readme.md)
+[Configuring your Sumo Logic Recorded Future Integration](doc/readme.md)
 
 Dependencies
 ============

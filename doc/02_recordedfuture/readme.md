@@ -1,5 +1,5 @@
-SumoLogic Recorded Future Integration
-=====================================
+Sumo Logic Recorded Future Integration
+======================================
 
 This document will walk through specific steps in deployment options.
 
@@ -38,7 +38,7 @@ https://api.recordedfuture.com/explore.html
 
 
 When successful, you will be using this information as well as other information 
-in a configuration file to automate your download and publish to SumoLogic.
+in a configuration file to automate your download and publish to Sumo Logic.
 
 License
 =======

@@ -1,22 +1,22 @@
-SumoLogic Recorded Future Integration
-=====================================
+Sumo Logic Recorded Future Integration
+======================================
 
-The installation of the SumoLogic Recorded Future integration is easy.
-There are in 5 easy steps, starting with setting up your SumoLogic 
+The installation of the Sumo Logic Recorded Future integration is easy.
+There are in 5 easy steps, starting with setting up your Sumo Logic 
 environment, getting your Recorded Future API key, and then organizing 
 how you want to see your threat intelligence data.
 
 Setup Steps
 ===========
 
-[Step-1: SumoLogic Preparation](01_sumologic/readme.md)
+[Step-1: Sumo Logic Preparation](01_sumologic/readme.md)
 
 [Step-2: Recorded Future Preparation](02_recordedfuture/readme.md)
 
 [Step-3: Integration Setup](03_integration/readme.md)
 
 As an overview, the first step plan how you want to import, 
-or ingest, the data into SumoLogic. 
+or ingest, the data into Sumo Logic. 
 
 The next step ensures we have the right subscription and setup
 for Recorded Future.
