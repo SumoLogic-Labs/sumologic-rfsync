@@ -43,13 +43,13 @@ Later support will be for Windows and other operating systems using a binary cre
 
 Examples:
 
-'''
-_sourceCategory = recordedfuture/cached/ip
-_sourceCategory = recordedfuture/cached/hash
-_sourceCategory = recordedfuture/cached/url
-_sourceCategory = recordedfuture/cached/vunlerability
-_sourceCategory = recordedfuture/cached/domain
-'''
+| Suggested Cached Source Categories |
+|:-------------------------------------------------------------------|
+| _sourceCategory = recordedfuture/cached/ip |
+| _sourceCategory = recordedfuture/cached/hash |
+| _sourceCategory = recordedfuture/cached/url |
+| _sourceCategory = recordedfuture/cached/vunlerability |
+| _sourceCategory = recordedfuture/cached/domain |
 
     3.1. You can also optionally to setup a hosted HTTP collector. 
 
@@ -66,15 +66,13 @@ https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_su
 
     3.2. Choose a source category or Categories for the threat intelligence. 
 
-Examples:
-
-'''
-_sourceCategory = recordedfuture/hosted/ip
-_sourceCategory = recordedfuture/hosted/hash
-_sourceCategory = recordedfuture/hosted/url
-_sourceCategory = recordedfuture/hosted/vunlerability
-_sourceCategory = recordedfuture/hosted/domain
-'''
+| Suggested Hosted Source Categories |
+|:-------------------------------------------------------------------|
+| _sourceCategory = recordedfuture/hosted/ip |
+| _sourceCategory = recordedfuture/hosted/hash |
+| _sourceCategory = recordedfuture/hosted/url |
+| _sourceCategory = recordedfuture/hosted/vunlerability |
+| _sourceCategory = recordedfuture/hosted/domain |
 
 Installation Steps
 ==================
