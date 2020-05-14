@@ -85,15 +85,15 @@ Steps to set up the hosted collector would be:
 
 3) Confirm the path to the rfslsync.cfg config file. <git-repository-dir>/etc/rfslsync.cfg
 
-2) cp <git-repository-dir>/bin/sl-download-wrapper.bash /var/tmp/sl-download-wrapper.bash
+4) cp <git-repository-dir>/bin/sl-download-wrapper.bash /var/tmp/sl-download-wrapper.bash
 
-3) Confirm the contents of the wrapper script is correct /var/tmp/sl-download-wrapper.bash
+5) Confirm the contents of the wrapper script is correct /var/tmp/sl-download-wrapper.bash
 
-* cmdname
+   * cmdname
 
-* cfgname
+   * cfgname
 
-4) Confirm the script can be executed.
+6) Confirm the script can be executed.
 
 The next step is setting up the scripted action, and then finally configure 
 the query that drives the downloads.
