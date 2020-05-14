@@ -39,13 +39,17 @@ with the latest python3 and python modules to install the script.
 
 Later support will be for Windows and other operating systems using a binary created from Pyinstaller.
 
-    2.2. Choose a source category or Categories for the threat intelligence. Examples:
+    2.2. Choose a source category or Categories for the threat intelligence. 
 
+Examples:
+
+'''
 _sourceCategory = recordedfuture/cached/ip
 _sourceCategory = recordedfuture/cached/hash
 _sourceCategory = recordedfuture/cached/url
 _sourceCategory = recordedfuture/cached/vunlerability
 _sourceCategory = recordedfuture/cached/domain
+'''
 
     3.1. You can also optionally to setup a hosted HTTP collector. 
 
@@ -60,13 +64,17 @@ We will use this URL to optionally publish to Sumologic as well.
 
 https://collectors.jp.sumologic.com/receiver/v1/http/<unique_url_generated_by_sumologic>
 
-    3.2. Choose a source category or Categories for the threat intelligence. Examples:
+    3.2. Choose a source category or Categories for the threat intelligence. 
 
+Examples:
+
+'''
 _sourceCategory = recordedfuture/hosted/ip
 _sourceCategory = recordedfuture/hosted/hash
 _sourceCategory = recordedfuture/hosted/url
 _sourceCategory = recordedfuture/hosted/vunlerability
 _sourceCategory = recordedfuture/hosted/domain
+'''
 
 Installation Steps
 ==================
@@ -95,7 +103,7 @@ Installation Steps
 
 ![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/steps/sl.step5.png "Navigate to Access Key")
 
-    6. Create a name for the key you will use. If thee installed collector is only 
+    6. Create a name for the key you will use. If the installed collector is only 
        for Recorded Future, then name the key: recordedfuture
 
        This will have a accesskey ID and the access key string. 
