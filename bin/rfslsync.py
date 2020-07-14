@@ -4,10 +4,9 @@
 """
 Explanation:
 
-This will collect CSV files from the Recorded Future website
-save this into a cache, and then Publish this to the SumoLogic website.
-
-This script allows the client to choose how to publish as well.
+This script collects files from the Recorded Future website.
+It puts files into a local directory cache.
+Finally, it provides several means to publish to Sumo Logic.
 
 Usage:
     $ python  rfslsync [ options ]
@@ -40,11 +39,7 @@ import urllib.request
 sys.dont_write_bytecode = 1
 
 PARSER = argparse.ArgumentParser(description="""
-
-This script connects Recorded Future to SumoLogic in the following manner.
-Retrieves the information from Recorded Future in CSV format
-Pushes the files to Sumologic hosted Web collector.
-
+A tool to manage how to collect from Recorded Future and publish to Sumo Logic.
 """)
 
 PARSER.add_argument('-k', metavar='<key>', dest='key', help='set API key')
