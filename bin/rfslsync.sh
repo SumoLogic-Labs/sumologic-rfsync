@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
-  
+
 umask 022
 
-BASEDIR="/var/tmp/sumologic-rfsync"
+BASEDIR="$( dirname $( pwd ) )"
 cmdname="$BASEDIR/bin/rfslsync.py"
 cfgname="$BASEDIR/etc/rfslsync.cfg"
 LOGDIR="$BASEDIR/log"
-OUTDIR="$BASEDIR/csv"
 
 complain_and_exit () {
    echo "ERROR: $2"
@@ -18,9 +17,8 @@ complain_and_exit () {
 [ -f "$cfgname" ] || complain_and_exit "113" "Exiting. Cannot find: $cfgname"
 
 [ -d "$LOGDIR" ]  || mkdir -p $LOGDIR
-[ -d "$OUTDIR" ]  || mkdir -p $OUTDIR
 
 logfile="$BASEDIR/log/output.log"
 rm -f $logfile 
 touch $logfile
-$cmdname -c $cfgname -v > $logfile 2>&1
+$cmdname -c $cfgname -v  > $logfile 2>&1
