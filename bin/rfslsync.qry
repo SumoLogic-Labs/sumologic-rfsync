@@ -1,0 +1,34 @@
+// Schedule the query to run every hour
+// Set the duration of the query for 2 days
+// Set the alert to be greater than 0 results
+// Set the alert type to be a scripted action
+// Set the following parameter to the Recorded Future
+_sourceCategory={{target_source_category}}
+// split data into time buckets and then count by the buckets
+| timeslice 1h
+| count by _sourceCategory, _timeslice, _sourcehost
+| sort by _timeslice
+// get the most recent time bucket
+| topk(1, _timeslice)
+// this is now our date we use to compare
+| _timeslice as lastdate
+// Use this as both a time check and also build a unique tag
+// while not used for the alert we can track the clienttag
+| now() as currentdate
+| concat("recorded_future","#",_sourcehost,"#",currentdate) as clienttag
+// set specific values for date and time
+// we can collapse this though best to be explicit
+| 24 as hrs2day
+| 60 as min2hrs
+| 60 as sec2min
+| 1000 as mil2sec
+| mil2sec * sec2min * min2hrs as mil2hrs
+// this can also be a parameter though for now hard coded as 24 hours
+| 24 as hourlimit
+// calculate the delta of now versus last observed date
+// we can split this out per data source and have different schedules
+| currentdate - lastdate as delta
+| int ( delta / mil2hrs )  as hours
+// conditional statement only show if hours is greater than limit
+// at 25 hours the client will fire the scripted action
+| where hours > hourlimit
