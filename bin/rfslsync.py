@@ -87,13 +87,11 @@ else:
     if ARGS.key:
         os.environ['APIKEY'] = ARGS.key
     if ARGS.dir:
-        BASEDIR = os.path.abspath((os.path.join(ARGS.dir)))
+        CSVDIR = os.path.abspath((os.path.join(ARGS.dir)))
 
 if CSVDIR == 'unset':
-    HOMEDIR = os.path.abspath((os.path.expanduser('~')))
-    BASEDIR = os.path.abspath((os.path.join(HOMEDIR, 'var', 'tmp')))
-
-CSVDIR = '%s/%s/%s' % (BASEDIR, SRCTAG, DSTAMP)
+    BASEDIR = os.path.abspath('/var/tmp')
+    CSVDIR = '%s/%s/%s' % (BASEDIR, SRCTAG, DSTAMP)
 
 for mapname in MAPLIST:
     if mapname == 'all':
