@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
-
+  
 umask 022
 
-BASEDIR="$( dirname $( pwd ) )"
+BASEDIR="/var/tmp/rfslsync"
 cmdname="$BASEDIR/bin/rfslsync.py"
 cfgname="$BASEDIR/etc/rfslsync.cfg"
 LOGDIR="$BASEDIR/log"
@@ -21,4 +21,4 @@ complain_and_exit () {
 logfile="$BASEDIR/log/output.log"
 rm -f $logfile 
 touch $logfile
-$cmdname -c $cfgname -v  > $logfile 2>&1
+$cmdname -c $cfgname -v > $logfile 2>&1
