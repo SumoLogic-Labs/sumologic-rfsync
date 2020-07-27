@@ -34,7 +34,7 @@ import pprint
 import re
 import os
 import sys
-import urllib.request
+import requests
 
 sys.dont_write_bytecode = 1
 
@@ -47,7 +47,8 @@ PARSER.add_argument('-d', metavar='<dir>', dest='dir', help='set directory')
 PARSER.add_argument('-c', metavar='<cfg>', dest='cfg', help='set config file')
 PARSER.add_argument('-u', metavar='<url>', nargs='*', dest='url', help='set url: <map#urlname>')
 PARSER.add_argument('-m', metavar='<map>', nargs='*', dest='map', default=['all'], help='set maps')
-PARSER.add_argument('-v', '--verbose', help='verbose', action="store_true")
+PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
+                    dest='verbose', help="more verbose")
 
 URLLIST = ''
 ARGS = PARSER.parse_args()
@@ -87,11 +88,12 @@ else:
     if ARGS.key:
         os.environ['APIKEY'] = ARGS.key
     if ARGS.dir:
-        CSVDIR = os.path.abspath((os.path.join(ARGS.dir)))
+        BASEDIR = os.path.abspath((os.path.join(ARGS.dir)))
 
 if CSVDIR == 'unset':
     BASEDIR = os.path.abspath('/var/tmp')
-    CSVDIR = '%s/%s/%s' % (BASEDIR, SRCTAG, DSTAMP)
+
+CSVDIR = '%s/%s/%s' % (BASEDIR, SRCTAG, DSTAMP)
 
 for mapname in MAPLIST:
     if mapname == 'all':
@@ -106,12 +108,12 @@ for mapname in MAPLIST:
 
 if URLLIST is not None:
     for urlname in URLLIST:
-        if ARGS.verbose:
+        if ARGS.verbose > 5:
             print('PRIOR-URLNAME: ' + urlname)
         matchObject = re.search(r"^(\w+\#.*)", urlname)
         if not matchObject:
             urlname = 'all' + '#' + urlname
-        if ARGS.verbose:
+        if ARGS.verbose > 5:
             print('AFTER-URLNAME: ' + urlname)
         (targetmap, targeturl) = urlname.split('#')
         if targetmap == 'all':
@@ -132,12 +134,12 @@ def main():
     This is the wrapper for the retreival and the publish modules.
     """
 
-    if ARGS.verbose:
+    if ARGS.verbose > 7:
         print('DATASTRUCTURES:')
         pprint.pprint(FILEMAP)
         pprint.pprint(WEBMAP)
 
-    if ARGS.verbose:
+    if ARGS.verbose > 3:
         print('CSVDIR: ' + CSVDIR)
 
     for targetkey, targetfile in FILEMAP.items():
@@ -152,39 +154,43 @@ def retrieve_mapitem(targetkey, targetfile):
     """
     This retrieves the files from the Recorded Future website
     """
-    if ARGS.verbose:
+    if ARGS.verbose > 1:
         print('FILEKEY: ' + targetkey)
         print('FILEFILE:' + targetfile)
 
     maptarget = '%s/%s/%s' % (URLBASE, targetkey, URLTAIL)
-    getrequest = urllib.request.Request(maptarget, None, \
-        {'X-RFToken': APIKEY, 'X-RF-User-Agent' : 'SumoLogic+v1.0'})
-    getresults = urllib.request.urlopen(getrequest)
+
+    session = requests.Session()
+    headers = {'X-RFToken': APIKEY, 'X-RF-User-Agent' : 'SumoLogic+v1.0'}
+    body = session.get(maptarget, headers=headers)
+    getresults = body.text
 
     os.makedirs(CSVDIR, exist_ok=True)
 
-    if ARGS.verbose:
+    if ARGS.verbose > 2:
         print("Starting: " +  targetkey)
 
-    with open(targetfile, mode="wb") as outputfile:
-        outputfile.write(getresults.read())
+    with open(targetfile, mode="w") as outputfile:
+        outputfile.write(getresults)
 
-    if ARGS.verbose:
+    if ARGS.verbose > 2:
         print("Finished: " + targetkey)
 
 def publish_mapitem(localfile, sumologicurl):
     """
     This is the wrapper for publishing the files from Recorded Future to SumoLogic
     """
-    if ARGS.verbose:
+    if ARGS.verbose > 3:
         print('LOCALFILE: ' + localfile)
         print('SUMOLOGIC: ' + sumologicurl)
 
     with open(localfile, mode='r') as outputfile:
         slrfmap8 = (outputfile.read().encode('utf-8'))
-        postrequest = urllib.request.Request(sumologicurl, slrfmap8, {'Content-Type':'txt/csv'})
-        postresponse = urllib.request.urlopen(postrequest)
-        if ARGS.verbose:
+        headers = {'Content-Type':'txt/csv'}
+        session = requests.Session()
+        body = session.post(sumologicurl, slrfmap8, headers=headers)
+        postresponse = body.status
+        if ARGS.verbose > 5:
             print('RESPONSE: ' + str(postresponse.status))
 
 if __name__ == '__main__':
