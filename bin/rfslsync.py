@@ -188,10 +188,9 @@ def publish_mapitem(localfile, sumologicurl):
         slrfmap8 = (outputfile.read().encode('utf-8'))
         headers = {'Content-Type':'txt/csv'}
         session = requests.Session()
-        body = session.post(sumologicurl, slrfmap8, headers=headers)
-        postresponse = body.status
+        postresponse = session.post(sumologicurl, slrfmap8, headers=headers).status_code
         if ARGS.verbose > 5:
-            print('RESPONSE: ' + str(postresponse.status))
+            print('RESPONSE: ' + str(postresponse))
 
 if __name__ == '__main__':
     main()
