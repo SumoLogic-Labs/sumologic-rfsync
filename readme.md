@@ -7,7 +7,7 @@ Installing the Project
 ======================
 
 The scripts are command line based, designed to be used within a batch script or DevOPs tool such as Cher or Ansible.
-Each script is a python3 script, and the complete list of the python modules will be provided to aid people using a pip install.
+Script are python3 scripts. The complete list of the python modules are provided to aid people using a pip install.
 
 You will need to use Python 3.6 or higher and the modules listed in the dependency section.  
 
@@ -29,7 +29,7 @@ The steps are as follows:
     
        git clone git@github.com:wks-sumo-logic/sumologic-rfsync.git
 
-    This will create a new folder sumologic-rfsync
+    This will create a new folder
     
     6. Change into the folder. Type the following to install all the package dependencies 
        (this may take a while as this will download all of the libraries that it uses):
@@ -57,7 +57,9 @@ Scripts and Functions:
 
     1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
 
-    2. sl-updates-24h.query - This is a query we configure to trigger the script.
+    2. rfslsync.sh - This is a wrapper script to launch the download script as part of a scripted action.
+
+    3. sl-updates-24h.query - This could be used to monitor the age of the downloaded data
                    
 To Do List:
 ===========
@@ -66,11 +68,7 @@ To Do List:
 
 * extend the download/upload functions
 
-* implement unique headers when publishing
-
-* implement unique signatures when querying
-
-* downkoiad gzipped data use for installed collector
+* download gzipped data use for installed collector
 
 
 License
