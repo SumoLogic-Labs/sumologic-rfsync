@@ -3,18 +3,14 @@ Sumo Logic Recorded Future Integration
 
 This document will walk through specific steps in deployment options.
 
-
 Installing the Collectors
 =========================
 
-You can run Recorded Future integration by uploading 
-to a HTTP hosted collector or an installed collector.
+You can run Recorded Future integration by uploading to a HTTP hosted collector or an installed collector.
 
-Each of the two will require to download the script 
-from the github, and set up the configuration file.
+Each of the two will require to download the script from the github, and set up the configuration file.
 
-The sections below will talk about setting up the 
-collectors, and configuring Sumo Logic to accept the data.
+The sections below will talk about setting up the collectors, and configuring Sumo Logic to accept the data.
 
 Sumo Logic Preparation Work
 ==========================

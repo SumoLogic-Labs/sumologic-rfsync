@@ -9,8 +9,7 @@ Installing the Script and Modules
 
 1. First install python3 on the host you setup the installed collector.
 
-If this is the only implementation of python3 then use the Pipfile to 
-install only the necessary python modules.
+If this is the only implementation of python3 then use the Pipfile to install only the necessary python modules.
 
 Setting up the Directory and Configuration File
 ===============================================

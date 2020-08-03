@@ -3,7 +3,6 @@ Sumo Logic Recorded Future Integration
 
 This document will walk through specific steps in deployment options.
 
-
 Recorded Future Steps
 =====================
 
@@ -13,7 +12,6 @@ Specify the threat feeds, the granularity of feed, and the frequency of updates.
 From this you should have the following items:
 
 1. List of threat feeds you want. Below is a sample of the size of the uncompressed CSV files
-
 
 | Threat Map          | Size in Kbytes  | Size in Lines | Sample File Name |
 |:------------------- |:----------------|:--------------|:-----------------|
@@ -35,7 +33,6 @@ Other Useful Resources:
 https://api.recordedfuture.com/index.html
 
 https://api.recordedfuture.com/explore.html
-
 
 When successful, you will be using this information as well as other information 
 in a configuration file to automate your download and publish to Sumo Logic.

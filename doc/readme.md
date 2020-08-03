@@ -2,9 +2,14 @@ Sumo Logic Recorded Future Integration
 ======================================
 
 The installation of the Sumo Logic Recorded Future integration is easy.
-There are in 5 easy steps, starting with setting up your Sumo Logic 
-environment, getting your Recorded Future API key, and then organizing 
-how you want to see your threat intelligence data.
+
+There are in 5 easy steps:
+
+* starting with setting up your Sumo Logic environment
+
+* getting your Recorded Future API key
+
+* organizing how you want to see your threat intelligence data
 
 Setup Steps
 ===========
