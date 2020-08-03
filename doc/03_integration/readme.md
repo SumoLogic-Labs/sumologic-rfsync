@@ -36,13 +36,15 @@ https://github.com/wks-sumo-logic/sumologic-rfsync
 
 When downloaded and unpacked, the directory structure will be:
 
-`./bin/rfslsync.py`
+`/var/tmp/rfslsync/bin/rfslsync.py`
 
-`./bin/sl-updates-24h.query`
+`/var/tmp/rfslsync/bin/rfslsync.sh`
 
-`./bin/sl-download-wrapper.bash`
+`/var/tmp/rfslsync/bin/rfslsync.qry`
 
-`./etc/rfslsync.cfg`
+`/var/tmp/rfslsync/etc/rfslsync.cfg`
+
+`/var/tmp/rfslsync/log/output.log`
 
 Confirm you can run the following command:
 
@@ -75,19 +77,31 @@ We will put that script into a local directory on the install collector host.
 That script, coupled with the query is how Sumo Logic will pull the Recorded Future files.
 A script sample is located in the bin directory of the git project, and is called:
 
-* sl-download-wrapper.bash
+* rfslsync.sh
 
 Steps to set up the hosted collector would be:
 
-1) cd /var/tmp
+1) cd /var/tmp and create the directory required
 
-2) Confirm the path to the rfsync.py script. <git-repository-dir>/bin/rflsync.py
+* umask 022
+
+* mkdir -p /var/tmp/rfslsync/bin
+
+* mkdir -p /var/tmp/rfslsync/etc
+
+2) Confirm the path to the rfsync.sh script. <git-repository-dir>/bin/rflsync.sh
 
 3) Confirm the path to the rfslsync.cfg config file. <git-repository-dir>/etc/rfslsync.cfg
 
-4) cp <git-repository-dir>/bin/sl-download-wrapper.bash /var/tmp/sl-download-wrapper.bash
+4) Copy and Edit the files required for the scripted action:
 
-5) Confirm the contents of the wrapper script is correct /var/tmp/sl-download-wrapper.bash
+* cp <git-repository-dir>/bin/rfslsync.sh /var/tmp/rfslsync/bin/rfslsync.sh
+
+* cp <git-repository-dir>/bin/rfslsync.py /var/tmp/rfslsync/bin/rfslsync.py
+
+* cp <git-repository-dir>/etc/rfslsync.cfg /var/tmp/rfslsync/etc/rfslsync.cfg
+
+5) Confirm the contents of the wrapper script is correct /var/tmp/rfslsync/rfslsync.sh
 
    * cmdname
 
@@ -95,8 +109,7 @@ Steps to set up the hosted collector would be:
 
 6) Confirm the script can be executed.
 
-The next step is setting up the scripted action, and then finally configure 
-the query that drives the downloads.
+The next step is setting up the scripted action, and optionally setup the query to monitor the downloads
 
 Setting up the Scripted Action
 ==============================
@@ -119,11 +132,9 @@ Setting up the Scripted Action
 |:------------------- |:------------------------------------------------------|
 | Script Action Name | download-recorded-future-maps |
 | Script Description | Download Threat Intelligence from Recorded Future |
-| Path to script | /var/tmp/sl-download-wrapper.bash |
+| Path to script | /var/tmp/rfslsync/bin/rfslsync.sh |
+| Directory for script | /var/tmp/rfslsync |
 | Script type | /bin/bash |
-
-Setting up Scheduled Query
-==========================
 
 License
 =======
