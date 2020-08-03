@@ -145,9 +145,19 @@ Installation Steps
          We need to add this into the resources for the installed collector.
 
          "enableActionSource=true"
+         "enableScriptSource=true"
+
+         We will be using the Script Source to regularly start the download script.
 
          Adding this to the user.properties files and then stopping and restarting the collector.
+
+         When working with a Unix/Mac collector, then stop and start the collector
+   
+         prompt# <sumo_logic_collector_install_directory>/collector stop
+  
+         wait for 5 seconds
       
+         prompt# <sumo_logic_collector_install_directory>/collector start
 
 Suggested Settings
 ===================
