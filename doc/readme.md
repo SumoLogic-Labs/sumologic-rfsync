@@ -15,14 +15,11 @@ Setup Steps
 
 [Step-3: Integration Setup](03_integration/readme.md)
 
-As an overview, the first step plan how you want to import, 
-or ingest, the data into Sumo Logic. 
+As an overview, the first step plan how you want to import, or ingest, the data into Sumo Logic. 
 
-The next step ensures we have the right subscription and setup
-for Recorded Future.
+The next step ensures we have the right subscription and setup for Recorded Future.
 
-The last step pulls all of this together, and makes your threat
-intelligence import automatic.
+The last step pulls all of this together, and makes your threat intelligence import automatic.
 
 License
 =======
