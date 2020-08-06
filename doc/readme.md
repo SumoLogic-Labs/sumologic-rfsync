@@ -3,7 +3,7 @@ Sumo Logic Recorded Future Integration
 
 The installation of the Sumo Logic Recorded Future integration is easy.
 
-There are in 5 easy steps:
+There are in 3 easy steps:
 
 * starting with setting up your Sumo Logic environment
 
