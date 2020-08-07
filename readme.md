@@ -66,10 +66,9 @@ To Do List:
 
 * Build an Ansible wrapper for script to automatically complete configuration
 
-* extend the download/upload functions
+* Build an suite of regression tests to validate data
 
-* download gzipped data use for installed collector
-
+* Build content and material to allow for further enriching data from prior query output
 
 License
 =======
