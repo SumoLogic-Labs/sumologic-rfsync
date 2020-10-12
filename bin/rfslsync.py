@@ -30,7 +30,6 @@ import argparse
 import configparser
 import datetime
 import json
-import pprint
 import re
 import os
 import sys
@@ -136,8 +135,8 @@ def main():
 
     if ARGS.verbose > 7:
         print('DATASTRUCTURES:')
-        pprint.pprint(FILEMAP)
-        pprint.pprint(WEBMAP)
+        print(FILEMAP)
+        print(WEBMAP)
 
     if ARGS.verbose > 3:
         print('CSVDIR: ' + CSVDIR)

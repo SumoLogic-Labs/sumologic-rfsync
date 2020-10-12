@@ -2,6 +2,8 @@
   
 umask 022
 
+ulimit -Sv 1000000 
+
 BASEDIR="/var/tmp/rfslsync"
 cmdname="$BASEDIR/bin/rfslsync.py"
 cfgname="$BASEDIR/etc/rfslsync.cfg"
