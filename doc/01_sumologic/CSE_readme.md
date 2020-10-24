@@ -21,12 +21,12 @@ API Integration Enabling the API in Recorded Future
 
 1.	Navigate to menu > user settings > API Access > Generate new API token
 
-![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step1.png "Generate API Token")
+![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.1.png "Generate API Token")
 
  
 2.	Now Setup an Insight Action configuration
 
-![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step2.png "Insight Action Config")
+![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.2.png "Insight Action Config")
 
  
 To enrich both Insights and Signals that are part of Insights ensure both Enrichment checkboxes are checked.
@@ -38,23 +38,23 @@ PLEASE NOTE: these lookups will consume RF API credits.
 Record fields that are subject to lookup in RF is controlled via Artifacts. 
 Currently supported Artifacts are: "IP Address", "Domain" and "Hash" (artifact names are case sensitive).
 
-![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step3.png "Map List")
+![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.3.png "Map List")
  
-![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step4.png "Map List")
+![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.4.png "Map List")
 
-![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step5.customer.headers.png "Map List")
+![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.5.customer.headers.png "Map List")
 
-![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step6.png "Map List")
+![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.6.png "Map List")
 
-![Step07.1](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step7.1.png "Map List")
+![Step07_1](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.7.1.png "Map List")
 
-![Step07.2](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step7.2.png "Map List")
+![Step07_2](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.7.2.png "Map List")
 
-![Step07.3](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step7.3.png "Map List")
+![Step07_3](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.7.3.png "Map List")
 
-![Step07.4](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step7.4.png "Map List")
+![Step07_4](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.7.4.png "Map List")
 
-![Step07.5](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step7.5.png "Map List")
+![Step07_5](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.7.5.png "Map List")
 
 4.	Enrichment
 
