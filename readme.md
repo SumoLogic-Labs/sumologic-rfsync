@@ -1,25 +1,16 @@
 Sumo Logic Recorded Future Integration
 ======================================
 
-This repository shows how to integrate Sumo Logic and Recorded Futures into one or both of:
+This repository will show how to integrate Sumo Logic and Recorded Futures for:
 
-* Sumo Logic Continuous Intelligence Platform (CIP)
+* Sumo Logic Continuous Intelligence Platform - [CIP](doc/readme.md)
 
-* Sumo Logic Cloud SIEM Enterprise (CSE)
-
-Setting up the Sumo Logic Recorded Future Integration
-=====================================================
-
-Designed to be completed in minimal steps, the integration can be setup easily.
-
-Please refer to these configuration instructions located:
-
-[Configuring your Sumo Logic Recorded Future Integration](doc/readme.md)
+* Sumo Logic Cloud SIEM Enterprise - [CSE](doc/readme.md)
 
 License
 =======
 
-Copyright 2019 Wayne Kirk Schmidt
+Copyright 2020 Wayne Kirk Schmidt
 
 Licensed under the GNU GPL License (the "License");
 you may not use this file except in compliance with the License.
