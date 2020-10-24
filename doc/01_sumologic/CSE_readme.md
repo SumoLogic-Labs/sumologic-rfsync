@@ -23,7 +23,7 @@ API Integration Enabling the API in Recorded Future
 
 ![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step1.png "Generate API Token")
  
-	2.	Insight Action config
+	2.	Now Setup an Insight Action configuration
 
 ![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step2.png "Insight Action Config")
  
