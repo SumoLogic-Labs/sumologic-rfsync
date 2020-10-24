@@ -3,9 +3,9 @@ Sumo Logic Recorded Future Integration
 
 We show how to integrate [Recorded Future](https://www.recordedfuture.com/) feeds with [Sumo Logic](https://www.sumologic.com/) products:
 
-* Sumo Logic Continuous Intelligence Platform - [CIP](doc/readme.md)
+* [Sumo Logic Continuous Intelligence Platform - Recorded Future Integration Steps](doc/readme.md)
 
-* Sumo Logic Cloud SIEM Enterprise - [CSE](doc/readme.md)
+* [Sumo Logic Cloud SIEM Enterprise - Recorded Future Integration Strps](doc/readme.md)
 
 Features
 ========
