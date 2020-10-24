@@ -6,25 +6,14 @@ This covers how to setup the integration for the CIP, inicluding the dependencie
 Installing the Project
 ======================
 
-First things first, we need to download the script and dependencies we need to use.
-
-Please follow these quick steps to get this installed.
-
 [Install the Scripts](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_project_prep.md)
 
 Installing the Collectors
 =========================
 
-Now, to the configuring your Sumo Logic environment, with the final step deciding how to 
+You can choose to have a hosted or an installed collector ingest your Recorded Future data.
 
-You can run Recorded Future integration by uploading to a HTTP hosted collector or an installed collector.
-
-Each of the two requires the script we downloaded just previously and then edit the configuration file with your preferences.
-
-The following sections focus on how to set up the collectors, and configuring Sumo Logic to accept the data.
-
-Sumo Logic Preparation Work
-===========================
+The following shows how to set up the collectors, and configure Sumo Logic to accept the feed.
 
     1. Configure collectors for your deployments, along with sources.
 
