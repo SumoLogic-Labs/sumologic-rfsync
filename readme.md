@@ -12,7 +12,7 @@ Features
 
 | Product Name   | Recorded Future Feeds Support        | Ad Hoc Enrichment |
 |:---------------|:-------------------------------------|:------------------|
-| Sumo Logic CIP | All Recorded Future feeds via script | Browser Plugin    |
+| Sumo Logic CIP | All Recorded Future feeds via script | [Browser Plugin](https://chrome.google.com/webstore/detail/recorded-future/cdblaggcibgbankgilackljdpdhhcine?hl=en)    |
 | Sumo Logic CSE | All Recorded Future feeds via webhook| Within the SIEM   |
 
 | Recorded Future Feeds    |
