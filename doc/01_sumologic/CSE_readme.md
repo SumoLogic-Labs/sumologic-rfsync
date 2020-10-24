@@ -22,42 +22,67 @@ API Integration Enabling the API in Recorded Future
 	1.	Navigate to menu > user settings > API Access > Generate new API token
 
 ![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step1.png "Generate API Token")
+
  
 	2.	Now Setup an Insight Action configuration
 
 ![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step2.png "Insight Action Config")
+
  
-To enrich both Insights and Signals that are part of Insights ensure both Enrichment checkboxes are checked.
+	To enrich both Insights and Signals that are part of Insights ensure both Enrichment checkboxes are checked.
 
-Insight Notification Type "When created" checkbox triggers this action on every Insight at creation time
+	Insight Notification Type "When created" checkbox triggers this action on every Insight at creation time
 
-PLEASE NOTE: these lookups will consume RF API credits.
+	PLEASE NOTE: these lookups will consume RF API credits.
 
 	3. 	Artifacts (required)
 
-Record fields that are subject to lookup in RF is controlled via Artifacts. 
+	Record fields that are subject to lookup in RF is controlled via Artifacts. 
 
-Currently supported Artifacts are: "IP Address", "Domain" and "Hash" (artifact names are case sensitive).
+	Currently supported Artifacts are: "IP Address", "Domain" and "Hash" (artifact names are case sensitive).
 
 ![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step3.png "Map List")
  
- 
-Enrichment
+![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step4.png "Map List")
+
+![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step5.png "Map List")
+
+![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step6.png "Map List")
+
+![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step7.png "Map List")
+
+![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step8.png "Map List")
+
+        4.	Enrichment
+
 Artifact lookup results are shown in a list under the enrichment name "Recorded Future".
- 
  
 Recorded Future Available API Fields
 As of 2019-08-03 the RF API list of available fields are:
-•	analystNotes
-•	counts
-•	entity
-•	intelCard
-•	metrics
-•	relatedEntites
-•	risk
-•	sightings
-•	threatLists
-•	timestamps
+| Recorded Future Available |
+|   API Fields 2019-08-03   |
+|:--------------------------|
+|	analystNotes        |
+|:--------------------------|
+|	counts              |
+|:--------------------------|
+|	entity              |
+|:--------------------------|
+|	intelCard           |
+|:--------------------------|
+|	metrics             |
+|:--------------------------|
+|	relatedEntites      |
+|:--------------------------|
+|	risk                |
+|:--------------------------|
+|	sightings           |
+|:--------------------------|
+|	threatLists         |
+|:--------------------------|
+|	timestamps          |
+|:--------------------------|
+
 Bold fields are included in Insight and Signal enrichment via the CSE Insight Action.
  
 Custom Headers
