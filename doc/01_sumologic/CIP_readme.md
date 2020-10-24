@@ -74,29 +74,29 @@ Installation Steps
 
     1. Navigate to the collection management page in your organization
 
-![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step1.png "Collection Management")
+![Step01](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step1.png "Collection Management")
 
     2. Add a collector by clicking on add collectors.  We start with an installed collector.
 
-![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step2.png "Add Collector")
+![Step02](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step2.png "Add Collector")
 
     3. There are two types of collectors: hosted and installed.  
 
        We will choose installed for the 1st collector
 
-![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step3.png "Choose Type - Installed")
+![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step3.png "Choose Type - Installed")
 
     4. The installed collector needs to have the software running on the host you choose. 
 
        Please pick the right OS type to install the right package.
 
-![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step4.png "Select Installation Package")
+![Step04](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step4.png "Select Installation Package")
 
     5. The installed collector needs to establish connection to sumologic.  
 
        We want to create an access key for this collector.
 
-![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step5.png "Navigate to Access Key")
+![Step05](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step5.png "Navigate to Access Key")
 
     6. Create a name for the key. 
 
@@ -106,25 +106,25 @@ Installation Steps
 
        SAVE BOTH strings as we will use this in our installation process.
 
-![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step6.png "Access Key Details")
+![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step6.png "Access Key Details")
 
     7. The instaled collector should be running and have a green status connection. 
 
        We want to confirm the collector is running, and communicating with Sumo Logic.
 
-![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step7.png "Verify Installed Collector")
+![Step07](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step7.png "Verify Installed Collector")
 
     8. Now click on the collector to either add sources or script actions. 
 
        We choose sources now and will choose scripted actions later.
 
-![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step8.png "Add Sources")
+![Step08](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step8.png "Add Sources")
 
     9. Choose local files for the sources. 
 
        You will be asked for a path to specific files, and the source category.
 
-![Step09](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step9.png "Choose Source Type - Local Files")
+![Step09](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step9.png "Choose Source Type - Local Files")
 
     10. Now specify the path to the files, and the source category. 
 
@@ -134,7 +134,7 @@ Installation Steps
 
        If running as root, this will put the directory into /var/tmp/recordedfuture.
 
-![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/sl.step10.png "Specify Path for Files")
+![Step10](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_steps/cip.step10.png "Specify Path for Files")
 
      11. The installed collector will be running software, so we need to enable this feature.
 
