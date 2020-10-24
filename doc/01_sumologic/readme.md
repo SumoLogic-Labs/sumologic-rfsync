@@ -8,11 +8,11 @@ Background and Product Specific Steps
 
     * Steps to setup the Sumo Logic Recorded Future Integration for the Continuous Intelligence Platform (CIP)
 
-![CIP](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_readme.md"CIP Setup")
+[CIP Setup](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_readme.md)
 
     * Steps to setup the Sumo Logic Recorded Future Integration for the Cloud SIEM Enterprise (CSE)
 
-![CSE](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_readme.md"CSE Setup")
+[CSE Setup](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_readme.md)
 
 License
 =======
