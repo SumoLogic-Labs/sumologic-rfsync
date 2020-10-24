@@ -59,29 +59,19 @@ Artifact lookup results are shown in a list under the enrichment name "Recorded 
  
 Recorded Future Available API Fields
 As of 2019-08-03 the RF API list of available fields are:
-| Recorded Future Available |
-|   API Fields 2019-08-03   |
+
+| RF API Fields 2019-08-03  |
 |:--------------------------|
 |	analystNotes        |
-|:--------------------------|
 |	counts              |
-|:--------------------------|
 |	entity              |
-|:--------------------------|
 |	intelCard           |
-|:--------------------------|
 |	metrics             |
-|:--------------------------|
 |	relatedEntites      |
-|:--------------------------|
 |	risk                |
-|:--------------------------|
 |	sightings           |
-|:--------------------------|
 |	threatLists         |
-|:--------------------------|
 |	timestamps          |
-|:--------------------------|
 
 Bold fields are included in Insight and Signal enrichment via the CSE Insight Action.
  
