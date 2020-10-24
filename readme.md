@@ -1,7 +1,7 @@
 Sumo Logic Recorded Future Integration
 ======================================
 
-This repository will show how to integrate Sumo Logic and Recorded Futures for:
+We show how to integrate [Recorded Future](https://www.recordedfuture.com/) feeds with [Sumo Logic](https://www.sumologic.com/) products:
 
 * Sumo Logic Continuous Intelligence Platform - [CIP](doc/readme.md)
 
