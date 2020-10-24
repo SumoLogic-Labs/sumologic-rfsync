@@ -48,16 +48,16 @@ Artifact lookup results are shown in a list under the enrichment name "Recorded 
 
 | RF API Fields 2019-08-03  |
 |:--------------------------|
-|	*analystNotes*        |
+|	**analystNotes**        |
 |	counts              |
-|	*entity*              |
-|	*intelCard*           |
+|	**entity**              |
+|	**intelCard**           |
 |	metrics             |
 |	relatedEntites      |
-|	*risk*                |
-|	*sightings*           |
-|	*threatLists*         |
-|	*timestamps*          |
+|	**risk**                |
+|	**sightings**           |
+|	**threatLists**         |
+|	**timestamps**          |
 
 Bold fields are included in Insight and Signal enrichment via the CSE Insight Action.
 
