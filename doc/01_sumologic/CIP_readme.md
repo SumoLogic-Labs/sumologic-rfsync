@@ -10,7 +10,7 @@ First things first, we need to download the script and dependencies we need to u
 
 Please follow these quick steps to get this installed.
 
-(https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_project_prep.md "Install the Scripts")
+[Install the Scripts](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_project_prep.md)
 
 Installing the Collectors
 =========================
