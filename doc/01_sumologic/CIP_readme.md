@@ -6,60 +6,22 @@ This covers how to setup the integration for the CIP, inicluding the dependencie
 Installing the Project
 ======================
 
-The scripts are command line based, designed to be used within a batch script or DevOPs tool such as Cher or Ansible.
-Script are python3 scripts. The complete list of the python modules are provided to aid people using a pip install.
+First things first, we need to download the script and dependencies we need to use.
 
-You will need to use Python 3.6 or higher and the modules listed in the dependency section.  
+Please follow these quick steps to get this installed.
 
-The steps are as follows: 
+(https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_project_prep.md "Install the Scripts")
 
-    1. Download and install python 3.6 or higher from python.org. Append python3 to the LIB and PATH env.
-
-    2. Download and install git for your platform if you don't already have it installed.
-       It can be downloaded from https://git-scm.com/downloads
-    
-    3. Open a new shell/command prompt. It must be new since only a new shell will include the new python 
-       path that was created in step 1. Cd to the folder where you want to install the scripts.
-    
-    4. Execute the following command to install pipenv, which will manage all of the library dependencies:
-    
-        sudo -H pip3 install pipenv 
- 
-    5. Clone this repo using the following command:
-    
-       git clone git@github.com:wks-sumo-logic/sumologic-rfsync.git
-
-    This will create a new folder
-    
-    6. Change into the folder. Type the following to install all the package dependencies 
-       (this may take a while as this will download all of the libraries that it uses):
-
-        pipenv install
-        
-Dependencies
-============
-
-See the contents of "pipfile"
-
-Script Names and Purposes
-=========================
-
-Scripts and Functions:
-
-    1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
-
-    2. rfslsync.sh - This is a wrapper script to launch the download script as part of a scripted action.
-
-    3. sl-updates-24h.query - This could be used to monitor the age of the downloaded data
-                   
 Installing the Collectors
 =========================
 
+Now, to the configuring your Sumo Logic environment, with the final step deciding how to 
+
 You can run Recorded Future integration by uploading to a HTTP hosted collector or an installed collector.
 
-Each of the two will require to download the script from the github, and set up the configuration file.
+Each of the two requires the script we downloaded just previously and then edit the configuration file with your preferences.
 
-The sections below will talk about setting up the collectors, and configuring Sumo Logic to accept the data.
+The following sections focus on how to set up the collectors, and configuring Sumo Logic to accept the data.
 
 Sumo Logic Preparation Work
 ===========================
