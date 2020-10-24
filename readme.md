@@ -7,6 +7,22 @@ This repository will show how to integrate Sumo Logic and Recorded Futures for:
 
 * Sumo Logic Cloud SIEM Enterprise - [CSE](doc/readme.md)
 
+Features
+========
+
+| Product Name   | Recorded Future Feeds Support        | Ad Hoc Enrichment |
+|:---------------|:-------------------------------------|:------------------|
+| Sumo Logic CIP | All Recorded Future feeds via script | Browser Plugin    |
+| Sumo Logic CSE | All Recorded Future feeds via webhook| Within the SIEM   |
+
+| Recorded Future Feeds    |
+|:-------------------------|
+| ip - ip addresses        |
+| hash - file hashes       |
+| domain - DNS domains     |
+| url - web URLS           |
+| vulnerability - CVE list |
+
 License
 =======
 
