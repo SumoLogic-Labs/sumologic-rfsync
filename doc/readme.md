@@ -20,7 +20,11 @@ See our section on Sumo Logic Preparation to choose the right setup steps for yo
 Setup Steps
 ===========
 
-[Step-1: Sumo Logic Preparation](01_sumologic/readme.md)
+[Step-1: Sumo Logic Preparation for CIP](01_sumologic/CIP_readme.md)
+
+and/or:
+
+[Step-1: Sumo Logic Preparation for CSE](01_sumologic/CSE_readme.md)
 
 [Step-2: Recorded Future Preparation](02_recordedfuture/readme.md)
 
