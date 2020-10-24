@@ -5,7 +5,13 @@ The installation of the Sumo Logic Recorded Future integration is easy.
 
 There are in 3 easy steps:
 
-* starting with setting up your Sumo Logic environment
+* starting with setting up your Sumo Logic environment using one or both of the following
+
+    * Continuous Intelligence Platform (CIP)
+
+    * Cloud SIEM Enterprise (CSE)
+
+See our section on Sumo Logic Preparation to choose the right setup steps for you.
 
 * getting your Recorded Future API key
 
@@ -49,4 +55,3 @@ Support
 
 Feel free to e-mail me with issues to: wschmidt@sumologic.com
 I will provide "best effort" fixes and extend the scripts.
-/Users/wschmidt/Downloads/sumologictoolbox-master/Pipfile
