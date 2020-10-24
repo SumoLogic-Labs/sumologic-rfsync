@@ -6,7 +6,7 @@ This covers how to setup the integration for the CIP, inicluding the dependencie
 Installing the Project
 ======================
 
-[Install the Scripts](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_project_prep.md)
+[Install the Scripts](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CIP_github.md)
 
 Installing the Collectors
 =========================
