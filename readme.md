@@ -5,7 +5,7 @@ We show how to integrate [Recorded Future](https://www.recordedfuture.com/) feed
 
 * [Sumo Logic Continuous Intelligence Platform - Recorded Future Integration Steps](doc/readme.md)
 
-* [Sumo Logic Cloud SIEM Enterprise - Recorded Future Integration Strps](doc/readme.md)
+* [Sumo Logic Cloud SIEM Enterprise - Recorded Future Integration Steps](doc/readme.md)
 
 Features
 ========
