@@ -44,7 +44,7 @@ Scripts and Functions:
 
     2. rfslsync.sh - This is a wrapper script to launch the download script as part of a scripted action.
 
-    3. rfslenrich.py - this can return data to enrich data, and is another example of the RF API at work.
+    3. rfslenrich.py - this can return data to enrich data, and is another example of the Recorded Future API at work.
                    
 License
 =======

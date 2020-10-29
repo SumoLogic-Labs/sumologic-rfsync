@@ -8,13 +8,13 @@ Installation Steps
 
 This article shows how to install and setup Recorded Future API and TAXII feeds to use with CSE.
 
-Recorded Future (RF) provides contextual Threat Intelligence through indicator lookups via a cloud-accessible API. 
+Recorded Future provides contextual Threat Intelligence through indicator lookups via a cloud-accessible API. 
 
 CSE provides an Insight Action that allows lookup of extracted Insight Artifacts. 
 
 The lookup result is added as enrichment to Insight and/or Signals. 
 
-You can also bring in RF TAXII feeds into CSE that will create Signals based on IP, Domain, or URL.
+You can also bring in Recoorded Future TAXII feeds into CSE that will create Signals based on IP, Domain, or URL.
 
 API Integration Enabling the API in Recorded Future
 ===================================================
@@ -29,14 +29,15 @@ API Integration Enabling the API in Recorded Future
 
 To enrich both Insights and Signals that are part of Insights ensure both Enrichment checkboxes are checked.
 Insight Notification Type "When created" checkbox triggers this action on every Insight at creation time
-PLEASE NOTE: these lookups will consume RF API credits.
+
+NOTE: Please consult with your Recorded Future account manager regarding licensed API usage.
 
 * 	Artifacts (required)
 
 Record fields that are subject to lookup in RF is controlled via Artifacts. 
-Currently supported Artifacts are: "IP Address", "Domain" and "Hash" (artifact names are case sensitive).
+Currently supported Artifacts are: "IP Address", "Domain", "URL", and "Hash" (artifact names are case sensitive).
 
-![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.3.png "Map List")
+![Step03](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.3.png "Feed List")
 
 *	Enrichment
 
@@ -88,19 +89,6 @@ Enter your credentials on the next screen:
 	* Password: <API_KEY>
 
 	* Certification: NOT NEEDED
-
-	* Collections (recommended): 
-
-| Collections (recommended)                              |
-|:-------------------------------------------------------|
-| url_active_phishing_url                                |
-| url_cc_url                                             |
-| url_compromised_url                                    |
-| url_ransomware_distribution_url                        |
-| url_recently_detected_cryptocurrency_mining_techniques |
-| domain_active_phishing_url                             |
-| domain_recently_linked_to_cyber_attack                 |
-| domain_recently_resolved_to_very_malicious_ip          |
 
 	* Subscription ID: NOT NEEDED
 
