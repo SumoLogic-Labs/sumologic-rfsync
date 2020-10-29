@@ -12,8 +12,8 @@ Features
 
 | Product Name   | Recorded Future Feeds Support        | Ad Hoc Enrichment |
 |:---------------|:-------------------------------------|:------------------|
-| [Sumo Logic CIP](https://www.sumologic.com/brief/continuous-intelligence-platform-overview/) | All Recorded Future feeds via script | [Browser Plugin](https://chrome.google.com/webstore/detail/recorded-future/cdblaggcibgbankgilackljdpdhhcine?hl=en)    |
-| [Sumo Logic CSE](https://www.sumologic.com/solutions/cloud-siem-enterprise/) | All Recorded Future feeds via webhook| Within the SIEM   |
+| [Sumo Logic CIP](https://www.sumologic.com/brief/continuous-intelligence-platform-overview/) | All Recorded Future feeds | [Browser Plugin](https://chrome.google.com/webstore/detail/recorded-future/cdblaggcibgbankgilackljdpdhhcine?hl=en)    |
+| [Sumo Logic CSE](https://www.sumologic.com/solutions/cloud-siem-enterprise/) | All Recorded Future feeds except vulnerability | Within the SIEM   |
 
 | Recorded Future Feeds    |
 |:-------------------------|
