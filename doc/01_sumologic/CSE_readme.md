@@ -92,7 +92,7 @@ Enter your credentials on the next screen:
 
 	* Subscription ID: NOT NEEDED
 
-	* Polling Interval: 8 hours (to avoid 500 API calls per month limit)
+	* Polling Interval: Please see [this link](https://support.recordedfuture.com/hc/en-us/articles/115010401968-Risk-List-Download-Recommendations)
 
 ![Step06](https://github.com/wks-sumo-logic/sumologic-rfsync/blob/master/doc/01_sumologic/CSE_steps/cse.step.6.png "Map List")
 
