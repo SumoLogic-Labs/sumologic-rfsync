@@ -14,7 +14,7 @@ CSE provides an Insight Action that allows lookup of extracted Insight Artifacts
 
 The lookup result is added as enrichment to Insight and/or Signals. 
 
-You can also bring in Recoorded Future TAXII feeds into CSE that will create Signals based on IP, Domain, or URL.
+You can also bring in Recoorded Future TAXII feeds into CSE that will create Signals based on IP, Domain, Hash, or URL.
 
 API Integration Enabling the API in Recorded Future
 ===================================================
