@@ -66,9 +66,9 @@ Bold fields are included in Insight and Signal enrichment via the CSE Insight Ac
 
 JASK uses a custom User-Agent header to aid in potential troubleshooting. 
 
-Current User-Agent header is:
+Current User-Agent header should be:
 
-	*	JASK-Enrichment+v1.0
+	*	SumoLogic-CSE/JASK-Enrichment+v1.0
 
 	*	TAXII Feed Integration
 
