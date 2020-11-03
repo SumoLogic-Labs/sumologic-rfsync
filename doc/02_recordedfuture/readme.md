@@ -32,8 +32,6 @@ Other Useful Resources:
 
 https://api.recordedfuture.com/index.html
 
-https://api.recordedfuture.com/explore.html
-
 When successful, you will be using this information as well as other information 
 in a configuration file to automate your download and publish to Sumo Logic.
 
