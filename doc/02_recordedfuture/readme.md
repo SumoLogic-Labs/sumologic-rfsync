@@ -58,4 +58,3 @@ Support
 
 Feel free to e-mail me with issues to: wschmidt@sumologic.com
 I will provide "best effort" fixes and extend the scripts.
-/Users/wschmidt/Downloads/sumologictoolbox-master/Pipfile
