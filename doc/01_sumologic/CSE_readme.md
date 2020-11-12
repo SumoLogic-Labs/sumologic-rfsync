@@ -68,7 +68,7 @@ JASK uses a custom User-Agent header to aid in potential troubleshooting.
 
 Current User-Agent header should be:
 
-	*	SumoLogic-CSE/JASK-Enrichment+v1.0
+	*	SumoLogicCSE-Enrichment+v1.0
 
 	*	TAXII Feed Integration
 
