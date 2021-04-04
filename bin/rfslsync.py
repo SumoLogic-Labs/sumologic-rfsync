@@ -46,6 +46,8 @@ PARSER.add_argument('-d', metavar='<dir>', dest='dir', help='set directory')
 PARSER.add_argument('-c', metavar='<cfg>', dest='cfg', help='set config file')
 PARSER.add_argument('-u', metavar='<url>', nargs='*', dest='url', help='set url: <map#urlname>')
 PARSER.add_argument('-m', metavar='<map>', nargs='*', dest='map', default=['all'], help='set maps')
+PARSER.add_argument("-a", "--autosource", action='store_true', default=False, \
+                    dest='AUTOSOURCE', help="make automoatic source categories for maps")
 PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
                     dest='verbose', help="more verbose")
 
@@ -186,6 +188,10 @@ def publish_mapitem(localfile, sumologicurl):
     with open(localfile, mode='r') as outputfile:
         slrfmap8 = (outputfile.read().encode('utf-8'))
         headers = {'Content-Type':'txt/csv'}
+        if ARGS.AUTOSOURCE:
+            myname = os.path.splitext(os.path.basename(localfile))[0]
+            sumo_category = SRCTAG + '/' + myname
+            headers['X-Sumo-Category'] = sumo_category
         session = requests.Session()
         postresponse = session.post(sumologicurl, slrfmap8, headers=headers).status_code
         if ARGS.verbose > 5:

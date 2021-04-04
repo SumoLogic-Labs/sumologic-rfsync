@@ -42,6 +42,12 @@ Scripts and Functions:
 
     1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
 
+NOTE: common ways to run this script would be:
+
+*  sync all of the default maps: ./bin/rfslsync.py -c ./etc/rfslsync.cfg
+
+*  specify auto-generated source categories: ./bin/rfslsync.py -c ./etc/rfslsync.cfg -a
+
     2. rfslsync.sh - This is a wrapper script to launch the download script as part of a scripted action.
 
     3. rfslenrich.py - this can return data to enrich data, and is another example of the Recorded Future API at work.
