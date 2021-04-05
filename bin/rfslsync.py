@@ -229,7 +229,7 @@ def publish_mapitem(localfile, sumologicurl):
         mymapname = mymapfile.split('.')[1]
 
         if ARGS.AUTOSOURCE:
-            sumo_category = SRCTAG + '/' + mymapname
+            sumo_category = SRCTAG + '/' + 'map' + '/' + mymapname
         else:
             sumo_category = SRCTAG + '/' + 'feed'
         headers['X-Sumo-Category'] = sumo_category
@@ -239,7 +239,7 @@ def publish_mapitem(localfile, sumologicurl):
             print('SOURCE_CATEGORY: {}'.format(str(sumo_category)))
             print('UPLOAD_RESPONSE: {}'.format(str(postresponse)))
 
-        sumo_category = SRCTAG + '/' + mymapname + '/' + 'schema'
+        sumo_category = SRCTAG + '/' + 'schema' + '/' + mymapname
         headers['X-Sumo-Category'] = sumo_category
         postresponse = session.post(sumologicurl, rf_map_header, headers=headers).status_code
         if ARGS.verbose > 5:
