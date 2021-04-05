@@ -7,11 +7,8 @@ verify_ssl = true
 pyinstaller = "*"
 
 [packages]
-tzlocal = "*"
 pyinstaller = "*"
 requests = "*"
-pathlib = "*"
-pandas = "*"
 datetime = "*"
 argparse = "*"
 configparser = "*"
