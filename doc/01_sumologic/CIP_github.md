@@ -35,23 +35,41 @@ The steps are as follows:
         
 Now, we can go back to configuring our collectors and turning on our script!
 
-Script Names and Purposes
-=========================
-
-Scripts and Functions:
+Script
+======
 
     1. rfslsync.py - This is the main script. It collects files, optionally saves them, and pushes them.
 
-NOTE: common ways to run this script would be:
-
-*  sync all of the default maps: ./bin/rfslsync.py -c ./etc/rfslsync.cfg
-
-*  specify auto-generated source categories: ./bin/rfslsync.py -c ./etc/rfslsync.cfg -a
-
     2. rfslsync.sh - This is a wrapper script to launch the download script as part of a scripted action.
 
-    3. rfslenrich.py - this can return data to enrich data, and is another example of the Recorded Future API at work.
-                   
+Users
+=====
+
+    * To initialize the configuration file
+
+prompt> ./bin/rfslsync.py -i
+
+    * To use a configuration file 
+
+prompt> ./bin/rfslsync.py -c ./etc/rfslsync.cfg
+
+    * To use a configuration file and run the script verbosely
+
+prompt> ./bin/rfslsync.py -c ./etc/rfslsync.cfg -v 6
+ 
+    * To use a configuration file and auto create source categories
+
+prompt> ./bin/rfslsync.py -c ./etc/rfslsync.cfg -a 
+
+    * To use a configuration file and specify a HTTPS url to publish results
+
+prompt> ./bin/rfslsync.py -c ./etc/rfslsync.cfg -s https://some/url/to/post/results
+
+    * To use a configuration file and specify specific Recorded Future maps
+
+prompt> ./bin/rfslsync.py -c ./etc/rfslsync.cfg -m ip -m hash
+
+
 License
 =======
 
