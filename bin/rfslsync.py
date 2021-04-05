@@ -16,7 +16,7 @@ Style:
     http://google.github.io/styleguide/pyguide.html
 
     @name           rfslsync
-    @version        1.0.0
+    @version        1.5.0
     @author-name    Wayne Schmidt
     @author-email   wschmidt@sumologic.com
     @license-name   GNU GPL
@@ -29,8 +29,6 @@ __author__ = "Wayne Schmidt (wschmidt@sumologic.com)"
 import argparse
 import configparser
 import datetime
-import json
-import re
 import os
 import sys
 import requests
@@ -41,89 +39,123 @@ PARSER = argparse.ArgumentParser(description="""
 A tool to manage how to collect from Recorded Future and publish to Sumo Logic.
 """)
 
-PARSER.add_argument('-k', metavar='<key>', dest='key', help='set API key')
-PARSER.add_argument('-d', metavar='<dir>', dest='dir', help='set directory')
-PARSER.add_argument('-c', metavar='<cfg>', dest='cfg', help='set config file')
-PARSER.add_argument('-u', metavar='<url>', nargs='*', dest='url', help='set url: <map#urlname>')
-PARSER.add_argument('-m', metavar='<map>', nargs='*', dest='map', default=['all'], help='set maps')
+PARSER.add_argument('-k', metavar='<apikey>', dest='APIKEY', help='set API key')
+
+PARSER.add_argument('-d', metavar='<cachedir>', dest='CACHED', help='set directory')
+
+PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', help='set config file')
+
+PARSER.add_argument('-s', metavar='<srcurl>', dest='SRCURL', help='set HTTPS endpoint')
+
+PARSER.add_argument('-m', metavar='<maplist>', dest='MAPLIST', \
+                    action='append', help='set specific maps')
+
 PARSER.add_argument("-a", "--autosource", action='store_true', default=False, \
-                    dest='AUTOSOURCE', help="make automoatic source categories for maps")
+                    dest='AUTOSOURCE', help="make automatic categories for maps")
+
+PARSER.add_argument("-i", "--initialize", action='store_true', default=False, \
+                    dest='INITIALIZE', help="initialize config file")
+
 PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
                     dest='verbose', help="more verbose")
 
-URLLIST = ''
 ARGS = PARSER.parse_args()
+
 DEFAULTMAP = ('domain', 'hash', 'ip', 'url', 'vulnerability')
+MAPLIST = DEFAULTMAP
+
 FILEMAP = dict()
 WEBMAP = dict()
+
 SRCTAG = 'recordedfuture'
+
 CURRENT = datetime.datetime.now()
 DSTAMP = CURRENT.strftime("%Y%m%d")
 TSTAMP = CURRENT.strftime("%H%M%S")
+
 LSTAMP = DSTAMP + '.' + TSTAMP
+
 URLBASE = 'https://api.recordedfuture.com/v2'
 URLTAIL = 'risklist?format=csv%2Fsplunk'
-CSVDIR = 'unset'
-MAPLIST = DEFAULTMAP
 
-if ARGS.cfg:
-    CFGFILE = os.path.abspath(ARGS.cfg)
+CACHED = os.path.join('/var/tmp/', SRCTAG, DSTAMP)
+
+def initialize_config_file():
+    """
+    Initialize configuration file, write output, and then exit
+    """
+
+    starter_config='/var/tmp/recorded_future.initial.cfg'
+    config = configparser.RawConfigParser()
+    config.optionxform = str
+
+    config.add_section('Default')
+
+    cached_input = input ("Please enter your Cache Directory: \n")
+    config.set('Default', 'CACHED', cached_input )
+
+    apikey_input = input ("Please enter your API Secret: \n")
+    config.set('Default', 'APIKEY', apikey_input )
+
+    source_input = input ("Please enter the URL of the Sumologic Source: \n")
+    config.set('Default', 'SRCURL', source_input )
+
+    with open(starter_config, 'w') as configfile:
+        config.write(configfile)
+    print('Complete! Written: {}'.format(starter_config))
+    sys.exit()
+
+if ARGS.INITIALIZE:
+    initialize_config_file()
+
+if ARGS.CONFIG:
+    CFGFILE = os.path.abspath(ARGS.CONFIG)
     CONFIG = configparser.ConfigParser()
+    CONFIG.optionxform = str
     CONFIG.read(CFGFILE)
+    if ARGS.verbose > 9:
+        print(dict(CONFIG.items('Default')))
 
-    APIKEY = json.loads(CONFIG.get("Default", "APIKEY"))
-    os.environ['APIKEY'] = APIKEY
+    if CONFIG.has_option("Default", "APIKEY"):
+        APIKEY = CONFIG.get("Default", "APIKEY")
+        os.environ['APIKEY'] = APIKEY
 
-    MAPLIST = json.loads(CONFIG.get("Default", "MAPLIST"))
+    if CONFIG.has_option("Default", "MAPLIST"):
+        MAPLIST = CONFIG.get("Default", "MAPLIST")
 
-    if CONFIG.has_option('Default', 'URLLIST'):
-        URLLIST = json.loads(CONFIG.get("Default", "URLLIST"))
+    if CONFIG.has_option("Default", "SRCURL"):
+        SRCURL = CONFIG.get("Default", "SRCURL")
+        print(SRCURL)
 
-    if CONFIG.has_option('Default', 'CSVDIR'):
-        CSVDIR = os.path.abspath(json.loads(CONFIG.get("Default", "CSVDIR")))
-else:
-    if ARGS.url:
-        URLLIST = ARGS.url
-    if ARGS.map:
-        MAPLIST = ARGS.map
-    if ARGS.key:
-        os.environ['APIKEY'] = ARGS.key
-    if ARGS.dir:
-        BASEDIR = os.path.abspath((os.path.join(ARGS.dir)))
+    if CONFIG.has_option("Default", "CACHED"):
+        CACHED = os.path.abspath(CONFIG.get("Default", "CACHED"))
 
-if CSVDIR == 'unset':
-    BASEDIR = os.path.abspath('/var/tmp')
+if ARGS.SRCURL:
+    SRCURL = ARGS.SRCURL
 
-CSVDIR = '%s/%s/%s' % (BASEDIR, SRCTAG, DSTAMP)
+if ARGS.APIKEY:
+    os.environ['APIKEY'] = ARGS.APIKEY
+
+if ARGS.CACHED:
+    CACHED = os.path.abspath(ARGS.CACHED)
+
+if ARGS.MAPLIST:
+    MAPLIST = ARGS.MAPLIST
 
 for mapname in MAPLIST:
+
     if mapname == 'all':
         for mapitem in DEFAULTMAP:
-            filename = '%s_%s_%s.%s' % ('rf', mapitem, 'risklist', 'csv')
-            dstfile = os.path.join(CSVDIR, filename)
+            filename = '%s_%s.%s.%s' % ('rf', 'risklist', mapitem, 'csv')
+            dstfile = os.path.join(CACHED, filename)
             FILEMAP[mapitem] = dstfile
-    if mapname != 'all':
-        filename = '%s_%s_%s.%s' % ('rf', mapname, 'risklist', 'csv')
-        dstfile = os.path.join(CSVDIR, filename)
-        FILEMAP[mapname] = dstfile
+            WEBMAP[mapitem] = SRCURL
 
-if URLLIST is not None:
-    for urlname in URLLIST:
-        if ARGS.verbose > 5:
-            print('PRIOR-URLNAME: ' + urlname)
-        matchObject = re.search(r"^(\w+\#.*)", urlname)
-        if not matchObject:
-            urlname = 'all' + '#' + urlname
-        if ARGS.verbose > 5:
-            print('AFTER-URLNAME: ' + urlname)
-        (targetmap, targeturl) = urlname.split('#')
-        if targetmap == 'all':
-            for mapname in DEFAULTMAP:
-                if mapname in FILEMAP:
-                    WEBMAP[mapname] = targeturl
-        if targetmap != 'all':
-            if targetmap in FILEMAP:
-                WEBMAP[targetmap] = targeturl
+    if mapname != 'all':
+        filename = '%s_%s.%s.%s' % ('rf', 'risklist', mapname, 'csv')
+        dstfile = os.path.join(CACHED, filename)
+        FILEMAP[mapname] = dstfile
+        WEBMAP[mapname] = SRCURL
 
 try:
     APIKEY = os.environ['APIKEY']
@@ -135,13 +167,13 @@ def main():
     This is the wrapper for the retreival and the publish modules.
     """
 
+    if ARGS.verbose > 3:
+        print('CACHED: {}'.format(CACHED))
+
     if ARGS.verbose > 7:
         print('DATASTRUCTURES:')
         print(FILEMAP)
         print(WEBMAP)
-
-    if ARGS.verbose > 3:
-        print('CSVDIR: ' + CSVDIR)
 
     for targetkey, targetfile in FILEMAP.items():
         retrieve_mapitem(targetkey, targetfile)
@@ -149,15 +181,16 @@ def main():
     for targetkey, localfile in FILEMAP.items():
         if targetkey in WEBMAP:
             sumologicurl = WEBMAP[targetkey]
-            publish_mapitem(localfile, sumologicurl)
+            if SRCURL != 'UNSET':
+                publish_mapitem(localfile, sumologicurl)
 
 def retrieve_mapitem(targetkey, targetfile):
     """
     This retrieves the files from the Recorded Future website
     """
     if ARGS.verbose > 1:
-        print('FILEKEY: ' + targetkey)
-        print('FILEFILE:' + targetfile)
+        print('KEYNAME: ' + targetkey)
+        print('FILENAME:' + targetfile)
 
     maptarget = '%s/%s/%s' % (URLBASE, targetkey, URLTAIL)
 
@@ -166,7 +199,7 @@ def retrieve_mapitem(targetkey, targetfile):
     body = session.get(maptarget, headers=headers)
     getresults = body.text
 
-    os.makedirs(CSVDIR, exist_ok=True)
+    os.makedirs(CACHED, exist_ok=True)
 
     if ARGS.verbose > 2:
         print("Starting: " +  targetkey)
@@ -183,19 +216,36 @@ def publish_mapitem(localfile, sumologicurl):
     """
     if ARGS.verbose > 3:
         print('LOCALFILE: ' + localfile)
-        print('SUMOLOGIC: ' + sumologicurl)
 
     with open(localfile, mode='r') as outputfile:
-        slrfmap8 = (outputfile.read().encode('utf-8'))
+
+        rf_map_header = (outputfile.readline().encode('utf-8').strip())
+        rf_map_payload = (outputfile.read().encode('utf-8'))
+
         headers = {'Content-Type':'txt/csv'}
-        if ARGS.AUTOSOURCE:
-            myname = os.path.splitext(os.path.basename(localfile))[0]
-            sumo_category = SRCTAG + '/' + myname
-            headers['X-Sumo-Category'] = sumo_category
         session = requests.Session()
-        postresponse = session.post(sumologicurl, slrfmap8, headers=headers).status_code
+
+        mymapfile = os.path.splitext(os.path.basename(localfile))[0]
+        mymapname = mymapfile.split('.')[1]
+
+        if ARGS.AUTOSOURCE:
+            sumo_category = SRCTAG + '/' + mymapname
+        else:
+            sumo_category = SRCTAG + '/' + 'feed'
+        headers['X-Sumo-Category'] = sumo_category
+        postresponse = session.post(sumologicurl, rf_map_payload, headers=headers).status_code
         if ARGS.verbose > 5:
-            print('RESPONSE: ' + str(postresponse))
+            print('SUMOLOGIC_HTTPS: {}'.format(sumologicurl))
+            print('SOURCE_CATEGORY: {}'.format(str(sumo_category)))
+            print('UPLOAD_RESPONSE: {}'.format(str(postresponse)))
+
+        sumo_category = SRCTAG + '/' + mymapname + '/' + 'schema'
+        headers['X-Sumo-Category'] = sumo_category
+        postresponse = session.post(sumologicurl, rf_map_header, headers=headers).status_code
+        if ARGS.verbose > 5:
+            print('SUMOLOGIC_HTTPS: {}'.format(sumologicurl))
+            print('SOURCE_CATEGORY: {}'.format(str(sumo_category)))
+            print('UPLOAD_RESPONSE: {}'.format(str(postresponse)))
 
 if __name__ == '__main__':
     main()
