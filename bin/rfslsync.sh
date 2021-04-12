@@ -4,7 +4,7 @@ umask 022
 
 ulimit -Sv 1000000 
 
-BASEDIR="/var/tmp/rfslsync"
+BASEDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cmdname="$BASEDIR/bin/rfslsync.py"
 cfgname="$BASEDIR/etc/rfslsync.cfg"
 LOGDIR="$BASEDIR/log"
@@ -15,7 +15,9 @@ complain_and_exit () {
 }
 
 [ -d "$BASEDIR" ] || complain_and_exit "111" "Exiting. Cannot find: $BASEDIR"
+
 [ -f "$cmdname" ] || complain_and_exit "112" "Exiting. Cannot find: $cmdname"
+
 [ -f "$cfgname" ] || complain_and_exit "113" "Exiting. Cannot find: $cfgname"
 
 [ -d "$LOGDIR" ]  || mkdir -p $LOGDIR

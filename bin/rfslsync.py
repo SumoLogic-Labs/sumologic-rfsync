@@ -23,7 +23,7 @@ Style:
     @license-url    http://www.gnu.org/licenses/gpl.html
 """
 
-__version__ = '1.0.0'
+__version__ = '1.5.0'
 __author__ = "Wayne Schmidt (wschmidt@sumologic.com)"
 
 import argparse
