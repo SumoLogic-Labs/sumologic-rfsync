@@ -11,7 +11,7 @@ BINDIR="$BASEDIR/bin"
 cmdname="$BINDIR/rfslsync.py"
 
 ETCDIR="$BASEDIR/etc"
-cfgname="$ETCDIR/etc/rfslsync.cfg"
+cfgname="$ETCDIR/rfslsync.cfg"
 
 LOGDIR="$BASEDIR/log"
 logfile="$LOGDIR/output.log"
