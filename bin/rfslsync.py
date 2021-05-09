@@ -125,7 +125,6 @@ if ARGS.CONFIG:
 
     if CONFIG.has_option("Default", "SRCURL"):
         SRCURL = CONFIG.get("Default", "SRCURL")
-        print(SRCURL)
 
     if CONFIG.has_option("Default", "CACHED"):
         CACHED = os.path.abspath(CONFIG.get("Default", "CACHED"))

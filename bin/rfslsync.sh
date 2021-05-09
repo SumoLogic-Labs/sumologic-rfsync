@@ -25,4 +25,4 @@ logfile="$BASEDIR/log/output.log"
 rm -f $logfile 
 touch $logfile
 
-$cmdname -c $cfgname -v 3 > $logfile 2>&1
+$cmdname -c $cfgname -v 3 -a > $logfile 2>&1
