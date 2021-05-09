@@ -41,6 +41,14 @@ Content
 |:-------------------------------------|
 | [Recoorded Future Overview](content/Recorded_Future_Content.json)        |
 
+Installation
+============
+
+| Video Name                           |
+|:-------------------------------------|
+| [CIP Installation Videoo](media/Sumo_Logic-Recorded_Future-CIP-Integration.mp4) |
+| [CSE Installation Videoo](media/Sumo_Logic-Recorded_Future-CSE-Integration.mp4) |
+
 License
 =======
 
