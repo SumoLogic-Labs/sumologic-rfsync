@@ -22,9 +22,13 @@ Setup Steps
 
 [Step-1: Sumo Logic Preparation for CIP](01_sumologic/CIP_readme.md)
 
+[Step-1: CIP Preparation Media ](../media/Sumo_Logic-Recorded_Future-CIP-Integration.mp4)
+
 and/or:
 
 [Step-1: Sumo Logic Preparation for CSE](01_sumologic/CSE_readme.md)
+
+[Step-1: Sumo Logic Preparation for CSE Media ](../media/Sumo_Logic-Recorded_Future-CSE-Integration.mp4)
 
 [Step-2: Recorded Future Preparation](02_recordedfuture/readme.md)
 

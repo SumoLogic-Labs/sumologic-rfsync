@@ -23,7 +23,7 @@ Style:
     @license-url    http://www.gnu.org/licenses/gpl.html
 """
 
-__version__ = '1.0.0'
+__version__ = '1.5.0'
 __author__ = "Wayne Schmidt (wschmidt@sumologic.com)"
 
 import argparse
@@ -50,8 +50,11 @@ PARSER.add_argument('-s', metavar='<srcurl>', dest='SRCURL', help='set HTTPS end
 PARSER.add_argument('-m', metavar='<maplist>', dest='MAPLIST', \
                     action='append', help='set specific maps')
 
-PARSER.add_argument("-a", "--autosource", action='store_true', default=False, \
+PARSER.add_argument("-a", "--autosource", action='store_true', default=True, \
                     dest='AUTOSOURCE', help="make automatic categories for maps")
+
+PARSER.add_argument("-u", "--unifiedfeed", action='store_true', default=False, \
+                    dest='UNIFIEDFEED', help="consolidate maps into single category")
 
 PARSER.add_argument("-i", "--initialize", action='store_true', default=False, \
                     dest='INITIALIZE', help="initialize config file")
@@ -167,12 +170,7 @@ def main():
     """
 
     if ARGS.verbose > 3:
-        print('CACHED: {}'.format(CACHED))
-
-    if ARGS.verbose > 7:
-        print('DATASTRUCTURES:')
-        print(FILEMAP)
-        print(WEBMAP)
+        print('local_cache_directory: {}'.format(CACHED))
 
     for targetkey, targetfile in FILEMAP.items():
         retrieve_mapitem(targetkey, targetfile)
@@ -188,8 +186,7 @@ def retrieve_mapitem(targetkey, targetfile):
     This retrieves the files from the Recorded Future website
     """
     if ARGS.verbose > 1:
-        print('KEYNAME: ' + targetkey)
-        print('FILENAME:' + targetfile)
+        print('download: {:15} filename: {}'.format(targetkey, targetfile))
 
     maptarget = '%s/%s/%s' % (URLBASE, targetkey, URLTAIL)
 
@@ -201,20 +198,20 @@ def retrieve_mapitem(targetkey, targetfile):
     os.makedirs(CACHED, exist_ok=True)
 
     if ARGS.verbose > 2:
-        print("Starting: " +  targetkey)
+        print('starting: {}'.format(targetkey))
 
     with open(targetfile, mode="w") as outputfile:
         outputfile.write(getresults)
 
     if ARGS.verbose > 2:
-        print("Finished: " + targetkey)
+        print('finished: {}'.format(targetkey))
 
 def publish_mapitem(localfile, sumologicurl):
     """
     This is the wrapper for publishing the files from Recorded Future to SumoLogic
     """
     if ARGS.verbose > 3:
-        print('LOCALFILE: ' + localfile)
+        print('publishing: {}'.format(localfile))
 
     with open(localfile, mode='r') as outputfile:
 
@@ -231,20 +228,22 @@ def publish_mapitem(localfile, sumologicurl):
             sumo_category = SRCTAG + '/' + 'map' + '/' + mymapname
         else:
             sumo_category = SRCTAG + '/' + 'feed'
+
+        if ARGS.UNIFIEDFEED:
+            sumo_category = SRCTAG + '/' + 'feed'
+
         headers['X-Sumo-Category'] = sumo_category
         postresponse = session.post(sumologicurl, rf_map_payload, headers=headers).status_code
         if ARGS.verbose > 5:
-            print('SUMOLOGIC_HTTPS: {}'.format(sumologicurl))
-            print('SOURCE_CATEGORY: {}'.format(str(sumo_category)))
-            print('UPLOAD_RESPONSE: {}'.format(str(postresponse)))
+            print('source_category: {}'.format(str(sumo_category)))
+            print('upload_response: {}'.format(str(postresponse)))
 
         sumo_category = SRCTAG + '/' + 'schema' + '/' + mymapname
         headers['X-Sumo-Category'] = sumo_category
         postresponse = session.post(sumologicurl, rf_map_header, headers=headers).status_code
         if ARGS.verbose > 5:
-            print('SUMOLOGIC_HTTPS: {}'.format(sumologicurl))
-            print('SOURCE_CATEGORY: {}'.format(str(sumo_category)))
-            print('UPLOAD_RESPONSE: {}'.format(str(postresponse)))
+            print('source_category: {}'.format(str(sumo_category)))
+            print('upload_response: {}'.format(str(postresponse)))
 
 if __name__ == '__main__':
     main()
