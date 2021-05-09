@@ -26,7 +26,7 @@ Features
 ScreenShots
 ===========
 
-| Content Name                         |
+| Screen Shot Name                     |
 |:-------------------------------------|
 | [Recorded Future Overview](content/screenshots/Recorded_Future_Overview.png) |
 | [Recorded Future Domain Map](content/screenshots/Recorded_Future_Domain_Map.png) |
