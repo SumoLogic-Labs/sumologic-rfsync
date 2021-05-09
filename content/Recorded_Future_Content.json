@@ -28,15 +28,19 @@
                     {
                         "key": "panelPANE-8B114AD283131842",
                         "structure": "{\"height\":15,\"width\":12,\"x\":0,\"y\":0}"
+                    },
+                    {
+                        "key": "panelPANE-B73345A88716294D",
+                        "structure": "{\"height\":15,\"width\":12,\"x\":12,\"y\":0}"
                     }
                 ]
             },
             "panels": [
                 {
-                    "id": "11427FA540913A5D",
+                    "id": null,
                     "key": "panelPANE-8B114AD283131842",
                     "title": "Risk Breakdown",
-                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18}}",
+                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18},\"color\":{\"family\":\"Diverging 2\"}}",
                     "keepVisualSettingsConsistentWithParent": true,
                     "panelType": "SumoSearchPanel",
                     "queries": [
@@ -60,6 +64,30 @@
                         },
                         "to": null
                     },
+                    "coloringRules": null,
+                    "linkedDashboards": []
+                },
+                {
+                    "id": null,
+                    "key": "panelPANE-B73345A88716294D",
+                    "title": "Top 10 Suspect Domains",
+                    "visualSettings": "{\"title\":{\"fontSize\":14},\"general\":{\"type\":\"table\",\"displayType\":\"default\",\"paginationPageSize\":100,\"fontSize\":16,\"mode\":\"distribution\"},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"legend\":{\"enabled\":false}}",
+                    "keepVisualSettingsConsistentWithParent": true,
+                    "panelType": "SumoSearchPanel",
+                    "queries": [
+                        {
+                            "queryString": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfcve, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| where !( rfrisk contains \"undefined\")\n| count_distinct(rfcve) by rfcve\n| fields - _count_distinct\n| limit 10",
+                            "queryType": "Logs",
+                            "queryKey": "A",
+                            "metricsQueryMode": null,
+                            "metricsQueryData": null,
+                            "tracesQueryData": null,
+                            "parseMode": "Auto",
+                            "timeSource": "Message"
+                        }
+                    ],
+                    "description": "",
+                    "timeRange": null,
                     "coloringRules": null,
                     "linkedDashboards": []
                 }
@@ -92,20 +120,55 @@
                     {
                         "key": "panelPANE-8B114AD283131842",
                         "structure": "{\"height\":15,\"width\":12,\"x\":0,\"y\":0}"
+                    },
+                    {
+                        "key": "panelPANE-FC306CF38A9D694B",
+                        "structure": "{\"height\":15,\"width\":12,\"x\":12,\"y\":0}"
                     }
                 ]
             },
             "panels": [
                 {
-                    "id": "4310E7B07D3825A8",
+                    "id": null,
                     "key": "panelPANE-8B114AD283131842",
                     "title": "Risk Breakdown",
-                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18}}",
+                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18},\"color\":{\"family\":\"Diverging 2\"}}",
                     "keepVisualSettingsConsistentWithParent": true,
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
                             "queryString": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as rfhash, 2 as rfhashrtype, 3 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| where !( rfrisk contains \"undefined\")\n| count by rfrisk\n| sort by rfrisk",
+                            "queryType": "Logs",
+                            "queryKey": "A",
+                            "metricsQueryMode": null,
+                            "metricsQueryData": null,
+                            "tracesQueryData": null,
+                            "parseMode": "Auto",
+                            "timeSource": "Message"
+                        }
+                    ],
+                    "description": "",
+                    "timeRange": {
+                        "type": "BeginBoundedTimeRange",
+                        "from": {
+                            "type": "RelativeTimeRangeBoundary",
+                            "relativeTime": "-3h"
+                        },
+                        "to": null
+                    },
+                    "coloringRules": null,
+                    "linkedDashboards": []
+                },
+                {
+                    "id": null,
+                    "key": "panelPANE-FC306CF38A9D694B",
+                    "title": "Top 10 Suspect Hashes",
+                    "visualSettings": "{\"title\":{\"fontSize\":14},\"general\":{\"type\":\"table\",\"displayType\":\"default\",\"paginationPageSize\":100,\"fontSize\":14,\"mode\":\"distribution\"},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"legend\":{\"enabled\":false}}",
+                    "keepVisualSettingsConsistentWithParent": true,
+                    "panelType": "SumoSearchPanel",
+                    "queries": [
+                        {
+                            "queryString": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as hashname, 2 as algo, 3 as risknum, 4 as riskstring, 5 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].CriticalityLabel\" as Label\n| count_distinct(hashname) by hashname, Label\n| fields - _count_distinct\n| limit 10\n| sort by Label asc\n",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -165,10 +228,10 @@
             },
             "panels": [
                 {
-                    "id": "8B114AD283131842",
+                    "id": null,
                     "key": "panelPANE-8B114AD283131842",
                     "title": "Risk Breakdown",
-                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18}}",
+                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18},\"color\":{\"family\":\"Diverging 2\"}}",
                     "keepVisualSettingsConsistentWithParent": true,
                     "panelType": "SumoSearchPanel",
                     "queries": [
@@ -196,15 +259,15 @@
                     "linkedDashboards": []
                 },
                 {
-                    "id": "587263C3A401D946",
+                    "id": null,
                     "key": "panel587263C3A401D946",
-                    "title": "Top_10_Risk_Domains",
-                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18},\"legend\":{\"enabled\":true,\"verticalAlign\":\"right\"}}",
+                    "title": "Top_10_IP_Addresses",
+                    "visualSettings": "{\"title\":{\"fontSize\":14},\"general\":{\"type\":\"table\",\"displayType\":\"default\",\"paginationPageSize\":100,\"fontSize\":12,\"mode\":\"distribution\"},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{}}",
                     "keepVisualSettingsConsistentWithParent": true,
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/url\n| parse \"*,*\" as myurl, mypayload\n| replace(myurl, /\\\"/,\"\") as myurl\n| parse field=myurl \"*://*/*\" as my_transport, my_domain, my_urltail\n| count by my_domain\n| sort by _count\n| limit 10",
+                            "queryString": "_sourceCategory=recordedfuture/map/ip\n| csv _raw extract 1 as ipaddress, 2 as risknum, 3 as riskstring, 4 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].Name\" as reason\n| count_distinct(ipaddress) by ipaddress, reason\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -284,7 +347,7 @@
             },
             "panels": [
                 {
-                    "id": "357E16DB0509F3B5",
+                    "id": null,
                     "key": "panelPANE-89DE4882A5402B4D",
                     "title": " ",
                     "visualSettings": "{\"general\":{\"mode\":\"TextPanel\",\"type\":\"text\",\"displayType\":\"default\"},\"title\":{\"fontSize\":14},\"series\":{},\"text\":{\"textColor\":\"#f2da73\",\"fontSize\":42}}",
@@ -293,15 +356,15 @@
                     "text": "Recorded Future - Threat Intelligence"
                 },
                 {
-                    "id": "F9D4E9D6B36E384A",
+                    "id": null,
                     "key": "panelPANE-F9D4E9D6B36E384A",
                     "title": "Data by Map Type",
-                    "visualSettings": "{\"general\":{\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10,\"mode\":\"distribution\"},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"legend\":{\"enabled\":true,\"fontSize\":21},\"color\":{\"family\":\"Diverging 2\"},\"title\":{\"fontSize\":18}}",
+                    "visualSettings": "{\"title\":{\"fontSize\":14},\"general\":{\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10,\"mode\":\"distribution\"},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{}}",
                     "keepVisualSettingsConsistentWithParent": true,
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/*\n| parse field=_sourceCategory \"*/*/*\" as vendor, feedtype, feedmap\n| count by feedmap",
+                            "queryString": "_sourceCategory=recordedfuture/map/*\n| parse field=_sourceCategory \"*/*/*\" as vendor, feedtype, feedmap\n| count by feedmap\n",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -331,7 +394,7 @@
                     ]
                 },
                 {
-                    "id": "787A5F0B8CEF9842",
+                    "id": null,
                     "key": "panelPANE-787A5F0B8CEF9842",
                     "title": "Urls",
                     "visualSettings": "{\"general\":{\"mode\":\"singleValueMetrics\",\"type\":\"svp\",\"displayType\":\"default\"},\"title\":{\"fontSize\":14},\"svp\":{\"option\":\"Average\",\"label\":\"\",\"useBackgroundColor\":false,\"useNoData\":false,\"noDataString\":\"No data\",\"hideData\":false,\"hideLabel\":false,\"rounding\":2,\"valueFontSize\":18,\"labelFontSize\":14,\"thresholds\":[{\"from\":null,\"to\":null,\"color\":\"#16943E\"},{\"from\":0,\"to\":null,\"color\":\"#DFBE2E\"},{\"from\":null,\"to\":null,\"color\":\"#BF2121\"}],\"sparkline\":{\"show\":false,\"color\":\"#222D3B\"},\"gauge\":{\"show\":false,\"min\":0,\"max\":100,\"showThreshold\":false,\"showThresholdMarker\":false}},\"series\":{}}",
@@ -359,10 +422,23 @@
                         "to": null
                     },
                     "coloringRules": null,
-                    "linkedDashboards": []
+                    "linkedDashboards": [
+                        {
+                            "id": "i84x9gsKBSUeKedqxLIc7TzP29MpzqEvNZc47uJHElb9nfAxs70uO4p8akP2",
+                            "relativePath": "../URL_Map",
+                            "includeTimeRange": true,
+                            "includeVariables": true
+                        },
+                        {
+                            "id": "8tGIdyHJIK1UU6US5zldFqzNZYDrh6cUwiXWNnpUuPZjlbk9gHjSjB6w0LUv",
+                            "relativePath": "../Vulnerability_Map",
+                            "includeTimeRange": true,
+                            "includeVariables": true
+                        }
+                    ]
                 },
                 {
-                    "id": "638BC926A4C3EA4F",
+                    "id": null,
                     "key": "panel638BC926A4C3EA4F",
                     "title": "Domain",
                     "visualSettings": "{\"general\":{\"mode\":\"singleValueMetrics\",\"type\":\"svp\",\"displayType\":\"default\"},\"title\":{\"fontSize\":14},\"svp\":{\"option\":\"Average\",\"label\":\"\",\"useBackgroundColor\":false,\"useNoData\":false,\"noDataString\":\"No data\",\"hideData\":false,\"hideLabel\":false,\"rounding\":2,\"valueFontSize\":18,\"labelFontSize\":14,\"thresholds\":[{\"from\":null,\"to\":null,\"color\":\"#16943E\"},{\"from\":0,\"to\":null,\"color\":\"#DFBE2E\"},{\"from\":null,\"to\":null,\"color\":\"#BF2121\"}],\"sparkline\":{\"show\":false,\"color\":\"#222D3B\"},\"gauge\":{\"show\":false,\"min\":0,\"max\":100,\"showThreshold\":false,\"showThresholdMarker\":false}},\"series\":{}}",
@@ -390,10 +466,17 @@
                         "to": null
                     },
                     "coloringRules": null,
-                    "linkedDashboards": []
+                    "linkedDashboards": [
+                        {
+                            "id": "77cC7Cib5AWQRLzkxepm8beMscRIW6itrpS1Gqy2OsXTWJjXwDH61SEVbkNv",
+                            "relativePath": "../Domain_Map",
+                            "includeTimeRange": true,
+                            "includeVariables": true
+                        }
+                    ]
                 },
                 {
-                    "id": "C1FDB09088DC6A43",
+                    "id": null,
                     "key": "panelC1FDB09088DC6A43",
                     "title": "Hash",
                     "visualSettings": "{\"general\":{\"mode\":\"singleValueMetrics\",\"type\":\"svp\",\"displayType\":\"default\"},\"title\":{\"fontSize\":14},\"svp\":{\"option\":\"Average\",\"label\":\"\",\"useBackgroundColor\":false,\"useNoData\":false,\"noDataString\":\"No data\",\"hideData\":false,\"hideLabel\":false,\"rounding\":2,\"valueFontSize\":18,\"labelFontSize\":14,\"thresholds\":[{\"from\":null,\"to\":null,\"color\":\"#16943E\"},{\"from\":0,\"to\":null,\"color\":\"#DFBE2E\"},{\"from\":null,\"to\":null,\"color\":\"#BF2121\"}],\"sparkline\":{\"show\":false,\"color\":\"#222D3B\"},\"gauge\":{\"show\":false,\"min\":0,\"max\":100,\"showThreshold\":false,\"showThresholdMarker\":false}},\"series\":{}}",
@@ -421,10 +504,17 @@
                         "to": null
                     },
                     "coloringRules": null,
-                    "linkedDashboards": []
+                    "linkedDashboards": [
+                        {
+                            "id": "JguH576FvhlMLRzHPZzAHlekt8GXL9Y5x8p0C1186jgP69MIP3D6eUr8eli3",
+                            "relativePath": "../Hash_Map",
+                            "includeTimeRange": true,
+                            "includeVariables": true
+                        }
+                    ]
                 },
                 {
-                    "id": "67AACB5BB57EDA4E",
+                    "id": null,
                     "key": "panel67AACB5BB57EDA4E",
                     "title": "Vulnerability",
                     "visualSettings": "{\"general\":{\"mode\":\"singleValueMetrics\",\"type\":\"svp\",\"displayType\":\"default\"},\"title\":{\"fontSize\":14},\"svp\":{\"option\":\"Average\",\"label\":\"\",\"useBackgroundColor\":false,\"useNoData\":false,\"noDataString\":\"No data\",\"hideData\":false,\"hideLabel\":false,\"rounding\":2,\"valueFontSize\":18,\"labelFontSize\":14,\"thresholds\":[{\"from\":null,\"to\":null,\"color\":\"#16943E\"},{\"from\":0,\"to\":null,\"color\":\"#DFBE2E\"},{\"from\":null,\"to\":null,\"color\":\"#BF2121\"}],\"sparkline\":{\"show\":false,\"color\":\"#222D3B\"},\"gauge\":{\"show\":false,\"min\":0,\"max\":100,\"showThreshold\":false,\"showThresholdMarker\":false}},\"series\":{}}",
@@ -443,19 +533,12 @@
                         }
                     ],
                     "description": "",
-                    "timeRange": {
-                        "type": "BeginBoundedTimeRange",
-                        "from": {
-                            "type": "RelativeTimeRangeBoundary",
-                            "relativeTime": "-3h"
-                        },
-                        "to": null
-                    },
+                    "timeRange": null,
                     "coloringRules": null,
                     "linkedDashboards": []
                 },
                 {
-                    "id": "88DAC292847E8B48",
+                    "id": null,
                     "key": "panel88DAC292847E8B48",
                     "title": "IP",
                     "visualSettings": "{\"general\":{\"mode\":\"singleValueMetrics\",\"type\":\"svp\",\"displayType\":\"default\"},\"title\":{\"fontSize\":14},\"svp\":{\"option\":\"Average\",\"label\":\"\",\"useBackgroundColor\":false,\"useNoData\":false,\"noDataString\":\"No data\",\"hideData\":false,\"hideLabel\":false,\"rounding\":2,\"valueFontSize\":18,\"labelFontSize\":14,\"thresholds\":[{\"from\":null,\"to\":null,\"color\":\"#16943E\"},{\"from\":0,\"to\":null,\"color\":\"#DFBE2E\"},{\"from\":null,\"to\":null,\"color\":\"#BF2121\"}],\"sparkline\":{\"show\":false,\"color\":\"#222D3B\"},\"gauge\":{\"show\":false,\"min\":0,\"max\":100,\"showThreshold\":false,\"showThresholdMarker\":false}},\"series\":{}}",
@@ -483,7 +566,14 @@
                         "to": null
                     },
                     "coloringRules": null,
-                    "linkedDashboards": []
+                    "linkedDashboards": [
+                        {
+                            "id": "pTQyxLDznJBjWnmCWGRjRrAA2ssOjN4P4PwX5qSOtY43zX4LTJnTrn1pUayG",
+                            "relativePath": "../IP_Map",
+                            "includeTimeRange": true,
+                            "includeVariables": true
+                        }
+                    ]
                 }
             ],
             "variables": [],
@@ -513,13 +603,17 @@
                 "layoutStructures": [
                     {
                         "key": "panelPANE-8B114AD283131842",
-                        "structure": "{\"height\":15,\"width\":12,\"x\":0,\"y\":0}"
+                        "structure": "{\"height\":15,\"width\":11,\"x\":0,\"y\":0}"
+                    },
+                    {
+                        "key": "panelPANE-6C7A5C31A01A3842",
+                        "structure": "{\"height\":15,\"width\":13,\"x\":11,\"y\":0}"
                     }
                 ]
             },
             "panels": [
                 {
-                    "id": "BE2100BF980038A2",
+                    "id": null,
                     "key": "panelPANE-8B114AD283131842",
                     "title": "Risk Breakdown",
                     "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18}}",
@@ -528,6 +622,37 @@
                     "queries": [
                         {
                             "queryString": "_sourceCategory=recordedfuture/map/url\n| csv _raw extract 1 as rfurl, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| where !( rfrisk contains \"undefined\")\n| count by rfrisk\n| sort by rfrisk",
+                            "queryType": "Logs",
+                            "queryKey": "A",
+                            "metricsQueryMode": null,
+                            "metricsQueryData": null,
+                            "tracesQueryData": null,
+                            "parseMode": "Auto",
+                            "timeSource": "Message"
+                        }
+                    ],
+                    "description": "",
+                    "timeRange": {
+                        "type": "BeginBoundedTimeRange",
+                        "from": {
+                            "type": "RelativeTimeRangeBoundary",
+                            "relativeTime": "-3h"
+                        },
+                        "to": null
+                    },
+                    "coloringRules": null,
+                    "linkedDashboards": []
+                },
+                {
+                    "id": null,
+                    "key": "panelPANE-6C7A5C31A01A3842",
+                    "title": "Top 10 URL",
+                    "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"table\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10,\"fontSize\":14},\"title\":{\"fontSize\":14},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"legend\":{\"enabled\":false}}",
+                    "keepVisualSettingsConsistentWithParent": true,
+                    "panelType": "SumoSearchPanel",
+                    "queries": [
+                        {
+                            "queryString": "_sourceCategory=recordedfuture/map/url\n| csv _raw extract 1 as urlname, 2 as risknum, 3 as riskstring, 4 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].Name\" as reason\n| count_distinct(ipaddress) by urlname, reason\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -578,12 +703,16 @@
                     {
                         "key": "panelPANE-8B114AD283131842",
                         "structure": "{\"height\":15,\"width\":12,\"x\":0,\"y\":0}"
+                    },
+                    {
+                        "key": "panelPANE-CE972D80A9B1FB45",
+                        "structure": "{\"height\":15,\"width\":12,\"x\":12,\"y\":0}"
                     }
                 ]
             },
             "panels": [
                 {
-                    "id": "7C3B8C343F91F0D7",
+                    "id": null,
                     "key": "panelPANE-8B114AD283131842",
                     "title": "Risk Breakdown",
                     "visualSettings": "{\"general\":{\"mode\":\"distribution\",\"type\":\"pie\",\"displayType\":\"default\",\"fillOpacity\":1,\"startAngle\":270,\"innerRadius\":\"30%\",\"maxNumOfSlices\":10},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"title\":{\"fontSize\":18}}",
@@ -592,6 +721,37 @@
                     "queries": [
                         {
                             "queryString": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfdomain, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| where !( rfrisk contains \"undefined\")\n| count by rfrisk\n| sort by rfrisk",
+                            "queryType": "Logs",
+                            "queryKey": "A",
+                            "metricsQueryMode": null,
+                            "metricsQueryData": null,
+                            "tracesQueryData": null,
+                            "parseMode": "Auto",
+                            "timeSource": "Message"
+                        }
+                    ],
+                    "description": "",
+                    "timeRange": {
+                        "type": "BeginBoundedTimeRange",
+                        "from": {
+                            "type": "RelativeTimeRangeBoundary",
+                            "relativeTime": "-3h"
+                        },
+                        "to": null
+                    },
+                    "coloringRules": null,
+                    "linkedDashboards": []
+                },
+                {
+                    "id": null,
+                    "key": "panelPANE-CE972D80A9B1FB45",
+                    "title": "Top 10  Vulnerabilities",
+                    "visualSettings": "{\"title\":{\"fontSize\":14},\"general\":{\"type\":\"table\",\"displayType\":\"default\",\"paginationPageSize\":100,\"fontSize\":12,\"mode\":\"distribution\"},\"axes\":{\"axisX\":{\"titleFontSize\":12,\"labelFontSize\":12},\"axisY\":{\"titleFontSize\":12,\"labelFontSize\":12}},\"series\":{},\"legend\":{\"enabled\":false}}",
+                    "keepVisualSettingsConsistentWithParent": true,
+                    "panelType": "SumoSearchPanel",
+                    "queries": [
+                        {
+                            "queryString": "_sourceCategory=recordedfuture/map/vulnerability\n| csv _raw extract 1 as itemname, 2 as risknum, 3 as riskstring, 4 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].Name\" as reason\n| count_distinct(ipaddress) by itemname, reason\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
