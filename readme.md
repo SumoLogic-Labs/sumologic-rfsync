@@ -26,7 +26,7 @@ Features
 ScreenShots
 ===========
 
-| Screen Shot Name                     |
+| Sumo Logic Content Screen Shot Name  |
 |:-------------------------------------|
 | [Recorded Future Overview](content/screenshots/Recorded_Future_Overview.png) |
 | [Recorded Future Domain Map](content/screenshots/Recorded_Future_Domain_Map.png) |
@@ -34,6 +34,16 @@ ScreenShots
 | [Recorded Future Ip Map](content/screenshots/Recorded_Future_IP_Map.png) |
 | [Recorded Future URL Map](content/screenshots/Recorded_Future_URL_Map.png ) |
 | [Recorded Future Vuln Map](content/screenshots/Recorded_Future_Vulnerability_Map.png) |
+
+| Recorded Future Browser Plugin       |
+|:-------------------------------------|
+| [Recorded Future Browser Plugin IP1](content/screenshots/Recorded-Future-Example-001_IP.png) |
+| [Recorded Future Browser Plugin IP2](content/screenshots/Recorded-Future-Example-002_IP.png) |
+| [Recorded Future Browser Plugin Hash](content/screenshots/Recorded-Future-Example-003_Hash.png) |
+| [Recorded Future Browser Plugin URL](content/screenshots/Recorded-Future-Example-004_URL.png) |
+| [Recorded Future Browser Plugin Vulnerability](content/screenshots/Recorded-Future-Example-005_Vulnerability.png) |
+| [Recorded Future Browser Plugin Domain](content/screenshots/Recorded-Future-Example-006_Domain.png) |
+| [Recorded Future Browser Plugin IP Site Detail](content/screenshots/Recorded-Future-Example-007_IP-Site-Lookup.png) |
 
 Content
 =======
