@@ -1,0 +1,28 @@
+{
+    "description": "Recorded Future IP Threat Intelligence Lookup",
+    "fields": [
+        {   
+            "fieldName": "Name",
+            "fieldType": "string"
+        },
+        {
+            "fieldName": "Risk",
+            "fieldType": "string"
+        },
+        {
+            "fieldName": "RiskString",
+            "fieldType": "string"
+        },
+        {
+            "fieldName": "EvidenceDetails",
+            "fieldType": "string"
+        }
+    ],
+    "primaryKeys": [
+        "Name"
+    ],
+    "ttl": 5000,
+    "sizeLimitAction": "DeleteOldData",
+    "name": "ip",
+    "parentFolderId": "REPLACEME"
+}

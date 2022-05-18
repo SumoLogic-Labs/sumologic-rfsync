@@ -1,0 +1,6 @@
+_sourceCategory=recordedfuture/map/hash
+| csv _raw extract 1 as rfitem, 2 as algo, 3 as rfrisknum, 4 as rfriskstring, 5 as rfriskdetails
+| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp
+| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails, algo
+| fields - _count_distinct
+| save view recordedfuture_hash

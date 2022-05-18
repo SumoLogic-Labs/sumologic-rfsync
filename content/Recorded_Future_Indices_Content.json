@@ -1,0 +1,237 @@
+{
+    "type": "FolderSyncDefinition",
+    "name": "Indices",
+    "description": "",
+    "children": [
+        {
+            "type": "SavedSearchWithScheduleSyncDefinition",
+            "name": "create_index_vulnerability",
+            "search": {
+                "queryText": "_sourceCategory=recordedfuture/map/vulnerability\n| csv _raw extract 1 as rfitem, 2 as rfrisknum, 3 as rfriskstring, 4 as rfriskdetails\n| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp\n| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails\n| fields - _count_distinct\n| save view recordedfuture_vulnerability",
+                "defaultTimeRange": "-24h",
+                "byReceiptTime": false,
+                "viewName": "",
+                "viewStartTime": "1970-01-01T00:00:00Z",
+                "queryParameters": [],
+                "parsingMode": "AutoParse"
+            },
+            "searchSchedule": {
+                "cronExpression": "0 0 14 ? * 2-6 *",
+                "displayableTimeRange": "-15m",
+                "parseableTimeRange": {
+                    "type": "BeginBoundedTimeRange",
+                    "from": {
+                        "type": "RelativeTimeRangeBoundary",
+                        "relativeTime": "-15m"
+                    },
+                    "to": null
+                },
+                "timeZone": "Asia/Tokyo",
+                "threshold": {
+                    "thresholdType": "group",
+                    "operator": "lt",
+                    "count": 0
+                },
+                "notification": {
+                    "taskType": "EmailSearchNotificationSyncDefinition",
+                    "toList": [
+                        "wschmidt@sumologic.com"
+                    ],
+                    "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
+                    "includeQuery": true,
+                    "includeResultSet": true,
+                    "includeHistogram": true,
+                    "includeCsvAttachment": false
+                },
+                "scheduleType": "1Day",
+                "muteErrorEmails": false,
+                "parameters": []
+            },
+            "description": ""
+        },
+        {
+            "type": "SavedSearchWithScheduleSyncDefinition",
+            "name": "make_index_domain",
+            "search": {
+                "queryText": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfitem, 2 as rfrisknum, 3 as rfriskstring, 4 as rfriskdetails\n| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp\n| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails\n| fields - _count_distinct\n| save view recordedfuture_domain",
+                "defaultTimeRange": "Last 24 Hours",
+                "byReceiptTime": false,
+                "viewName": "",
+                "viewStartTime": "1970-01-01T00:00:00Z",
+                "queryParameters": [],
+                "parsingMode": "AutoParse"
+            },
+            "searchSchedule": {
+                "cronExpression": "0 0 14 ? * 2-6 *",
+                "displayableTimeRange": "Last 24 Hours",
+                "parseableTimeRange": {
+                    "type": "BeginBoundedTimeRange",
+                    "from": {
+                        "type": "RelativeTimeRangeBoundary",
+                        "relativeTime": "-1d"
+                    },
+                    "to": null
+                },
+                "timeZone": "Asia/Tokyo",
+                "threshold": {
+                    "thresholdType": "group",
+                    "operator": "lt",
+                    "count": 0
+                },
+                "notification": {
+                    "taskType": "EmailSearchNotificationSyncDefinition",
+                    "toList": [
+                        "wschmidt@sumologic.com"
+                    ],
+                    "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
+                    "includeQuery": true,
+                    "includeResultSet": true,
+                    "includeHistogram": true,
+                    "includeCsvAttachment": false
+                },
+                "scheduleType": "1Day",
+                "muteErrorEmails": false,
+                "parameters": []
+            },
+            "description": ""
+        },
+        {
+            "type": "SavedSearchWithScheduleSyncDefinition",
+            "name": "make_index_hash",
+            "search": {
+                "queryText": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as rfitem, 2 as algo, 3 as rfrisknum, 4 as rfriskstring, 5 as rfriskdetails\n| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp\n| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails, algo\n| fields - _count_distinct\n| save view recordedfuture_hash",
+                "defaultTimeRange": "Last 24 Hours",
+                "byReceiptTime": false,
+                "viewName": "",
+                "viewStartTime": "1970-01-01T00:00:00Z",
+                "queryParameters": [],
+                "parsingMode": "AutoParse"
+            },
+            "searchSchedule": {
+                "cronExpression": "0 0 14 ? * 2-6 *",
+                "displayableTimeRange": "Last 24 Hours",
+                "parseableTimeRange": {
+                    "type": "BeginBoundedTimeRange",
+                    "from": {
+                        "type": "RelativeTimeRangeBoundary",
+                        "relativeTime": "-1d"
+                    },
+                    "to": null
+                },
+                "timeZone": "Asia/Tokyo",
+                "threshold": {
+                    "thresholdType": "group",
+                    "operator": "lt",
+                    "count": 0
+                },
+                "notification": {
+                    "taskType": "EmailSearchNotificationSyncDefinition",
+                    "toList": [
+                        "wschmidt@sumologic.com"
+                    ],
+                    "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
+                    "includeQuery": true,
+                    "includeResultSet": true,
+                    "includeHistogram": true,
+                    "includeCsvAttachment": false
+                },
+                "scheduleType": "1Day",
+                "muteErrorEmails": false,
+                "parameters": []
+            },
+            "description": ""
+        },
+        {
+            "type": "SavedSearchWithScheduleSyncDefinition",
+            "name": "make_index_ip",
+            "search": {
+                "queryText": "_sourceCategory=recordedfuture/map/ip\n| csv _raw extract 1 as rfitem, 2 as rfrisknum, 3 as rfriskstring, 4 as rfriskdetails\n| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp\n| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails\n| fields - _count_distinct\n| save view recordedfuture_ip",
+                "defaultTimeRange": "Last 24 Hours",
+                "byReceiptTime": false,
+                "viewName": "",
+                "viewStartTime": "1970-01-01T00:00:00Z",
+                "queryParameters": [],
+                "parsingMode": "AutoParse"
+            },
+            "searchSchedule": {
+                "cronExpression": "0 0 14 ? * 2-6 *",
+                "displayableTimeRange": "Last 24 Hours",
+                "parseableTimeRange": {
+                    "type": "BeginBoundedTimeRange",
+                    "from": {
+                        "type": "RelativeTimeRangeBoundary",
+                        "relativeTime": "-1d"
+                    },
+                    "to": null
+                },
+                "timeZone": "Asia/Tokyo",
+                "threshold": {
+                    "thresholdType": "group",
+                    "operator": "lt",
+                    "count": 0
+                },
+                "notification": {
+                    "taskType": "EmailSearchNotificationSyncDefinition",
+                    "toList": [
+                        "wschmidt@sumologic.com"
+                    ],
+                    "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
+                    "includeQuery": true,
+                    "includeResultSet": true,
+                    "includeHistogram": true,
+                    "includeCsvAttachment": false
+                },
+                "scheduleType": "1Day",
+                "muteErrorEmails": false,
+                "parameters": []
+            },
+            "description": ""
+        },
+        {
+            "type": "SavedSearchWithScheduleSyncDefinition",
+            "name": "make_index_url",
+            "search": {
+                "queryText": "_sourceCategory=recordedfuture/map/url\n| csv _raw extract 1 as rfitem, 2 as rfrisknum, 3 as rfriskstring, 4 as rfriskdetails\n| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp\n| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails\n| fields - _count_distinct\n| save view recordedfuture_url",
+                "defaultTimeRange": "-15m",
+                "byReceiptTime": false,
+                "viewName": "",
+                "viewStartTime": "1970-01-01T00:00:00Z",
+                "queryParameters": [],
+                "parsingMode": "AutoParse"
+            },
+            "searchSchedule": {
+                "cronExpression": "0 0 14 ? * 2-6 *",
+                "displayableTimeRange": "-24h",
+                "parseableTimeRange": {
+                    "type": "BeginBoundedTimeRange",
+                    "from": {
+                        "type": "RelativeTimeRangeBoundary",
+                        "relativeTime": "-1d"
+                    },
+                    "to": null
+                },
+                "timeZone": "Asia/Tokyo",
+                "threshold": {
+                    "thresholdType": "group",
+                    "operator": "lt",
+                    "count": 0
+                },
+                "notification": {
+                    "taskType": "EmailSearchNotificationSyncDefinition",
+                    "toList": [
+                        "wschmidt@sumologic.com"
+                    ],
+                    "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
+                    "includeQuery": true,
+                    "includeResultSet": true,
+                    "includeHistogram": true,
+                    "includeCsvAttachment": false
+                },
+                "scheduleType": "1Day",
+                "muteErrorEmails": false,
+                "parameters": []
+            },
+            "description": ""
+        }
+    ]
+}

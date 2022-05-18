@@ -1,0 +1,6 @@
+_sourceCategory=recordedfuture/map/ip
+| csv _raw extract 1 as rfitem, 2 as rfrisknum, 3 as rfriskstring, 4 as rfriskdetails
+| formatdate (now(), \"yyyyMMdd\" ) as rftimestamp
+| count_distinct(rfitem) by rftimestamp, rfitem, rfrisknum, rfriskstring, rfriskdetails
+| fields - _count_distinct
+| save view recordedfuture_ip
