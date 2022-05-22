@@ -9,7 +9,7 @@ rm -f $zipfile
 
 mkdir -p $staging/package
 
-cp ./lambda_function.cfg $staging
+cp ./recorded_future.cfg $staging
 cp ./lambda_function.py $staging
 cp ./requirements.txt $staging
 
@@ -23,5 +23,5 @@ zip -r $zipfile .
 
 cd $staging
 
-zip -g $zipfile ./lambda_function.cfg
+zip -g $zipfile ./recorded_future.cfg
 zip -g $zipfile ./lambda_function.py

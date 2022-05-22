@@ -22,7 +22,6 @@ if os.path.exists(modulecfg):
 
 for module in modulelist:
     module = module.rstrip()
-    print('# Module # {}'.format(module))
     try:
         __import__(module)
     except ImportError:
