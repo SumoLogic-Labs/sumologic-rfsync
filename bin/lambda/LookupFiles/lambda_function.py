@@ -92,6 +92,7 @@ def prepare_maplist():
     Populate all of the mapnames to use as output files
     """
     for mapname in MAPLIST.split(','):
+        mapname = mapname.replace("/", ".")
         filename = f'{mapname}.{"csv"}'
         dstfile = os.path.join(CACHED, filename)
         FILEMAP[mapname] = dstfile
