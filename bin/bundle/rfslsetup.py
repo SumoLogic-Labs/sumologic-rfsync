@@ -54,12 +54,13 @@ PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
 ARGS = PARSER.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 STEPLIST = {}
-STEPLIST['all'] = [ 'maps', 'fusion', 'lookups', 'indices', 'content' ]
+STEPLIST['all'] = [ 'ingest', 'maps', 'fusion', 'lookups', 'indices', 'content' ]
 STEPLIST['maps'] = [ 'maps' ]
 STEPLIST['fusion'] = [ 'fusion' ]
 STEPLIST['lookups'] = [ 'lookups' ]
 STEPLIST['indices'] = [ 'indices' ]
 STEPLIST['content'] = [ 'content' ]
+STEPLIST['ingest'] = [ 'ingest' ]
 STEPLIST['enrich'] = [ 'maps', 'lookups' ,'indices' ]
 STEPLIST['demo'] = [ 'demo' ]
 
@@ -105,6 +106,40 @@ CURRENT = datetime.datetime.now()
 DSTAMP = CURRENT.strftime("%Y%m%d")
 TSTAMP = CURRENT.strftime("%H%M%S")
 
+def prepare_ingest():
+    """
+    Create collector and source for Recorded Future Content
+    """
+    source = SumoApiClient(CFGDICT['SUMOUID'], CFGDICT['SUMOKEY'])
+
+    rfcollector = f'{SRCTAG}_collector'
+    rfsource = f'{SRCTAG}_source'
+
+    buildcollector = 'yes'
+    buildsource = 'yes'
+
+    collist = source.get_collectors()
+    for colitem in collist:
+        mycollectorname = colitem['name']
+        mycollectorid = colitem['id']
+        if mycollectorname == rfcollector:
+            buildcollector = 'no'
+            rfcollectorid = mycollectorid
+        srclist = source.get_sources(mycollectorid)
+        for srcitem in srclist:
+            mysrcname = srcitem['name']
+            mysrcid = srcitem['id']
+            if mysrcname == rfsource:
+                buildsource = 'no'
+                CFGDICT["SRCURL"] = srcitem['url']
+
+    if buildcollector == 'yes':
+        collectorresults = source.create_collector(rfcollector)
+        rfcollectorid = collectorresults['id']
+    if buildsource == 'yes':
+        sourceresults = source.create_source(rfcollectorid, rfsource)
+        CFGDICT["SRCURL"] = sourceresults['url']
+
 def prepare_content():
     """
     Create Indices from Map content
@@ -117,6 +152,8 @@ def prepare_content():
         print(f'PersonalFolderId: {results["id"]}')
 
     contentfile = os.path.abspath(f'{CURRENTDIR}/content/{SRCTAG}_content.json')
+    with open(contentfile, 'r', encoding='utf8') as contentobject:
+        jsoncontent = json.load(contentobject)
 
     buildit = 'yes'
     for item in results['children']:
@@ -124,7 +161,16 @@ def prepare_content():
             buildit = 'no'
 
     if buildit == 'yes':
-        source.start_import_job(personaldirid, contentfile)
+        result = source.start_import_job(personaldirid, jsoncontent)
+        jobid = result['id']
+        status = source.check_import_job_status(personaldirid, jobid)
+        if ARGS.verbose > 9:
+            print(f'STATUS: {status}')
+        while status['status'] == 'InProgress':
+            status = source.check_import_job_status(personaldirid, jobid)
+            if ARGS.verbose > 9:
+                print(f'STATUS: {status}')
+                time.sleep(DELAY_TIME)
 
 def prepare_indices():
     """
@@ -138,6 +184,8 @@ def prepare_indices():
         print(f'PersonalFolderId: {results["id"]}')
 
     contentfile = os.path.abspath(f'{CURRENTDIR}/content/{SRCTAG}_indices.json')
+    with open(contentfile, 'r', encoding='utf8') as contentobject:
+        jsoncontent = json.load(contentobject)
 
     buildit = 'yes'
     for item in results['children']:
@@ -145,7 +193,16 @@ def prepare_indices():
             buildit = 'no'
 
     if buildit == 'yes':
-        source.start_import_job(personaldirid, contentfile)
+        result = source.start_import_job(personaldirid, jsoncontent)
+        jobid = result['id']
+        status = source.check_import_job_status(personaldirid, jobid)
+        if ARGS.verbose > 9:
+            print(f'STATUS: {status}')
+        while status['status'] == 'InProgress':
+            status = source.check_import_job_status(personaldirid, jobid)
+            if ARGS.verbose > 9:
+                print(f'STATUS: {status}')
+                time.sleep(DELAY_TIME)
 
 def prepare_lookups():
     """
@@ -565,6 +622,88 @@ class SumoApiClient():
         time.sleep(DELAY_TIME)
         body = self.get(url, headers=headers).text
         results = json.loads(body)
+        return results
+
+    def get_collectors(self):
+        """
+        Using an HTTP client, this uses a GET to retrieve all collector information.
+        """
+        url = "/v1/collectors"
+        body = self.get(url).text
+        results = json.loads(body)['collectors']
+        return results
+
+    def get_collector(self, myselfid):
+        """
+        Using an HTTP client, this uses a GET to retrieve single collector information.
+        """
+        url = "/v1/collectors/" + str(myselfid)
+        body = self.get(url).text
+        results = json.loads(body)['collector']
+        return results
+
+    def create_collector(self, collector_name):
+        """
+        Using an HTTP client, this creates a collector
+        """
+        object_type = 'collector'
+        jsonpayload = {
+            "api.version":"v1",
+            "collector":{
+                "name": collector_name,
+                "timeZone":"Etc/UTC",
+                "fields":{
+                },
+                "collectorType":"Hosted",
+                "collectorVersion":""
+            }
+        }
+        url = "/v1/collectors"
+        body = self.post(url, jsonpayload).text
+        results = json.loads(body)['collector']
+        return results
+
+    def get_sources(self, parentid):
+        """
+        Using an HTTP client, this uses a GET to retrieve for all sources for a given collector
+        """
+        url = "/v1/collectors/" + str(parentid) + '/sources'
+        body = self.get(url).text
+        results = json.loads(body)['sources']
+        return results
+
+    def get_source(self, parentid, myselfid):
+        """
+        Using an HTTP client, this uses a GET to retrieve a given source for a given collector
+        """
+        url = "/v1/collectors/" + str(parentid) + '/sources/' + str(myselfid)
+        body = self.get(url).text
+        results = json.loads(body)['sources']
+        return results
+
+    def create_source(self, parentid, source_name):
+        """
+        Using an HTTP client, this creates a source for a collector
+        """
+        object_type = 'source'
+        jsonpayload = {
+            "api.version": "v1",
+            "source":{
+                "name": f'{source_name}' ,
+                "description": f'hosted source for {source_name}',
+                "category": f'{source_name}_category', 
+                "encoding":"UTF-8",
+                "sourceType":"HTTP",
+                "automaticDateParsing": True,
+                "multilineProcessingEnabled": True,
+                "useAutolineMatching": True,
+                "forceTimeZone": False,
+                "messagePerRequest": False
+            }
+        }
+        url = "/v1/collectors/" + str(parentid) + "/sources"
+        body = self.post(url, jsonpayload).text
+        results = json.loads(body)['source']
         return results
 
 def lambda_handler(event=None,context=None):
