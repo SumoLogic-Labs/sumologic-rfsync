@@ -42,7 +42,7 @@ from filesplit.split import Split
 sys.dont_write_bytecode = 1
 
 PARSER = argparse.ArgumentParser(description="""
-Tool to collect Recorded Future threat intel and publish to Sumo Logic
+Unified Script to create a complete Recorded Future - Sumo Logic Integration
 """)
 
 PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', help='specify a config file')
