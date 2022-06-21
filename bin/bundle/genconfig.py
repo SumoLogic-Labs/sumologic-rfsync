@@ -4,7 +4,7 @@
 """
 Explanation:
 
-This will walk the client through a set of questions to create a config file.
+This script guides creating a Recorded Future - Sumo Logic config file.
 
 Usage:
     $ python  genconfig [ options ]
@@ -34,7 +34,7 @@ import urllib.request
 sys.dont_write_bytecode = 1
 
 PARSER = argparse.ArgumentParser(description="""
-Generates a Sumo Logic/Recorded Future Integration Config File
+Generates a Sumo Logic - Recorded Future Integration Config File
 """)
 
 PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', \
@@ -85,15 +85,9 @@ def collect_config_info(config):
     sumo_key_input = input ("Please enter your Sumo Logic API Key String: \n")
     config.set('Default', 'SUMOKEY', sumo_key_input )
 
-    sumo_region_input = input ("Please enter your Sumo Logic Deployment Location: \n")
-    config.set('Default', 'SUMOEND', sumo_region_input )
-
     sumo_org_id = input ("Please enter your Sumo Logic Organization ID: \n")
     sumo_org_name = sumo_region_input + '_' + sumo_org_id
     config.set('Default', 'SUMONAME', sumo_org_name )
-
-    source_input = input ("Please enter your Sumo Logic Hosted Source URL: \n")
-    config.set('Default', 'SRCURL', source_input )
 
     map_list_input = input ("Please enter your Recorded Future Maps to Retrieve: \n")
     config.set('Default', 'MAPLIST', map_list_input )
