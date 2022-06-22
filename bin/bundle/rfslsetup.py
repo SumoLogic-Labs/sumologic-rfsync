@@ -38,6 +38,8 @@ import http
 import glob
 import requests
 from filesplit.split import Split
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
 
 sys.dont_write_bytecode = 1
 
@@ -50,7 +52,6 @@ PARSER.add_argument('-s', metavar='<steps>', dest='STEPKEY', \
                     default='all', help='specify script steps')
 PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
                     dest='verbose', help="specify level of verbose output")
-
 ARGS = PARSER.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 STEPLIST = {}
@@ -69,7 +70,7 @@ CMDNAME = os.path.splitext(os.path.basename(__file__))[0]
 
 CFGNAME = f'{CMDNAME}.cfg'
 
-DELAY_TIME = 1
+DELAY_TIME = 3
 
 CFGFILE = os.path.abspath(os.path.join(CURRENTDIR, CFGNAME ))
 if ARGS.CONFIG:
@@ -128,7 +129,7 @@ def prepare_ingest():
         srclist = source.get_sources(mycollectorid)
         for srcitem in srclist:
             mysrcname = srcitem['name']
-            mysrcid = srcitem['id']
+            _mysrcid = srcitem['id']
             if mysrcname == rfsource:
                 buildsource = 'no'
                 CFGDICT["SRCURL"] = srcitem['url']
@@ -412,7 +413,18 @@ class SumoApiClient():
         Initializes the Sumo Logic object
         """
 
+        self.retry_strategy = Retry(
+            total=10,
+            status_forcelist=[429, 500, 502, 503, 504],
+            allowed_methods=["HEAD", "GET", "OPTIONS"]
+        )
+        self.adapter = HTTPAdapter(max_retries=self.retry_strategy)
+
         self.session = requests.Session()
+
+        self.session.mount("https://", self.adapter)
+        self.session.mount("http://", self.adapter)
+
         self.session.auth = (access_id, access_key)
         self.session.headers = {'content-type': 'application/json', \
             'accept': 'application/json'}
@@ -646,7 +658,7 @@ class SumoApiClient():
         """
         Using an HTTP client, this creates a collector
         """
-        object_type = 'collector'
+        _object_type = 'collector'
         jsonpayload = {
             "api.version":"v1",
             "collector":{
@@ -685,13 +697,13 @@ class SumoApiClient():
         """
         Using an HTTP client, this creates a source for a collector
         """
-        object_type = 'source'
+        _object_type = 'source'
         jsonpayload = {
             "api.version": "v1",
             "source":{
                 "name": f'{source_name}' ,
                 "description": f'hosted source for {source_name}',
-                "category": f'{source_name}_category', 
+                "category": f'{source_name}_category',
                 "encoding":"UTF-8",
                 "sourceType":"HTTP",
                 "automaticDateParsing": True,
