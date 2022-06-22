@@ -7,6 +7,7 @@ This integration allows Recorded Future's comprehensive threat intelligence to e
 
 The result? On the fly ability to lookup/enhance events with threat intelligence to better respond to events.
 
+1
 Configuring the Feed: Getting started!
 ======================================
 
