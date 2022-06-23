@@ -85,13 +85,6 @@ def collect_config_info(config):
     sumo_key_input = input ("Please enter your Sumo Logic API Key String: \n")
     config.set('Default', 'SUMOKEY', sumo_key_input )
 
-    sumo_region_input = input ("Please enter your Sumo Logic Deployment Location: \n")
-    config.set('Default', 'SUMOEND', sumo_region_input )
-
-    sumo_org_id = input ("Please enter your Sumo Logic Organization ID: \n")
-    sumo_org_name = sumo_region_input + '_' + sumo_org_id
-    config.set('Default', 'SUMONAME', sumo_org_name )
-
     map_list_input = input ("Please enter your Recorded Future Maps to Retrieve: \n")
     config.set('Default', 'MAPLIST', map_list_input )
 
