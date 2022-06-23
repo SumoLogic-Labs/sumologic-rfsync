@@ -236,7 +236,8 @@ def prepare_lookups():
     results = source.get_personal_folder()
 
     personaldirid = results['id']
-    print(f'PersonalFolderId: {results["id"]}')
+    if ARGS.verbose > 4:
+        print(f'PersonalFolderId: {results["id"]}')
 
     buildit = 'yes'
     lookupdirname = f'{SRCTAG}_lookups'
@@ -255,8 +256,9 @@ def prepare_lookups():
 
     if buildit == 'yes':
         lookupdirid = source.create_folder(lookupdirname,personaldirid)["id"]
-    print(f'LookupDirId: {lookupdirid}')
-    print(f'LookupDirName: {lookupdirname}')
+    if ARGS.verbose > 4:
+        print(f'LookupDirId: {lookupdirid}')
+        print(f'LookupDirName: {lookupdirname}')
 
     create_lookup_stubs(source, lookupdirid)
     upload_lookup_data(source)
@@ -822,7 +824,7 @@ def lambda_handler(event=None,context=None):
 
     for step_name in STEPLIST[ARGS.STEPKEY]:
         if ARGS.verbose > 2:
-            print(f'Processing: {step_name}')
+            print(f'Process_Step_Name: {step_name}')
         eval( 'prepare_' + step_name + "()")
 
 if __name__ == '__main__':
