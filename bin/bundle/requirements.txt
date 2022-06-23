@@ -1,7 +1,4 @@
 requests
 datetime
 configparser
-argparse
-json
-glob
 filesplit

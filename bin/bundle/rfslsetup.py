@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # pylint: disable=W0123
+# pylint: disable=E0401
+# pylint: disable=R0914
+# pylint: disable=R0904
 
 """
 Explanation:
@@ -36,6 +39,7 @@ import os
 import sys
 import http
 import glob
+import shutil
 import requests
 from filesplit.split import Split
 from requests.adapters import HTTPAdapter
@@ -55,15 +59,17 @@ PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
 ARGS = PARSER.parse_args(args=None if sys.argv[1:] else ['--help'])
 
 STEPLIST = {}
-STEPLIST['all'] = [ 'ingest', 'maps', 'fusion', 'lookups', 'indices', 'content' ]
-STEPLIST['maps'] = [ 'maps' ]
+STEPLIST['ingest'] = [ 'ingest' ]
+STEPLIST['download'] = [ 'download' ]
+STEPLIST['publish'] = [ 'download', 'publish' ]
 STEPLIST['fusion'] = [ 'fusion' ]
-STEPLIST['lookups'] = [ 'lookups' ]
+STEPLIST['lookups'] = [ 'download', 'lookups' ]
 STEPLIST['indices'] = [ 'indices' ]
 STEPLIST['content'] = [ 'content' ]
-STEPLIST['ingest'] = [ 'ingest' ]
-STEPLIST['enrich'] = [ 'maps', 'lookups' ,'indices' ]
 STEPLIST['demo'] = [ 'demo' ]
+STEPLIST['complete'] = [ 'ingest', 'download', 'publish', 'fusion', \
+                         'lookups', 'indices', 'content' ]
+STEPLIST['basic'] = [ 'download', 'lookups']
 
 CURRENTDIR = os.path.abspath(os.path.dirname(__file__))
 CMDNAME = os.path.splitext(os.path.basename(__file__))[0]
@@ -91,17 +97,18 @@ URLBASE = 'https://api.recordedfuture.com/v2'
 URLTAIL = 'risklist?format=csv%2Fsplunk'
 
 if os.name == 'nt':
-    CACHED = os.path.join ( "C:", "Windows", "Temp" )
+    CACHED = os.path.join("C:", "Windows", "Temp" , SRCTAG)
 else:
-    CACHED = os.path.join ( "/", "var", "tmp" )
+    CACHED = os.path.join("/", "var", "tmp", SRCTAG)
 
-FILELIMIT = 50 * 1024 * 1024
+FILELIMIT = 80 * 1024 * 1024
 
-LINELIMIT = 30000
+LINELIMIT = 40000
 
 CFGDICT = {}
 FUSION = {}
 LOOKUPS = {}
+PUBLISH = {}
 
 CURRENT = datetime.datetime.now()
 DSTAMP = CURRENT.strftime("%Y%m%d")
@@ -158,19 +165,27 @@ def prepare_content():
 
     buildit = 'yes'
     for item in results['children']:
-        if item['name'] == f'{SRCTAG}_content':
-            buildit = 'no'
+        contentname = item['name']
+        contentid = item['id']
+        if contentname == f'{SRCTAG}_content':
+            if ARGS.verbose > 9:
+                print(f'ExistingItem: {contentid} - {contentname}')
+            result = source.delete_content_job(contentid)
+            jobid = result['id']
+            if ARGS.verbose > 9:
+                print(f'Delete_Content_Job: {jobid}')
+            time.sleep(DELAY_TIME)
 
     if buildit == 'yes':
         result = source.start_import_job(personaldirid, jsoncontent)
         jobid = result['id']
         status = source.check_import_job_status(personaldirid, jobid)
         if ARGS.verbose > 9:
-            print(f'STATUS: {status}')
+            print(f'Import_Content_Job: {status["status"]}')
         while status['status'] == 'InProgress':
             status = source.check_import_job_status(personaldirid, jobid)
             if ARGS.verbose > 9:
-                print(f'STATUS: {status}')
+                print(f'Import_Content_Job: {status["status"]}')
                 time.sleep(DELAY_TIME)
 
 def prepare_indices():
@@ -190,19 +205,27 @@ def prepare_indices():
 
     buildit = 'yes'
     for item in results['children']:
-        if item['name'] == f'{SRCTAG}_indices':
-            buildit = 'no'
+        contentname = item['name']
+        contentid = item['id']
+        if contentname == f'{SRCTAG}_indices':
+            if ARGS.verbose > 9:
+                print(f'ExistingItem: {contentid} - {contentname}')
+            result = source.delete_content_job(contentid)
+            jobid = result['id']
+            if ARGS.verbose > 9:
+                print(f'Delete_Indices_Job: {jobid}')
+            time.sleep(DELAY_TIME)
 
     if buildit == 'yes':
         result = source.start_import_job(personaldirid, jsoncontent)
         jobid = result['id']
         status = source.check_import_job_status(personaldirid, jobid)
         if ARGS.verbose > 9:
-            print(f'STATUS: {status}')
+            print(f'Import_Indices_Job: {status["status"]}')
         while status['status'] == 'InProgress':
             status = source.check_import_job_status(personaldirid, jobid)
             if ARGS.verbose > 9:
-                print(f'STATUS: {status}')
+                print(f'Import_Indices_Job: {status["status"]}')
                 time.sleep(DELAY_TIME)
 
 def prepare_lookups():
@@ -215,16 +238,23 @@ def prepare_lookups():
     personaldirid = results['id']
     print(f'PersonalFolderId: {results["id"]}')
 
-    lookupdirid = 'build'
+    buildit = 'yes'
     lookupdirname = f'{SRCTAG}_lookups'
 
     for item in results['children']:
-        if item['name'] == SRCTAG:
-            lookupdirid = item["id"]
-            lookupdirname = item["name"]
+        contentname = item['name']
+        contentid = item['id']
+        if contentname == lookupdirname:
+            if ARGS.verbose > 9:
+                print(f'ExistingItem: {contentid} - {contentname}')
+            result = source.delete_content_job(contentid)
+            jobid = result['id']
+            if ARGS.verbose > 9:
+                print(f'Delete_Lookup_Job: {jobid}')
+            time.sleep(DELAY_TIME)
 
-    if lookupdirid == 'build':
-        lookupdirid = source.create_folder(SRCTAG,personaldirid)["id"]
+    if buildit == 'yes':
+        lookupdirid = source.create_folder(lookupdirname,personaldirid)["id"]
     print(f'LookupDirId: {lookupdirid}')
     print(f'LookupDirName: {lookupdirname}')
 
@@ -236,10 +266,10 @@ def create_lookup_stubs(source, lookupdirid):
     Create Lookup File Stubs
     """
     for rfcsvmap in glob.glob(glob.escape(CFGDICT['CACHED']) + "/*.default.csv"):
-        print(f'File: {rfcsvmap}')
         jsonname = os.path.basename(rfcsvmap).replace(".default.csv", ".json")
         jsonfile = os.path.join(CURRENTDIR, "json", jsonname)
-        print(f'Json: {jsonfile}')
+        if ARGS.verbose > 4:
+            print(f'Creating_Lookup_Using: {jsonfile}')
         results = source.create_lookup(lookupdirid, jsonfile )
         lookupfileid = results["id"]
         lookupfilename = results["name"]
@@ -253,11 +283,10 @@ def upload_lookup_data(source):
 
     for lookupkey, lookupfileid in LOOKUPS.items():
         targetfile = f'{CFGDICT["CACHED"]}/{lookupkey}.default.csv'
-        print(f'{targetfile}')
         filesize = os.path.getsize(targetfile)
         if filesize <= FILELIMIT:
             if ARGS.verbose > 2:
-                print(f'UPLOAD id: {lookupfileid} file: {targetfile}')
+                print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {targetfile}')
             _result = source.populate_lookup(lookupfileid, targetfile)
         else:
             split_dir = os.path.splitext(targetfile)[0]
@@ -266,7 +295,7 @@ def upload_lookup_data(source):
             filesplit.bylinecount(linecount=LINELIMIT, includeheader=True)
             for csv_file in glob.glob(glob.escape(split_dir) + "/*.csv"):
                 if ARGS.verbose > 2:
-                    print(f'UPLOAD id: {lookupfileid} file: {csv_file}')
+                    print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {csv_file}')
                 _result = source.populate_lookup_merge(lookupfileid, csv_file)
 
 def prepare_fusion():
@@ -313,11 +342,26 @@ def prepare_fusion():
             print(f'source_category: {str(fusion_file_category)}')
             print(f'upload_response: {str(postresponse)}')
 
-def prepare_maps():
+def prepare_download():
     """
-    Download Main Maps
+    Download Recorded Future Maps
     """
     session = requests.Session()
+
+    os.makedirs(CFGDICT['CACHED'], exist_ok=True)
+    os.chdir(CFGDICT['CACHED'])
+    for csvmap in glob.glob("*.csv"):
+        removecsv = os.path.abspath(csvmap)
+        if ARGS.verbose > 7:
+            print(f'Scrubbing_File: {removecsv}')
+        os.remove(removecsv)
+
+    os.chdir(CFGDICT['CACHED'])
+    for csvdir in glob.glob("*.default"):
+        removedir = os.path.abspath(csvdir)
+        if ARGS.verbose > 7:
+            print(f'Scrubbing_Directories: {removedir}')
+        shutil.rmtree(removedir)
 
     for map_token in CFGDICT['MAPLIST'].split(","):
         if "/" in map_token:
@@ -334,6 +378,8 @@ def prepare_maps():
         if list_name == 'default':
             category = f'{SRCTAG}/{"map"}/{map_name}'
 
+        PUBLISH[csv_file] = category
+
         headers = {'X-RFToken': CFGDICT['MAPKEY'], 'X-RF-User-Agent' : 'SumoLogic+v1.0'}
         if ARGS.verbose > 4:
             print(f'Retrieving: {httppath}')
@@ -345,6 +391,13 @@ def prepare_maps():
         with open(csv_file, mode="w", encoding='utf8') as outputfile:
             outputfile.write(getresults)
 
+def prepare_publish():
+    """
+    Publish the results
+    """
+    session = requests.Session()
+
+    for csv_file, category in PUBLISH.items():
         with open(csv_file, mode='r', encoding='utf8') as inputfile:
             rf_map_payload = (inputfile.read().encode('utf-8'))
 
@@ -355,7 +408,7 @@ def prepare_maps():
         postresponse = session.post(CFGDICT['SRCURL'], rf_map_payload, headers=headers).status_code
 
         if ARGS.verbose > 8:
-            print(f'web_response: {postresponse}')
+            print(f'Web_Status: {postresponse}')
 
 def initialize_variables():
     """
@@ -581,6 +634,36 @@ class SumoApiClient():
         """
         url = '/v2/content/folders/personal'
         body = self.get(url).text
+        results = json.loads(body)
+        return results
+
+    def delete_collector(self, item_id, adminmode=False):
+        """
+        delete a collector
+        """
+        headers = {'isAdminMode': str(adminmode).lower()}
+        url = '/v1/collectors/' + str(item_id) + '/delete'
+        body = self.delete(url, headers=headers).text
+        results = json.loads(body)
+        return results
+
+    def delete_content_job(self, item_id, adminmode=False):
+        """
+        deletes content
+        """
+        headers = {'isAdminMode': str(adminmode).lower()}
+        url = '/v2/content/' + str(item_id) + '/delete'
+        body = self.delete(url, headers=headers).text
+        results = json.loads(body)
+        return results
+
+    def delete_content_job_status(self, item_id, job_id, adminmode=False):
+        """
+        checks on the delete job status
+        """
+        headers = {'isAdminMode': str(adminmode).lower()}
+        url = '/v2/content/' + str(item_id) + '/delete/' + str(job_id) + '/status'
+        body = self.get(url, headers=headers)
         results = json.loads(body)
         return results
 
