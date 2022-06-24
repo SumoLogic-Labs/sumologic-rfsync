@@ -27,5 +27,6 @@ cd $staging
 
 zip -g $zipfile ./lambda_function.cfg
 zip -g $zipfile ./lambda_function.py
-zip -g $zipfile ./content
-zip -g $zipfile ./json
+zip -g $zipfile ./requirements.txt
+zip -r $zipfile ./content
+zip -r $zipfile ./json
