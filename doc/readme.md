@@ -38,8 +38,6 @@ CIP Setup:
 
 [CIP::Step-by-Step::Howto: Sumo Logic CIP Preparation](01_sumologic/CIP_readme.md)
 
-[CIP::Step-by-Step::Example: Guidance on script use for install ](01_sumologic/CIP_Install_Notes.txt)
-
 CSE Setup:
 ==========
 

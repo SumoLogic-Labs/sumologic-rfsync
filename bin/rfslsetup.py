@@ -51,12 +51,14 @@ PARSER = argparse.ArgumentParser(description="""
 Unified Script to create a complete Recorded Future - Sumo Logic Integration
 """)
 
-PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', help='specify a config file')
+PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', \
+                    default='default', help='specify a config file')
 PARSER.add_argument('-s', metavar='<steps>', dest='STEPKEY', \
-                    default='all', help='specify script steps')
+                    default='complete', help='specify script steps')
 PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
                     dest='verbose', help="specify level of verbose output")
-ARGS = PARSER.parse_args(args=None if sys.argv[1:] else ['--help'])
+
+ARGS = PARSER.parse_args()
 
 STEPLIST = {}
 STEPLIST['ingest'] = [ 'ingest' ]
@@ -76,11 +78,15 @@ CMDNAME = os.path.splitext(os.path.basename(__file__))[0]
 
 CFGNAME = f'{CMDNAME}.cfg'
 
-DELAY_TIME = 3
+DELAY_TIME = 1
 
-CFGFILE = os.path.abspath(os.path.join(CURRENTDIR, CFGNAME ))
-if ARGS.CONFIG:
+if ARGS.CONFIG == 'default':
+    CFGFILE = os.path.abspath(os.path.join(CURRENTDIR, CFGNAME ))
+else:
     CFGFILE = os.path.abspath(ARGS.CONFIG)
+
+print(CFGFILE)
+sys.exit()
 
 DEFAULTMAP = []
 DEFAULTMAP.append('ip')

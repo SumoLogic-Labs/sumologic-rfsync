@@ -85,7 +85,7 @@ def collect_config_info(config):
     sumo_key_input = input ("Please enter your Sumo Logic API Key String: \n")
     config.set('Default', 'SUMOKEY', sumo_key_input )
 
-    map_list_input = input ("Please enter your Recorded Future Maps to Retrieve: \n")
+    map_list_input = input ("Please enter your Recorded Future Risk Lists to Retrieve: \n")
     config.set('Default', 'MAPLIST', map_list_input )
 
     print('Please enter the Fusion files you may have, one path at a time.')
