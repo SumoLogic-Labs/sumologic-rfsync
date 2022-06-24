@@ -85,9 +85,6 @@ if ARGS.CONFIG == 'default':
 else:
     CFGFILE = os.path.abspath(ARGS.CONFIG)
 
-print(CFGFILE)
-sys.exit()
-
 DEFAULTMAP = []
 DEFAULTMAP.append('ip')
 
