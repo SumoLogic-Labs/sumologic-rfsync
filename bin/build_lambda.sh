@@ -11,6 +11,7 @@ mkdir -p $staging/package
 
 cp ./rfslsetup.cfg $staging/lambda_function.cfg
 cp ./rfslsetup.py $staging/lambda_function.py
+cp ./sumologic.py $staging/sumologic.py
 cp -r ./content $staging
 cp -r ./json $staging
 cp ./requirements.txt $staging
@@ -27,6 +28,7 @@ cd $staging
 
 zip -g $zipfile ./lambda_function.cfg
 zip -g $zipfile ./lambda_function.py
+zip -g $zipfile ./sumologic.py
 zip -g $zipfile ./requirements.txt
 zip -r $zipfile ./content
 zip -r $zipfile ./json
