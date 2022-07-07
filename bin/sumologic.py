@@ -160,36 +160,34 @@ class SumoApiClient():
         results = json.loads(body)
         return results
 
-    def populate_lookup_merge(self, parent_id, csvfile):
+    def post_file(self, method, params, headers=None):
         """
-        populates a lookup file stub
+        implements a post file
         """
-
-        with open(csvfile, "r", encoding='utf8') as fileobject:
-            csvpayload = fileobject.read()
-
-        files = { 'file' : ( csvfile, csvpayload ) }
-        headers = {'merge': 'true' }
-
-        url = '/v1/lookupTables/' + parent_id + '/upload'
-        body = self.upload(url, headers=headers, files=files).text
-        results = json.loads(body)
+        post_params = {'merge': params['merge']}
+        file_data = open(params['file_name'], 'rb').read()
+        files = {'file': (params['file_name'], file_data)}
+        results = requests.post(self.endpoint + method, files=files, params=post_params,
+                auth=(self.session.auth[0], self.session.auth[1]), headers=headers)
+        if 400 <= results.status_code < 600:
+            results.reason = results.text
+        results.raise_for_status()
         return results
 
-    def populate_lookup(self, parent_id, csvfile):
+    def upload_lookup_csv(self, table_id, file_name, merge='false'):
         """
-        populates a lookup file stub
+        populates a lookup file from a CSV file
         """
+        params={'file_name': file_name, 'merge': merge }
+        results = self.post_file('/v1/lookupTables/%s/upload' % table_id, params)
+        return results.json()
 
-        with open(csvfile, "r", encoding='utf8') as fileobject:
-            csvpayload = fileobject.read()
-
-        files = { 'file' : ( csvfile, csvpayload ) }
-
-        url = '/v1/lookupTables/' + parent_id + '/upload'
-        body = self.upload(url, files=files).text
-        results = json.loads(body)
-        return results
+    def upload_lookup_csv_status(self, jobid):
+        """
+        checks on the status of a lookup file upload job
+        """
+        results = self.get('/v1/lookupTables/jobs/%s/status' % jobid)
+        return results.json()
 
     def get_folder(self, folder_id, adminmode=False):
         """

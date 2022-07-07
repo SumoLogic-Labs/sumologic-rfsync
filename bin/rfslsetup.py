@@ -38,13 +38,10 @@ import time
 import json
 import os
 import sys
-### import http
 import glob
 import shutil
 import requests
 from filesplit.split import Split
-### from requests.adapters import HTTPAdapter
-### from requests.packages.urllib3.util.retry import Retry
 
 sys.dont_write_bytecode = True
 
@@ -109,7 +106,7 @@ else:
 
 FILELIMIT = 80 * 1024 * 1024
 
-LINELIMIT = 40000
+LINELIMIT = 30000
 
 CFGDICT = {}
 FUSION = {}
@@ -186,16 +183,17 @@ def prepare_content():
             time.sleep(DELAY_TIME)
             status = source.delete_content_job_status(contentid, jobid)
             if ARGS.verbose > 9:
-                print(f'Import_Content_Job: {status["status"]}')
+                print(f'Delete_Content_Job: {status["status"]}')
             while status['status'] == 'InProgress':
                 status = source.delete_content_job_status(contentid, jobid)
                 if ARGS.verbose > 9:
-                    print(f'Import_Content_Job: {status["status"]}')
+                    print(f'Delete_Content_Job: {status["status"]}')
                     time.sleep(DELAY_TIME)
 
     if buildit == 'yes':
         result = source.start_import_job(personaldirid, jsoncontent)
         jobid = result['id']
+        print(f'Import_Content_Job: {jobid}')
         status = source.check_import_job_status(personaldirid, jobid)
         if ARGS.verbose > 9:
             print(f'Import_Content_Job: {status["status"]}')
@@ -230,20 +228,21 @@ def prepare_indices():
             result = source.delete_content_job(contentid)
             jobid = result['id']
             if ARGS.verbose > 9:
-                print(f'Delete_Content_Job: {jobid}')
+                print(f'Delete_Indices_Job: {jobid}')
             time.sleep(DELAY_TIME)
             status = source.delete_content_job_status(contentid, jobid)
             if ARGS.verbose > 9:
-                print(f'Import_Content_Job: {status["status"]}')
+                print(f'Delete_Indices_Job: {status["status"]}')
             while status['status'] == 'InProgress':
                 status = source.delete_content_job_status(contentid, jobid)
                 if ARGS.verbose > 9:
-                    print(f'Import_Content_Job: {status["status"]}')
+                    print(f'Delete_Indices_Job: {status["status"]}')
                     time.sleep(DELAY_TIME)
 
     if buildit == 'yes':
         result = source.start_import_job(personaldirid, jsoncontent)
         jobid = result['id']
+        print(f'Import_Indices_Job: {jobid}')
         status = source.check_import_job_status(personaldirid, jobid)
         if ARGS.verbose > 9:
             print(f'Import_Indices_Job: {status["status"]}')
@@ -276,15 +275,15 @@ def prepare_lookups():
             result = source.delete_content_job(contentid)
             jobid = result['id']
             if ARGS.verbose > 9:
-                print(f'Delete_Content_Job: {jobid}')
+                print(f'Delete_Lookup_Job: {jobid}')
             time.sleep(DELAY_TIME)
             status = source.delete_content_job_status(contentid, jobid)
             if ARGS.verbose > 9:
-                print(f'Import_Content_Job: {status["status"]}')
+                print(f'Delete_Lookup_Job: {status["status"]}')
             while status['status'] == 'InProgress':
                 status = source.delete_content_job_status(contentid, jobid)
                 if ARGS.verbose > 9:
-                    print(f'Import_Content_Job: {status["status"]}')
+                    print(f'Delete_Lookup_Job: {status["status"]}')
                     time.sleep(DELAY_TIME)
 
     if buildit == 'yes':
@@ -294,7 +293,8 @@ def prepare_lookups():
         print(f'LookupDirName: {lookupdirname}')
 
     create_lookup_stubs(source, lookupdirid)
-    upload_lookup_data(source)
+
+    upload_lookup_data()
 
 def create_lookup_stubs(source, lookupdirid):
     """
@@ -310,11 +310,10 @@ def create_lookup_stubs(source, lookupdirid):
         lookupfilename = results["name"]
         LOOKUPS[lookupfilename] = lookupfileid
 
-def upload_lookup_data(source):
+def upload_lookup_data():
     """
     Upload the lookup file data
     """
-    source.session.headers = None
 
     for lookupkey, lookupfileid in LOOKUPS.items():
         targetfile = f'{CFGDICT["CACHED"]}/{lookupkey}.default.csv'
@@ -322,7 +321,22 @@ def upload_lookup_data(source):
         if filesize <= FILELIMIT:
             if ARGS.verbose > 2:
                 print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {targetfile}')
-            _result = source.populate_lookup(lookupfileid, targetfile)
+            source = sumologic.SumoApiClient(CFGDICT['SUMOUID'], CFGDICT['SUMOKEY'])
+            result = source.upload_lookup_csv(lookupfileid, targetfile, merge='false')
+            jobid = result['id']
+            if ARGS.verbose > 9:
+                print(f'Import_Lookup_Job: {jobid}')
+            time.sleep(DELAY_TIME)
+            status = source.upload_lookup_csv_status(jobid)
+            if ARGS.verbose > 9:
+                print(f'Import_Lookup_Job: {status["status"]}')
+            if ARGS.verbose > 19:
+                print(f'Import_Lookup_Job: {status}')
+            while status['status'] == 'Pending':
+                status = source.upload_lookup_csv_status(jobid)
+                if ARGS.verbose > 9:
+                    print(f'Import_Lookup_Job: {status["status"]}')
+                    time.sleep(DELAY_TIME)
         else:
             split_dir = os.path.splitext(targetfile)[0]
             os.makedirs(split_dir, exist_ok=True)
@@ -331,7 +345,22 @@ def upload_lookup_data(source):
             for csv_file in glob.glob(glob.escape(split_dir) + "/*.csv"):
                 if ARGS.verbose > 2:
                     print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {csv_file}')
-                _result = source.populate_lookup_merge(lookupfileid, csv_file)
+                source = sumologic.SumoApiClient(CFGDICT['SUMOUID'], CFGDICT['SUMOKEY'])
+                result = source.upload_lookup_csv(lookupfileid, csv_file, merge='true')
+                jobid = result['id']
+                if ARGS.verbose > 9:
+                    print(f'Import_Lookup_Job: {jobid}')
+                time.sleep(DELAY_TIME)
+                status = source.upload_lookup_csv_status(jobid)
+                if ARGS.verbose > 9:
+                    print(f'Import_Lookup_Job: {status["status"]}')
+                if ARGS.verbose > 19:
+                    print(f'Import_Lookup_Job: {status}')
+                while status['status'] == 'Pending':
+                    status = source.upload_lookup_csv_status(jobid)
+                    if ARGS.verbose > 9:
+                        print(f'Import_Lookup_Job: {status["status"]}')
+                        time.sleep(DELAY_TIME)
 
 def prepare_fusion():
     """
