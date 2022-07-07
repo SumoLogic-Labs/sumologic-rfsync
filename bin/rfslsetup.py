@@ -322,7 +322,7 @@ def upload_lookup_data():
             if ARGS.verbose > 2:
                 print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {targetfile}')
             source = sumologic.SumoApiClient(CFGDICT['SUMOUID'], CFGDICT['SUMOKEY'])
-            result = source.upload_lookup_csv(lookupfileid, targetfile, merge='false')
+            result = source.upload_lookup_csv(lookupfileid, targetfile, merge='true')
             jobid = result['id']
             if ARGS.verbose > 9:
                 print(f'Import_Lookup_Job: {jobid}')
@@ -330,13 +330,13 @@ def upload_lookup_data():
             status = source.upload_lookup_csv_status(jobid)
             if ARGS.verbose > 9:
                 print(f'Import_Lookup_Job: {status["status"]}')
-            if ARGS.verbose > 19:
-                print(f'Import_Lookup_Job: {status}')
-            while status['status'] == 'Pending':
+            while status['status'] != 'Success':
                 status = source.upload_lookup_csv_status(jobid)
                 if ARGS.verbose > 9:
                     print(f'Import_Lookup_Job: {status["status"]}')
-                    time.sleep(DELAY_TIME)
+                if ARGS.verbose > 29:
+                    print(f'Import_Lookup_Job_Details:\n{status}')
+                time.sleep(DELAY_TIME)
         else:
             split_dir = os.path.splitext(targetfile)[0]
             os.makedirs(split_dir, exist_ok=True)
@@ -354,13 +354,13 @@ def upload_lookup_data():
                 status = source.upload_lookup_csv_status(jobid)
                 if ARGS.verbose > 9:
                     print(f'Import_Lookup_Job: {status["status"]}')
-                if ARGS.verbose > 19:
-                    print(f'Import_Lookup_Job: {status}')
-                while status['status'] == 'Pending':
+                while status['status'] != 'Success':
                     status = source.upload_lookup_csv_status(jobid)
                     if ARGS.verbose > 9:
                         print(f'Import_Lookup_Job: {status["status"]}')
-                        time.sleep(DELAY_TIME)
+                    if ARGS.verbose > 29:
+                        print(f'Import_Lookup_Job_Details:\n{status}')
+                    time.sleep(DELAY_TIME)
 
 def prepare_fusion():
     """

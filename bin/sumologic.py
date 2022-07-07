@@ -160,6 +160,9 @@ class SumoApiClient():
         results = json.loads(body)
         return results
 
+##########
+##########        self.session.headers = None
+
     def post_file(self, method, params, headers=None):
         """
         implements a post file
