@@ -78,7 +78,7 @@ CMDNAME = os.path.splitext(os.path.basename(__file__))[0]
 
 CFGNAME = f'{CMDNAME}.cfg'
 
-DELAY_TIME = 1
+DELAY_TIME = 9
 
 if ARGS.CONFIG == 'default':
     CFGFILE = os.path.abspath(os.path.join(CURRENTDIR, CFGNAME ))
@@ -104,9 +104,9 @@ if os.name == 'nt':
 else:
     CACHED = os.path.join("/", "var", "tmp", SRCTAG)
 
-FILELIMIT = 80 * 1024 * 1024
+FILELIMIT = 90 * 1024 * 1024
 
-LINELIMIT = 30000
+LINELIMIT = 60000
 
 CFGDICT = {}
 FUSION = {}
@@ -131,22 +131,25 @@ def prepare_ingest():
 
     collist = source.get_collectors()
     for colitem in collist:
-        mycollectorname = colitem['name']
-        mycollectorid = colitem['id']
-        if mycollectorname == rfcollector:
-            buildcollector = 'no'
-            rfcollectorid = mycollectorid
+        if colitem['name'] is not None:
+            mycollectorname = colitem['name']
+            mycollectorid = colitem['id']
+            if mycollectorname == rfcollector:
+                buildcollector = 'no'
+                rfcollectorid = mycollectorid
         srclist = source.get_sources(mycollectorid)
         for srcitem in srclist:
-            mysrcname = srcitem['name']
-            _mysrcid = srcitem['id']
-            if mysrcname == rfsource:
-                buildsource = 'no'
-                CFGDICT["SRCURL"] = srcitem['url']
+            if srcitem['name'] is not None:
+                mysrcname = srcitem['name']
+                _mysrcid = srcitem['id']
+                if mysrcname == rfsource:
+                    buildsource = 'no'
+                    CFGDICT["SRCURL"] = srcitem['url']
 
     if buildcollector == 'yes':
         collectorresults = source.create_collector(rfcollector)
         rfcollectorid = collectorresults['id']
+
     if buildsource == 'yes':
         sourceresults = source.create_source(rfcollectorid, rfsource)
         CFGDICT["SRCURL"] = sourceresults['url']
@@ -330,7 +333,7 @@ def upload_lookup_data():
             status = source.upload_lookup_csv_status(jobid)
             if ARGS.verbose > 9:
                 print(f'Import_Lookup_Job: {status["status"]}')
-            while status['status'] != 'Success':
+            while ( status['status'] != 'Success' and status['status'] != 'PartialSuccess' ):
                 status = source.upload_lookup_csv_status(jobid)
                 if ARGS.verbose > 9:
                     print(f'Import_Lookup_Job: {status["status"]}')
@@ -342,7 +345,7 @@ def upload_lookup_data():
             os.makedirs(split_dir, exist_ok=True)
             filesplit = Split(targetfile, split_dir )
             filesplit.bylinecount(linecount=LINELIMIT, includeheader=True)
-            for csv_file in glob.glob(glob.escape(split_dir) + "/*.csv"):
+            for csv_file in sorted(glob.glob(glob.escape(split_dir) + "/*.csv")):
                 if ARGS.verbose > 2:
                     print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {csv_file}')
                 source = sumologic.SumoApiClient(CFGDICT['SUMOUID'], CFGDICT['SUMOKEY'])
