@@ -130,6 +130,8 @@ def prepare_ingest():
     buildsource = 'yes'
 
     collist = source.get_collectors()
+    if ARGS.verbose > 9:
+        print(f'collector_list: {collist}')
     for colitem in collist:
         if colitem['name'] is not None:
             mycollectorname = colitem['name']
@@ -138,6 +140,8 @@ def prepare_ingest():
                 buildcollector = 'no'
                 rfcollectorid = mycollectorid
         srclist = source.get_sources(mycollectorid)
+        if ARGS.verbose > 9:
+            print(f'colitem: {mycollectorname} source_list: {srclist}')
         for srcitem in srclist:
             if srcitem['name'] is not None:
                 mysrcname = srcitem['name']
