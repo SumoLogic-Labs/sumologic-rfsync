@@ -19,8 +19,8 @@ Style:
     @version        3.0.0
     @author-name    Wayne Schmidt
     @author-email   wschmidt@sumologic.com
-    @license-name   GNU GPL
-    @license-url    http://www.gnu.org/licenses/gpl.html
+    @license-name   Apache
+    @license-url    https://www.apache.org/licenses/LICENSE-2.0
 """
 
 __version__ = '3.0.0'
