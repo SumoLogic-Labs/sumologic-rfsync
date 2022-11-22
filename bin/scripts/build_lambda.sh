@@ -2,27 +2,36 @@
 
 umask 022
 
-staging="/tmp/RecordedFuture-Consolidated-Staging"
-zipfile="/tmp/RecordedFuture-Consolidated.Package.zip"
+scriptchoice=${1:-"rfsllookups"}
 
-rm -f $zipfile
+staging="/tmp/RecordedFuture-SumoLogic-Staging.${scriptchoice}"
+zipfile="/tmp/RecordedFuture-SumoLogic-Staging.${scriptchoice}.zip"
 
-mkdir -p $staging/package
+[ -f ./${scriptchoice}.py ] && {
 
-cp ./rfsllookups.cfg $staging/lambda_function.cfg
-cp ./rfsllookups.py $staging/lambda_function.py
-cp ./requirements.txt $staging
+	rm -f $zipfile
+        rm -rf $staging
 
-cd $staging
+	mkdir -p $staging
 
-python3 -m pip3 install -r ./requirements.txt --target ./package
+	cp ./lambda_function.cfg $staging/lambda_function.cfg
+	cp ./${scriptchoice}.py $staging/lambda_function.py
+	cp ./requirements.txt $staging
 
-cd $staging/package
+	cd $staging
 
-zip -r $zipfile .
+	python3 -m pip install -r ./requirements.txt --target ./package
 
-cd $staging
+	mkdir -p $staging/package
 
-zip -g $zipfile ./lambda_function.cfg
-zip -g $zipfile ./lambda_function.py
-zip -g $zipfile ./requirements.txt
+	cd $staging/package
+
+	zip -r $zipfile .
+
+	cd $staging
+
+	zip -g $zipfile ./lambda_function.cfg
+	zip -g $zipfile ./lambda_function.py
+	zip -g $zipfile ./requirements.txt
+
+}
