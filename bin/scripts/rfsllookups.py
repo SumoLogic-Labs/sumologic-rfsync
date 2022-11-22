@@ -30,7 +30,7 @@ Style:
     @license-url    https://www.apache.org/licenses/LICENSE-2.0
 """
 
-__version__ = '6.0.0'
+__version__ = '6.6.0'
 __author__ = "Wayne Schmidt (wayne.kirk.schmidt@gmail.com)"
 
 import argparse
@@ -50,7 +50,7 @@ from filesplit.split import Split
 
 sys.dont_write_bytecode = True
 
-import sumologic
+### import sumologic
 
 PARSER = argparse.ArgumentParser(description="""
 Download and Publish Recorded Future Data into Sumo Logic Lookup Files
