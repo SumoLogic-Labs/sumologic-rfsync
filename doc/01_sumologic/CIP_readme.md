@@ -6,7 +6,7 @@ This covers how to setup the integration for the CIP, including the dependencies
 Overview
 ========
 
-Number of Steps: 3
+Number of Steps: 9
 
 Duration: 10 - 15 minutes
 
@@ -63,19 +63,19 @@ The steps are as follows:
     
     4. Clone the git repository for Recorded Future / Sumo Logic Integration. 
 
-prompt> git clone git@github.com:SumoLogic-Labs/sumologic-rfsync.git
+       prompt> git clone git@github.com:SumoLogic-Labs/sumologic-rfsync.git
 
        Open a shell prompt and change directory to the base of the git repository you have cloned. 
 
     5. Change to the terraform directory. Confirm you have terraform installed and initialize terraform
 
-prompt> cd <repository>/bin/terraform
+       prompt> cd <repository>/bin/terraform
 
-prompt> which terraform
+       prompt> which terraform
 
-prompt> terraform --version
+       prompt> terraform --version
 
-prompt> terraform init
+       prompt> terraform init
 
     5. Now, run terraform! This will evaluate all of the terraform files in the directory and configure your environment.
 
@@ -99,24 +99,24 @@ prompt> terraform init
 
     6. Next, let's confirm we have a python installed, it is the right version, and we have a working environment.
 
-prompt> which python3
-/usr/local/bin/python3
+       prompt> which python3
+       /usr/local/bin/python3
 
-prompt> python3 --version
-Python 3.9.7
+       prompt> python3 --version
+       Python 3.9.7
 
-prompt> cd <repository>/bin
-prompt> <repository>/bin/scripts/envcheck.py 
+       prompt> cd <repository>/bin
+       prompt> <repository>/bin/scripts/envcheck.py 
 
        Please install any python modules that the script may ask you to install.
 
     7. Now! Run the publishing script and see that you have imported data into Sumo Logic. 
 
-prompt> <repository>/bin/scripts/rfslsync.py -v 20 -c <configuration_file>
+       prompt> <repository>/bin/scripts/rfslsync.py -v 20 -c <configuration_file>
 
-example: 
+       example: 
 
-prompt> <repository>/bin/scripts/rfslpublish.py -v 20 -c /var/tmp/recordedfuture/config/rfslconfig.cfg
+       prompt> <repository>/bin/scripts/rfslpublish.py -v 20 -c /var/tmp/recordedfuture/config/rfslconfig.cfg
 
     8. Next, you can run the following scripts
 
@@ -128,11 +128,11 @@ prompt> <repository>/bin/scripts/rfslpublish.py -v 20 -c /var/tmp/recordedfuture
 
     9.  Next use the build_lambda script to create the necessary zip files to install into AWS if you wish.
 
-prompt> <repository>/scripts/bin/build_lambda.sh rfslpublish - builds the basic publish lambda function zipfile
+       prompt> <repository>/scripts/bin/build_lambda.sh rfslpublish - builds the basic publish lambda function zipfile
 
-prompt> <repository>/scripts/bin/build_lambda.sh rfsllookups - builds the data upload into lookup file lambda function zipfile
+       prompt> <repository>/scripts/bin/build_lambda.sh rfsllookups - builds the data upload into lookup file lambda function zipfile
 
-prompt> <repository>/scripts/bin/build_lambda.sh rfslsamples - builds the demo events download lambda function zipfile
+       prompt> <repository>/scripts/bin/build_lambda.sh rfslsamples - builds the demo events download lambda function zipfile
 
  
 Collector Reference
