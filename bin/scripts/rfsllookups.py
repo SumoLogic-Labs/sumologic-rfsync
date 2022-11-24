@@ -12,7 +12,7 @@
 """
 Explanation:
 
-    This doenloads Recorded Future demo events into Sumo Logic.
+    This downloads Recorded Future Data and publishes this into Sumo Logic lookup files.
     The initial Sumo Logic environment setup is done with Terraform.
 
 Usage:

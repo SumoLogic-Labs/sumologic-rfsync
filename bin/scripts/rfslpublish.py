@@ -4,7 +4,7 @@
 """
 Explanation:
 
-    This doenloads Recorded Future demo events into Sumo Logic.
+    This downloads Recorded Future Risk list data into Sumo Logic. 
     The initial Sumo Logic environment setup is done with Terraform.
 
 Usage:
@@ -36,7 +36,7 @@ import requests
 sys.dont_write_bytecode = True
 
 PARSER = argparse.ArgumentParser(description="""
-Download and Publish Script for Recorded Future Data into Suno Logic Source Categories
+Download and Publish Script for Recorded Future Data into Sumo Logic Source Categories
 """)
 
 PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', \

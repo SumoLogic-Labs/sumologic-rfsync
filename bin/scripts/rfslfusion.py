@@ -4,17 +4,17 @@
 """
 Explanation:
 
-    This downloads Recorded Future Demo Events into Sumo Logic.
+    This doenloads Recorded Future Fusion files into Sumo Logic.
     The initial Sumo Logic environment setup is done with Terraform.
 
 Usage:
-    $ python  rfslsamples [ options ]
+    $ python  rfslfusion [ options ]
 
 Style:
     Google Python Style Guide:
     http://google.github.io/styleguide/pyguide.html
 
-    @name           rfslsamples
+    @name           rfslfusion
     @version        6.6.0
     @author-name    Wayne Schmidt
     @author-email   wayne.kirk.schmidt@gmail.com
@@ -30,13 +30,13 @@ import configparser
 import datetime
 import os
 import sys
-import urllib.request
+import shutil
 import requests
 
 sys.dont_write_bytecode = True
 
 PARSER = argparse.ArgumentParser(description="""
-Download and Publish Script for Recorded Future Sample Events
+Download and Publish Script for Recorded Future Fusion Data into Sumo Logic Source Categories
 """)
 
 PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', \
@@ -59,27 +59,25 @@ else:
     CFGFILE = os.path.abspath(ARGS.CONFIG)
 
 DEFAULTMAP = ('domain', 'hash', 'ip', 'url', 'vulnerability')
-MAPLIST = DEFAULTMAP
 
 SRCTAG = 'recordedfuture'
 
-RANGE = "10000"
-
 URLBASE = 'https://api.recordedfuture.com/v2'
-URLTAIL = 'demoevents?limit=' + RANGE
+URLTAIL = 'risklist?format=csv%2Fsplunk'
 
 if os.name == 'nt':
     CACHED = os.path.join("C:", "Windows", "Temp" , SRCTAG)
 else:
     CACHED = os.path.join("/", "var", "tmp", SRCTAG)
 
+PUBLISH = {}
 CFGDICT = {}
 
 CURRENT = datetime.datetime.now()
 DSTAMP = CURRENT.strftime("%Y%m%d")
 TSTAMP = CURRENT.strftime("%H%M%S")
 
-PURPOSE = 'samples'
+PURPOSE = 'publish'
 
 def initialize_variables():
     """
@@ -105,9 +103,9 @@ def initialize_variables():
         CFGDICT['recorded_future_cache_dir'] = \
            f'{CACHED}/{PURPOSE}'
 
-    if config.has_option("Default", "recorded_future_map_list"):
+    if config.has_option("Default", "recorded_future_fusion_list"):
         CFGDICT['recorded_future_map_list'] = \
-            config.get("Default", "recorded_future_map_list").split(',')
+            config.get("Default", "recorded_future_fusion_list").split(',')
     else:
         CFGDICT['recorded_future_map_list'] = DEFAULTMAP
 
@@ -119,52 +117,68 @@ def initialize_variables():
 
     return CFGDICT
 
-def retrieve_and_publish():
+def recordedfuture_download():
     """
-    This retrieves the files from the Recorded Future website
+    Download Recorded Future Maps
     """
+    session = requests.Session()
 
+    if os.path.exists(CFGDICT['recorded_future_cache_dir']):
+        if ARGS.verbose > 7:
+            print(f'Scrubbing_Cache_Directory: {CFGDICT["recorded_future_cache_dir"]}')
+        shutil.rmtree(CFGDICT['recorded_future_cache_dir'])
     os.makedirs(CFGDICT['recorded_future_cache_dir'], exist_ok=True)
 
-    for mapname in MAPLIST:
-        urlsource = f'{URLBASE}/{mapname}/{URLTAIL}'
-        filename = f'{"rf.demoevents"}.{mapname}.{"txt"}'
-        targetfile = os.path.join(CACHED, filename)
+    for fusion_file in CFGDICT['recorded_future_fusion_list']:
+        if "/" in fusion_file:
+            fusion_name, fusion_type  = fusion_file.split ('/')
+        else:
+            fusion_name = fusion_file
+            fusion_type = 'default'
 
-        if ARGS.verbose > 2:
-            print(f'downloading: {mapname}')
+        httppath = f'{URLBASE}/{fusion_name}/{URLTAIL}/{fusion_type}'
+        csv_name = f'{map_name}.{list_name}.{"csv"}'
+        csv_file = os.path.join(CFGDICT['recorded_future_cache_dir'], csv_name)
+        category = f'{SRCTAG}/{"map"}/{fusion_name}/{fusion_type}'
 
-        headers = {'Content-Type':'txt/plain'}
-        session = requests.Session()
+        if list_name == 'default':
+            category = f'{SRCTAG}/{"map"}/{fusion_name}'
 
-        sumo_category = SRCTAG + '/' + 'demoevents' + '/' + mapname
-        headers['X-Sumo-Category'] = sumo_category
+        PUBLISH[csv_file] = category
 
-        req = urllib.request.Request(urlsource, None, \
-            {'X-RFToken': CFGDICT["recorded_future_api_key"]})
+        headers = {
+            'X-RFToken': CFGDICT['recorded_future_api_key'],
+            'X-RF-User-Agent' : 'SumoLogic+v1.0'
+        }
+        if ARGS.verbose > 4:
+            print(f'Retrieving: {httppath}')
+        body = session.get(httppath, headers=headers)
+        getresults = body.text
 
-        if os.path.exists(targetfile):
-            if ARGS.verbose > 2:
-                print(f'Scrubbing_Demo_File: {targetfile}')
-            os.remove(targetfile)
+        if ARGS.verbose > 4:
+            print(f'Persisting: {csv_file}')
+        with open(csv_file, mode="w", encoding='utf8') as outputfile:
+            outputfile.write(getresults)
 
-        with urllib.request.urlopen(req) as res:
-            output = res.read().decode("utf-8")
-            with open(targetfile, mode="w", encoding='utf8') as outputfile:
-                for line in output.splitlines():
-                    outputfile.write(line)
-                    outputfile.write('\n')
+def sumologic_publish():
+    """
+    Publish the results
+    """
+    session = requests.Session()
 
-        if ARGS.verbose > 2:
-            print(f'publishing: {mapname} to: {sumo_category}')
+    for csv_file, category in PUBLISH.items():
+        with open(csv_file, mode='r', encoding='utf8') as inputfile:
+            rf_map_payload = (inputfile.read().encode('utf-8'))
 
-        with open(targetfile, mode="r", encoding='utf8') as inputfile:
-            rf_payload = (inputfile.read().encode('utf-8'))
-            postresponse = session.post(CFGDICT["source-url"], \
-                rf_payload, headers=headers).status_code
+        headers = {'Content-Type':'txt/csv'}
+        headers['X-Sumo-Category'] = category
+        if ARGS.verbose > 4:
+            print(f'Publishing: {category}')
+        postresponse = session.post(CFGDICT['source-url'], \
+            rf_map_payload, headers=headers).status_code
 
-            print(f'source_category: {sumo_category}')
-            print(f'upload_response: {postresponse}')
+        if ARGS.verbose > 8:
+            print(f'Web_Status: {postresponse}')
 
 def lambda_handler(event=None,context=None):
     """
@@ -180,7 +194,8 @@ def lambda_handler(event=None,context=None):
         print(f'Script_Event: {event}')
         print(f'Script_Context: {context}')
 
-    retrieve_and_publish()
+    recordedfuture_download()
+    sumologic_publish()
 
 if __name__ == '__main__':
     lambda_handler()
