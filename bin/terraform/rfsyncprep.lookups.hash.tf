@@ -30,3 +30,16 @@ resource "sumologic_lookup_table" "rf-hash-table" {
 output "lookuptable-rf-hash-id" {
   value = "${sumologic_lookup_table.rf-hash-table.id}"
 }
+
+resource "sumologic_content_permission" "lookuptable-rf-hash-permission" {
+    content_id = "${sumologic_lookup_table.rf-hash-table.id}"
+    notify_recipient = false
+    notification_message = "no_message"
+
+    permission {
+        permission_name = "View"
+        source_type = "org"
+        source_id = "${var.sumologic_org_id}"
+
+    }
+}

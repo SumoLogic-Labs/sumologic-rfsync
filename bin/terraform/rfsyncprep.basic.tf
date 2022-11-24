@@ -63,3 +63,12 @@ variable "recorded_future_cache_dir" {
 output "recorded_future_cache_dir" {
   value = "${var.recorded_future_cache_dir}"
 }
+
+variable "sumologic_org_id" {
+  description = "Sumo Logic Deployment Organizational ID"
+  type        = string
+}
+
+output "sumologic_org_id" {
+  value = "${var.sumologic_org_id}"
+}
