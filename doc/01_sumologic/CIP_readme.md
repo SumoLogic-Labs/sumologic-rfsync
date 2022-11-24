@@ -6,25 +6,47 @@ This covers how to setup the integration for the CIP, including the dependencies
 Overview
 ========
 
-Number of Steps: 6
+Number of Steps: 3
 
 Duration: 10 - 15 minutes
 
-Pre-Requisites:
+System-Requisites:
+==================
 	+ working python 3.6 or higher installation
+	+ working terraform package
+
+Data-Input:
+===========
 	+ Recorded Future API KEY
-	+ Sumo Logic Source HTTPS endpoint
+	+ Sumo Logic API name
+	+ Sumo Logic API KEY
+	+ Sumo Logic Deployment Region String
+	+ Sumo Logic Deployment Organization ID
+	+ Sumo Logic - Recorded Future Cached Directory Target
 
 Resources:
+==========
 	+ some 1 - 2 Gbytes of local space
 	+ recommended 2 - 4 Gbytes of memory
 
-Summary Steps:
-	+ <repository>/bin/envcheck.py
-	+ <repository>/bin/genconfig.py
-	+ <repository>/bin/rfslsync.py
+Sumo Logic Preparation
+======================
 
-Script Preparation
+    1. Navigate to the Administration and Security Management Page in your organization
+        + Record the Sumo Logic Organization ID ( in the Administration / Account page )
+        + Record the Sumo Logic Deployment Location ( from the login URL )
+
+    2. Create Sumo Logic API key.
+
+       We suggest keeping this key separate from other API keys and name this: recordedfuture
+
+       When this is done, it will show the accesskey ID and the access key string.
+       SAVE BOTH strings as we will use this in our installation process.
+
+        + Sumo Logic API name
+        + Sumo Logic API KEY
+
+Installation Steps
 ==================
 
 You will need to use Python 3.6 or higher and the modules listed in the dependency section.  
@@ -33,68 +55,85 @@ The steps are as follows:
 
     1. Download and install python 3.6 or higher from python.org. Append python3 to the LIB and PATH env.
 
-    2. Download and install git for your platform if you don't already have it installed.
+    2. Download and install terraform from developer.hashicorp.com. 
+       The instructions can be found here https://developer.hashicorp.com/terraform/downloads
+
+    3. Download and install git for your platform if you don't already have it installed.
        It can be downloaded from https://git-scm.com/downloads
     
-    3. Open a new shell/command prompt. It must be new since only a new shell will include the new python 
-       path that was created in step 1. Cd to the folder where you want to install the scripts.
-    
-    4. Execute the following command to install pipenv, which will manage all of the library dependencies:
-    
-        sudo -H pip3 install pipenv 
- 
-Sumo Logic Preparation
-======================
-
-    1. Navigate to the Security Management Page in your organization
-
-    2. Create Sumo Logic API key.
-
-       We suggest keeping this key separate from other API keys and name this: recordedfuture
-
-       When this is done, it will show the accesskey ID and the access key string.
-
-       SAVE BOTH strings as we will use this in our installation process.
-
-Specific Steps
-==============
-
-1. Clone the Github Repository
+    4. Clone the git repository for Recorded Future / Sumo Logic Integration. 
 
 prompt> git clone git@github.com:SumoLogic-Labs/sumologic-rfsync.git
 
-2. Confirm python3 exists and is newer than 3.6
+       Open a shell prompt and change directory to the base of the git repository you have cloned. 
+
+    5. Change to the terraform directory. Confirm you have terraform installed and initialize terraform
+
+prompt> cd <repository>/bin/terraform
+
+prompt> which terraform
+
+prompt> terraform --version
+
+prompt> terraform init
+
+    5. Now, run terraform! This will evaluate all of the terraform files in the directory and configure your environment.
+
+       The easiest way to do this is run the shell script: rfsyncprep.startup.ksh
+
+       This will prompt you for the information below, so be prepared to have the information ready.
+
+	+ Recorded Future API KEY
+	+ Sumo Logic API name
+	+ Sumo Logic API KEY
+	+ Sumo Logic Deployment Region String
+	+ Sumo Logic Deployment Organization ID
+	+ Sumo Logic - Recorded Future Cached Directory Target
+
+       Once this is done you will have a configured Sumo Logic environment!
+       Also, you will have the coniguration file you need to upload Recorded Future Data into Sumo Logic. 
+
+        + /var/tmp/recordedfuture/config/rfslconfig.cfg - your configuration file
+
+        + /var/tmp/recordedfuture/config/rfslconfig.vars - helper file for terraform
+
+    6. Next, let's confirm we have a python installed, it is the right version, and we have a working environment.
 
 prompt> which python3
-
 /usr/local/bin/python3
 
 prompt> python3 --version
 Python 3.9.7
 
-3. CD into the bin directory and validate the module install
-
 prompt> cd <repository>/bin
+prompt> <repository>/bin/scripts/envcheck.py 
 
-prompt> ./envcheck.py 
+       Please install any python modules that the script may ask you to install.
 
-4. Initialize the configuration file
+    7. Now! Run the publishing script and see that you have imported data into Sumo Logic. 
 
-prompt> ./genconfig.py -i
+prompt> <repository>/bin/scripts/rfslsync.py -v 20 -c <configuration_file>
 
-You will be prompted to answer all of the questions. 
+example: 
 
-NOTE: this creates a configuration file in /var/tmp suitable for both standalone and lambda scripts
+prompt> <repository>/bin/scripts/rfslpublish.py -v 20 -c /var/tmp/recordedfuture/config/rfslconfig.cfg
 
-NOTE: this will successfully run on Windows as well as Unix
+    8. Next, you can run the following scripts
 
-5. Now, check the values of the configuration file
+        + <repository>/bin/scripts/rfslpublish.py - Publishes the Recorded Future data into Sumo Logic
 
-prompt> <repository>/bin/genconfig.py -c <configfile_file>
+        + <repository>/bin/scripts/rfsllookups.py - Uploads Recorded Future data into Sumo Logic lookup files
 
-6. Test out this download process using this configuration file
+        + <repository>/bin/scripts/rfslsamples.py - Publishes Recorded Future demo data into Sumo Logic
 
-prompt> <repository>/bin/rfslsync.py -v 6 -c <configuration_file>
+    9.  Next use the build_lambda script to create the necessary zip files to install into AWS if you wish.
+
+prompt> <repository>/scripts/bin/build_lambda.sh rfslpublish - builds the basic publish lambda function zipfile
+
+prompt> <repository>/scripts/bin/build_lambda.sh rfsllookups - builds the data upload into lookup file lambda function zipfile
+
+prompt> <repository>/scripts/bin/build_lambda.sh rfslsamples - builds the demo events download lambda function zipfile
+
  
 Collector Reference
 ===================
