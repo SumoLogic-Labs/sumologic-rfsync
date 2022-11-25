@@ -109,8 +109,8 @@ def initialize_variables():
     else:
         CFGDICT['recorded_future_map_list'] = DEFAULTFUSION
 
-    if config.has_option("Default", "recorded_future_api_key"):
-        CFGDICT['recorded_future_api_key'] = config.get("Default", "recorded_future_api_key")
+    if config.has_option("Default", "recorded_future_access_key"):
+        CFGDICT['recorded_future_access_key'] = config.get("Default", "recorded_future_access_key")
 
     if config.has_option("Default", "source-url"):
         CFGDICT['source-url'] = config.get("Default", "source-url")
@@ -139,7 +139,7 @@ def download_and_publish():
         if ARGS.verbose > 3:
             print(f'Downloading: {target_http}')
 
-        headers = {'X-RFToken': CFGDICT['recorded_future_api_key'], 'X-RF-User-Agent' : 'SumoLogic+v1.0'}
+        headers = {'X-RFToken': CFGDICT['recorded_future_access_key'], 'X-RF-User-Agent' : 'SumoLogic+v1.0'}
         body = session.get(target_http, headers=headers)
         getresults = body.text
 

@@ -111,8 +111,8 @@ def initialize_variables():
     else:
         CFGDICT['recorded_future_map_list'] = DEFAULTMAP
 
-    if config.has_option("Default", "recorded_future_api_key"):
-        CFGDICT['recorded_future_api_key'] = config.get("Default", "recorded_future_api_key")
+    if config.has_option("Default", "recorded_future_access_key"):
+        CFGDICT['recorded_future_access_key'] = config.get("Default", "recorded_future_access_key")
 
     if config.has_option("Default", "source-url"):
         CFGDICT['source-url'] = config.get("Default", "source-url")
@@ -141,7 +141,7 @@ def retrieve_and_publish():
         headers['X-Sumo-Category'] = sumo_category
 
         req = urllib.request.Request(urlsource, None, \
-            {'X-RFToken': CFGDICT["recorded_future_api_key"]})
+            {'X-RFToken': CFGDICT["recorded_future_access_key"]})
 
         if os.path.exists(targetfile):
             if ARGS.verbose > 2:
