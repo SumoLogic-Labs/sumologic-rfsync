@@ -19,4 +19,4 @@ rm -f $( pwd )/terraform.tfstate.backup
 rm -f $( pwd )/terraform.tfstate
 
 rm -f $( pwd )/.terraform.lock.hcl
-rm -f $( pwd )/.terraform
+rm -fr $( pwd )/.terraform
