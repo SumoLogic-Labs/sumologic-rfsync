@@ -197,7 +197,7 @@ def sumologic_populate():
     """
     Create collector and source for Recorded Future Content
     """
-    source = sumologic.SumoApiClient(CFGDICT['sumologic_access_id'], \
+    source = SumoApiClient(CFGDICT['sumologic_access_id'], \
         CFGDICT['sumologic_access_key'])
 
     for map_token in CFGDICT['recorded_future_map_list']:
@@ -213,7 +213,7 @@ def sumologic_populate():
         if filesize <= FILELIMIT:
             if ARGS.verbose > 2:
                 print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {targetfile}')
-            source = sumologic.SumoApiClient(CFGDICT['sumologic_access_id'], \
+            source = SumoApiClient(CFGDICT['sumologic_access_id'], \
                 CFGDICT['sumologic_access_key'])
             result = source.upload_lookup_csv(lookupfileid, targetfile, merge='true')
             jobid = result['id']
@@ -238,7 +238,7 @@ def sumologic_populate():
             for csv_file in sorted(glob.glob(glob.escape(split_dir) + "/*.csv")):
                 if ARGS.verbose > 2:
                     print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {csv_file}')
-                source = sumologic.SumoApiClient(CFGDICT['sumologic_access_id'], \
+                source = SumoApiClient(CFGDICT['sumologic_access_id'], \
                     CFGDICT['sumologic_access_key'])
                 result = source.upload_lookup_csv(lookupfileid, csv_file, merge='true')
                 jobid = result['id']
