@@ -136,8 +136,8 @@ def initialize_variables():
     if config.has_option("Default", "sumologic_access_key"):
         CFGDICT['sumologic_access_key'] = config.get("Default", "sumologic_access_key")
 
-    if config.has_option("Default", "recorded_future_api_key"):
-        CFGDICT['recorded_future_api_key'] = config.get("Default", "recorded_future_api_key")
+    if config.has_option("Default", "recorded_future_access_key"):
+        CFGDICT['recorded_future_access_key'] = config.get("Default", "recorded_future_access_key")
 
     if config.has_option("Default", "source-url"):
         CFGDICT['source-url'] = config.get("Default", "source-url")
@@ -180,7 +180,7 @@ def recordedfuture_download():
         PUBLISH[csv_file] = category
 
         headers = {
-            'X-RFToken': CFGDICT['recorded_future_api_key'],
+            'X-RFToken': CFGDICT['recorded_future_access_key'],
             'X-RF-User-Agent' : 'SumoLogic+v1.0'
         }
         if ARGS.verbose > 4:
