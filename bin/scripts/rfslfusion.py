@@ -58,7 +58,7 @@ if ARGS.CONFIG == 'default':
 else:
     CFGFILE = os.path.abspath(ARGS.CONFIG)
 
-DEFAULTMAP = ('domain', 'hash', 'ip', 'url', 'vulnerability')
+DEFAULTFUSION = ('domain', 'hash', 'ip', 'url', 'vulnerability')
 
 SRCTAG = 'recordedfuture'
 
@@ -77,7 +77,7 @@ CURRENT = datetime.datetime.now()
 DSTAMP = CURRENT.strftime("%Y%m%d")
 TSTAMP = CURRENT.strftime("%H%M%S")
 
-PURPOSE = 'publish'
+PURPOSE = 'fusion'
 
 def initialize_variables():
     """
@@ -104,10 +104,10 @@ def initialize_variables():
            f'{CACHED}/{PURPOSE}'
 
     if config.has_option("Default", "recorded_future_fusion_list"):
-        CFGDICT['recorded_future_map_list'] = \
+        CFGDICT['recorded_future_fusion_list'] = \
             config.get("Default", "recorded_future_fusion_list").split(',')
     else:
-        CFGDICT['recorded_future_map_list'] = DEFAULTMAP
+        CFGDICT['recorded_future_map_list'] = DEFAULTFUSION
 
     if config.has_option("Default", "recorded_future_api_key"):
         CFGDICT['recorded_future_api_key'] = config.get("Default", "recorded_future_api_key")
@@ -117,11 +117,10 @@ def initialize_variables():
 
     return CFGDICT
 
-def recordedfuture_download():
+def download_and_publish():
     """
     Download Recorded Future Maps
     """
-    session = requests.Session()
 
     if os.path.exists(CFGDICT['recorded_future_cache_dir']):
         if ARGS.verbose > 7:
@@ -129,62 +128,49 @@ def recordedfuture_download():
         shutil.rmtree(CFGDICT['recorded_future_cache_dir'])
     os.makedirs(CFGDICT['recorded_future_cache_dir'], exist_ok=True)
 
-    for fusion_file in CFGDICT['recorded_future_fusion_list']:
-        if "/" in fusion_file:
-            fusion_name, fusion_type  = fusion_file.split ('/')
-        else:
-            fusion_name = fusion_file
-            fusion_type = 'default'
+    session = requests.Session()
+    fusionurl = 'https://api.recordedfuture.com/v2/fusion/files/?path='
 
-        httppath = f'{URLBASE}/{fusion_name}/{URLTAIL}/{fusion_type}'
-        csv_name = f'{map_name}.{list_name}.{"csv"}'
-        csv_file = os.path.join(CFGDICT['recorded_future_cache_dir'], csv_name)
-        category = f'{SRCTAG}/{"map"}/{fusion_name}/{fusion_type}'
+    for fvalue in CFGDICT['recorded_future_fusion_list']:
+        target_http = f'{fusionurl}{fvalue}'
+        target_name = f'{"fusion"}.{fvalue}'
+        target_file = os.path.abspath(os.path.join(CFGDICT['recorded_future_cache_dir'],target_name))
 
-        if list_name == 'default':
-            category = f'{SRCTAG}/{"map"}/{fusion_name}'
+        if ARGS.verbose > 3:
+            print(f'Downloading: {target_http}')
 
-        PUBLISH[csv_file] = category
-
-        headers = {
-            'X-RFToken': CFGDICT['recorded_future_api_key'],
-            'X-RF-User-Agent' : 'SumoLogic+v1.0'
-        }
-        if ARGS.verbose > 4:
-            print(f'Retrieving: {httppath}')
-        body = session.get(httppath, headers=headers)
+        headers = {'X-RFToken': CFGDICT['recorded_future_api_key'], 'X-RF-User-Agent' : 'SumoLogic+v1.0'}
+        body = session.get(target_http, headers=headers)
         getresults = body.text
 
-        if ARGS.verbose > 4:
-            print(f'Persisting: {csv_file}')
-        with open(csv_file, mode="w", encoding='utf8') as outputfile:
+        if ARGS.verbose > 3:
+            print(f'Persisting: {target_file}')
+
+        with open(target_file, mode="w", encoding='utf8') as outputfile:
             outputfile.write(getresults)
 
-def sumologic_publish():
-    """
-    Publish the results
-    """
-    session = requests.Session()
-
-    for csv_file, category in PUBLISH.items():
-        with open(csv_file, mode='r', encoding='utf8') as inputfile:
-            rf_map_payload = (inputfile.read().encode('utf-8'))
-
         headers = {'Content-Type':'txt/csv'}
-        headers['X-Sumo-Category'] = category
-        if ARGS.verbose > 4:
-            print(f'Publishing: {category}')
-        postresponse = session.post(CFGDICT['source-url'], \
-            rf_map_payload, headers=headers).status_code
 
-        if ARGS.verbose > 8:
-            print(f'Web_Status: {postresponse}')
+        with open(target_file, mode='r', encoding='utf8') as outputfile:
+            fusion_payload = (outputfile.read().encode('utf-8'))
+
+        filebase = os.path.splitext(os.path.basename(target_file))[0]
+        fusion_file_category = f'recordedfuture/fusion/files/{filebase}'
+
+        if ARGS.verbose > 3:
+            print(f'publishing: {fusion_file_category}')
+
+        headers['X-Sumo-Category'] = fusion_file_category
+        postresponse = session.post(CFGDICT['source-url'], fusion_payload, headers=headers).status_code
+
+        if ARGS.verbose > 7:
+            print(f'source_category: {str(fusion_file_category)}')
+            print(f'upload_response: {str(postresponse)}')
 
 def lambda_handler(event=None,context=None):
     """
     Functionality will work either being called by a lambda or standalone script
     """
-
     if ARGS.verbose > 4:
         print(f'ConfigFile: {CFGFILE}')
 
@@ -194,8 +180,7 @@ def lambda_handler(event=None,context=None):
         print(f'Script_Event: {event}')
         print(f'Script_Context: {context}')
 
-    recordedfuture_download()
-    sumologic_publish()
+    download_and_publish()
 
 if __name__ == '__main__':
     lambda_handler()
