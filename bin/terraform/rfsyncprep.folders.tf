@@ -42,7 +42,7 @@ resource "sumologic_content" "indices" {
 }
 
 resource "sumologic_folder" "lookupfolder" {
-  name  = "lookups"
+  name  = "recordedfuture_lookups"
   description  = "recordedfuture content lookups"
   parent_id = "${sumologic_folder.recorded_future_base_folder.id}"
 }
