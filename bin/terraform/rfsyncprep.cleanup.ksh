@@ -15,8 +15,12 @@ rm -f $outputdir/rfsyncprep.output.tf
 
 terraform apply -auto-approve -destroy ${varlist}
 
-rm -f $( pwd )/terraform.tfstate.backup 
-rm -f $( pwd )/terraform.tfstate
+[ -d $terraformdir ] && {
 
-rm -f $( pwd )/.terraform.lock.hcl
-rm -fr $( pwd )/.terraform
+    rm -f $terraformdir/terraform.tfstate.backup 
+    rm -f $terraformdir/terraform.tfstate
+
+    rm -f $terraformdir/.terraform.lock.hcl
+    rm -fr $terraformdir/.terraform
+
+}
