@@ -11,7 +11,6 @@ terraform {
 variable "sumologic_access_id" {
   description = "Sumo Logic API Key ID"
   type        = string
-  ### default     = "suoCxJJCTCaUIv"
 }
 
 output "sumologic_access_id" {
@@ -21,7 +20,6 @@ output "sumologic_access_id" {
 variable "sumologic_access_key" {
   description = "Sumo Logic API Key String"
   type        = string
-  ### default     = "TEQ0PvYgVg9ndN5Eph6MsbfuRdTMmQtOQBrXssByvISQBUu4RHyFFO5ZB2XehKES"
 }
 
 output "sumologic_access_key" {
@@ -31,7 +29,6 @@ output "sumologic_access_key" {
 variable "sumologic_environment" {
   description = "Sumo Logic Deployment Location"
   type        = string
-  ### default     = "jp"
 }
 
 output "sumologic_environment" {
@@ -41,7 +38,6 @@ output "sumologic_environment" {
 variable "recorded_future_access_key" {
   description = "Recorded Future API Key"
   type        = string
-  ### default     = "41d5884e99904cdf9a4def9626051dca"
 }
 
 output "recorded_future_access_key" {

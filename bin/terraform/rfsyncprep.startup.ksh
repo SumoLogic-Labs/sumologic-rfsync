@@ -10,6 +10,9 @@ configdir="/tmp/rfslsync_config"
 
 terraformdir="/tmp/rfslsync_terraform"
 
+tfcmdcount=$( which terraform | wc -l )
+[[ $tfcmdcount -lt 1 ]] && exit
+
 mkdir -p ${terraformdir}
 mkdir -p ${configdir}
 
