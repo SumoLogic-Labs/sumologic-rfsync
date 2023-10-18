@@ -72,7 +72,7 @@ DELAY_TIME = 9
 
 FILELIMIT = 90 * 1024 * 1024
 
-LINELIMIT = 60000
+FILESIZE_MAX = 100000000
 
 if ARGS.CONFIG == 'default':
     CFGFILE = os.path.abspath(os.path.join(CURRENTDIR, CFGNAME ))
@@ -223,7 +223,7 @@ def sumologic_populate():
             status = source.upload_lookup_csv_status(jobid)
             if ARGS.verbose > 9:
                 print(f'Import_Lookup_Job: {status["status"]}')
-            while ( status['status'] != 'Success' and status['status'] != 'PartialSuccess' ):
+            while status['status'] != 'Success' and status['status'] != 'PartialSuccess':
                 status = source.upload_lookup_csv_status(jobid)
                 if ARGS.verbose > 9:
                     print(f'Import_Lookup_Job: {status["status"]}')
@@ -234,7 +234,7 @@ def sumologic_populate():
             split_dir = os.path.splitext(targetfile)[0]
             os.makedirs(split_dir, exist_ok=True)
             filesplit = Split(targetfile, split_dir )
-            filesplit.bylinecount(linecount=LINELIMIT, includeheader=True)
+            filesplit.bysize(size=FILESIZE_MAX, newline=True, includeheader=True)
             for csv_file in sorted(glob.glob(glob.escape(split_dir) + "/*.csv")):
                 if ARGS.verbose > 2:
                     print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {csv_file}')
@@ -248,7 +248,7 @@ def sumologic_populate():
                 status = source.upload_lookup_csv_status(jobid)
                 if ARGS.verbose > 9:
                     print(f'Import_Lookup_Job: {status["status"]}')
-                while status['status'] != 'Success':
+                while status['status'] != 'Success' and status['status'] != 'PartialSuccess':
                     status = source.upload_lookup_csv_status(jobid)
                     if ARGS.verbose > 9:
                         print(f'Import_Lookup_Job: {status["status"]}')
