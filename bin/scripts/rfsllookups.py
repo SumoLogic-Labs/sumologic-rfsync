@@ -190,7 +190,7 @@ def recordedfuture_download():
 
         if ARGS.verbose > 4:
             print(f'Persisting: {csv_file}')
-        with open(csv_file, mode="w", encoding='utf8') as outputfile:
+        with open(csv_file, mode="w", encoding='utf-8') as outputfile:
             outputfile.write(getresults)
 
 def sumologic_populate():
@@ -372,7 +372,7 @@ class SumoApiClient():
         implements a post file
         """
         post_params = {'merge': params['merge']}
-        file_data = open(params['file_name'], 'rb').read()
+        file_data = open(params['file_name'], 'r', encoding='utf-8').read()
         files = {'file': (params['file_name'], file_data)}
         results = requests.post(self.endpoint + method, files=files, params=post_params,
                 auth=(self.session.auth[0], self.session.auth[1]), headers=headers)
