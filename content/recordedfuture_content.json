@@ -76,7 +76,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| concat (\"https://api.recordedfuture.com/v2/domain/\", itemname,\"?fields=riskMapping%2Crisk%2Ccounts\") as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| where !( rfrisk contains \"undefined\")\n| count by rfitem, rfrisk, recordedfuture\n| sort by rfrisk, _count\n| fields - _count\n| limit 10",
+                            "queryString": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| concat (\"https://app.recordedfuture.com/live/sc/entity/idn%3A\", itemname,) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| where !( rfrisk contains \"undefined\")\n| count by rfitem, rfrisk, recordedfuture\n| sort by rfrisk, _count\n| fields - _count\n| limit 10",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
