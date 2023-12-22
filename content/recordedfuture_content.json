@@ -179,7 +179,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as hashname, 2 as algo, 3 as risknum, 4 as riskstring, 5 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].CriticalityLabel\" as Label\n| concat (\"https://api.recordedfuture.com/v2/hash/\", itemname,\"?fields=riskMapping%2Crisk%2Ccounts\") as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| count_distinct(hashname) by hashname, Label, recordedfuture\n| fields - _count_distinct\n| limit 10\n| sort by Label asc\n",
+                            "queryString": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as hashname, 2 as algo, 3 as risknum, 4 as riskstring, 5 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].CriticalityLabel\" as Label\n| concat (\"https://app.recordedfuture.com/live/sc/entity/hash%3A\", itemname) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| count_distinct(hashname) by hashname, Label, recordedfuture\n| fields - _count_distinct\n| limit 10\n| sort by Label asc\n",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
