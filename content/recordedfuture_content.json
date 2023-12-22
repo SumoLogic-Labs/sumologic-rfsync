@@ -76,7 +76,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| concat (\"https://app.recordedfuture.com/live/sc/entity/idn%3A\", itemname,) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| where !( rfrisk contains \"undefined\")\n| count by rfitem, rfrisk, recordedfuture\n| sort by rfrisk, _count\n| fields - _count\n| limit 10",
+                            "queryString": "_sourceCategory=recordedfuture/map/domain\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 4 as rfpayload\n| if ( isNull(rfrisk), \"undefined\", rfrisk ) as rfrisk\n| concat (\"https://app.recordedfuture.com/live/sc/entity/idn%3A\", rfitem) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| where !( rfrisk contains \"undefined\")\n| count by rfitem, rfrisk, recordedfuture\n| sort by rfrisk, _count\n| fields - _count\n| limit 10",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -179,7 +179,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as hashname, 2 as algo, 3 as risknum, 4 as riskstring, 5 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].CriticalityLabel\" as Label\n| concat (\"https://app.recordedfuture.com/live/sc/entity/hash%3A\", itemname) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| count_distinct(hashname) by hashname, Label, recordedfuture\n| fields - _count_distinct\n| limit 10\n| sort by Label asc\n",
+                            "queryString": "_sourceCategory=recordedfuture/map/hash\n| csv _raw extract 1 as hashname, 2 as algo, 3 as risknum, 4 as riskstring, 5 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].CriticalityLabel\" as Label\n| concat (\"https://app.recordedfuture.com/live/sc/entity/hash%3A\", hashname) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| count_distinct(hashname) by hashname, Label, recordedfuture\n| fields - _count_distinct\n| limit 10\n| sort by Label asc\n",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -313,7 +313,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/ip\n| \"{{risknumber}}\" as risknumber\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 3 as rfriskstring, 4 as rfriskdetails\n| json field=rfriskdetails \"EvidenceDetails[0].Name\" as reason\n| where rfrisk > risknumber\n| count_distinct(rfitem) by rfitem, rfrisk, reason\n| concat (\"https://api.recordedfuture.com/v2/ip/\", rfitem,\"?fields=risk%2Crawrisk%2CriskMapping\") as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
+                            "queryString": "_sourceCategory=recordedfuture/map/ip\n| \"{{risknumber}}\" as risknumber\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 3 as rfriskstring, 4 as rfriskdetails\n| json field=rfriskdetails \"EvidenceDetails[0].Name\" as reason\n| where rfrisk > risknumber\n| count_distinct(rfitem) by rfitem, rfrisk, reason\n| concat (\"https://app.recordedfuture.com/live/sc/entity/ip%3A\", rfitem) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -787,7 +787,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/url\n| csv _raw extract 1 as urlname, 2 as risknum, 3 as riskstring, 4 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].Name\" as reason\n| concat (\"https://api.recordedfuture.com/v2/domain/\", itemname,\"?fields=riskMapping%2Crisk%2Ccounts\") as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| count_distinct(ipaddress) by urlname, reason, recordedfuture\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
+                            "queryString": "_sourceCategory=recordedfuture/map/url\n| csv _raw extract 1 as urlname, 2 as risknum, 3 as riskstring, 4 as riskdetails\n| json field=riskdetails \"EvidenceDetails[0].Name\" as reason\n| concat (\"https://app.recordedfuture.com/live/sc/entity/url%3A\", urlname) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf\n| count_distinct(ipaddress) by urlname, reason, recordedfuture\n| fields - _count_distinct\n| limit 10\n| sort by reason asc",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
@@ -886,7 +886,7 @@
                     "panelType": "SumoSearchPanel",
                     "queries": [
                         {
-                            "queryString": "_sourceCategory=recordedfuture/map/vulnerability\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 3 as rfriskstring, 4 as rfriskdetails\n| json field=rfriskdetails \"EvidenceDetails[0].Name\" as reason\n| json field=rfriskdetails \"EvidenceDetails[0].RuleCategory\" as rulecategory\n| json field=rfriskdetails \"EvidenceDetails[0].CriticalityLabel\" as criticality\n| count_distinct(rfitem) by rfitem, rulecategory, criticality\n| fields - _count_distinct\n| concat (\"https://web.nvd.nist.gov/view/vuln/detail?vulnId=\", rfitem) as basenist\n| tourl(basenist, \"lookup-on-nist\") as nist\n| concat (\"https://api.recordedfuture.com/v2/vulnerability/\", rfitem,\"?fields=risk%2Crawrisk%2CriskMapping\") as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf, basenist\n| limit 20\n| 1 as critvalue\n| if ( criticality = \"High\", 3, if ( criticality = \"Medium\", 2, if ( criticality = \"Low\", 1, critvalue ))) as critvalue\n| sort by critvalue\n| fields - critvalue\n",
+                            "queryString": "_sourceCategory=recordedfuture/map/vulnerability\n| csv _raw extract 1 as rfitem, 2 as rfrisk, 3 as rfriskstring, 4 as rfriskdetails\n| json field=rfriskdetails \"EvidenceDetails[0].Name\" as reason\n| json field=rfriskdetails \"EvidenceDetails[0].RuleCategory\" as rulecategory\n| json field=rfriskdetails \"EvidenceDetails[0].CriticalityLabel\" as criticality\n| count_distinct(rfitem) by rfitem, rulecategory, criticality\n| fields - _count_distinct\n| concat (\"https://web.nvd.nist.gov/view/vuln/detail?vulnId=\", rfitem) as basenist\n| tourl(basenist, \"lookup-on-nist\") as nist\n| concat (\"https://app.recordedfuture.com/live/sc/entity/\", rfitem) as baserf\n| tourl(baserf, \"lookup-on-recorded-future\") as recordedfuture\n| fields - baserf, basenist\n| limit 20\n| 1 as critvalue\n| if ( criticality = \"High\", 3, if ( criticality = \"Medium\", 2, if ( criticality = \"Low\", 1, critvalue ))) as critvalue\n| sort by critvalue\n| fields - critvalue\n",
                             "queryType": "Logs",
                             "queryKey": "A",
                             "metricsQueryMode": null,
