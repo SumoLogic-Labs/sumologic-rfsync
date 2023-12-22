@@ -157,7 +157,7 @@ def recordedfuture_download():
 
         if ARGS.verbose > 4:
             print(f'Persisting: {csv_file}')
-        with open(csv_file, mode="w", encoding='utf8') as outputfile:
+        with open(csv_file, mode="w", encoding='utf-8') as outputfile:
             outputfile.write(getresults)
 
 def sumologic_publish():
@@ -167,8 +167,8 @@ def sumologic_publish():
     session = requests.Session()
 
     for csv_file, category in PUBLISH.items():
-        with open(csv_file, mode='r', encoding='utf8') as inputfile:
-            rf_map_payload = (inputfile.read().encode('utf-8'))
+        with open(csv_file, mode='r', encoding='utf-8') as inputfile:
+            rf_map_payload = inputfile.read()
 
         headers = {'Content-Type':'txt/csv'}
         headers['X-Sumo-Category'] = category

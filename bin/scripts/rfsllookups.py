@@ -16,249 +16,135 @@ Explanation:
     The initial Sumo Logic environment setup is done with Terraform.
 
 Usage:
-    $ python  rflslookups [ options ]
+    $ python rflslookups.py -c <cfgfile> [options]
 
 Style:
     Google Python Style Guide:
     http://google.github.io/styleguide/pyguide.html
 
-    @name           rflslookups
-    @version        6.6.0
-    @author-name    Wayne Schmidt
-    @author-email   wayne.kirk.schmidt@gmail.com
     @license-name   Apache
     @license-url    https://www.apache.org/licenses/LICENSE-2.0
 """
 
-__version__ = '6.6.0'
-__author__ = "Wayne Schmidt (wayne.kirk.schmidt@gmail.com)"
+__version__ = '7.0.0'
+__author__ = "Patrick Kinsella (patrick.kinsella@recordedfuture.com)"
 
 import argparse
 import configparser
-import datetime
-import time
 import os
-import sys
+import csv
 import json
-import glob
-import shutil
 import http
 import requests
+from io import StringIO
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from filesplit.split import Split
 
-sys.dont_write_bytecode = True
-
-### import sumologic
-
-PARSER = argparse.ArgumentParser(description="""
-Download and Publish Recorded Future Data into Sumo Logic Lookup Files
-""")
-
-PARSER.add_argument('-c', metavar='<cfgfile>', dest='CONFIG', \
-                    default='default', help='specify a config file')
+PARSER = argparse.ArgumentParser(description="Download and Publish Recorded Future Data into Sumo Logic Lookup Files")
+PARSER.add_argument('-c', metavar='<cfgfile>', dest='cfgfile', \
+                    required=True, help='specify a config file')
 PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
                     dest='verbose', help="specify level of verbose output")
-
 ARGS = PARSER.parse_args()
 
-CURRENTDIR = os.path.abspath(os.path.dirname(__file__))
-CMDNAME = os.path.splitext(os.path.basename(__file__))[0]
+MAX_BYTES_PER_CHUNK = 90000000
 
-CFGNAME = f'{CMDNAME}.cfg'
-
-DELAY_TIME = 9
-
-FILELIMIT = 90 * 1024 * 1024
-
-LINELIMIT = 60000
-
-if ARGS.CONFIG == 'default':
-    CFGFILE = os.path.abspath(os.path.join(CURRENTDIR, CFGNAME ))
-else:
-    CFGFILE = os.path.abspath(ARGS.CONFIG)
-
-DEFAULTMAP = ('domain', 'hash', 'ip', 'url', 'vulnerability')
-
-SRCTAG = 'recordedfuture'
-
-URLBASE = 'https://api.recordedfuture.com/v2'
-URLTAIL = 'risklist?format=csv%2Fsplunk'
-
-if os.name == 'nt':
-    CACHED = os.path.join("C:", "Windows", "Temp" , SRCTAG)
-else:
-    CACHED = os.path.join("/", "var", "tmp", SRCTAG)
-
-PUBLISH = {}
-CFGDICT = {}
-
-CURRENT = datetime.datetime.now()
-DSTAMP = CURRENT.strftime("%Y%m%d")
-TSTAMP = CURRENT.strftime("%H%M%S")
-
-PURPOSE = 'lookups'
-
-def initialize_variables():
-    """
-    Define and read configuration file, validating config file entries
-    """
-    if os.path.exists(CFGFILE):
-        config = configparser.RawConfigParser()
-        config.optionxform = str
-        config.read(CFGFILE)
-    else:
-        print(f'ConfigFile: {CFGFILE} Missing! Exiting.')
-        sys.exit()
-
-    if ARGS.verbose > 8:
-        print(dict(config.items('Default')))
-
-    config.read(CFGFILE)
-
-    if config.has_option("Default", "recorded_future_cache_dir"):
-        CFGDICT['recorded_future_cache_dir'] = \
-           f'{config.get("Default", "recorded_future_cache_dir")}/{PURPOSE}'
-    else:
-        CFGDICT['recorded_future_cache_dir'] = \
-           f'{CACHED}/{PURPOSE}'
-
-    if config.has_option("Default", "recorded_future_map_list"):
-        CFGDICT['recorded_future_map_list'] = \
-            config.get("Default", "recorded_future_map_list").split(',')
-    else:
-        CFGDICT['recorded_future_map_list'] = DEFAULTMAP
-
-    if config.has_option("Default", "sumologic_access_id"):
-        CFGDICT['sumologic_access_id'] = config.get("Default", "sumologic_access_id")
-
-    if config.has_option("Default", "sumologic_access_key"):
-        CFGDICT['sumologic_access_key'] = config.get("Default", "sumologic_access_key")
-
-    if config.has_option("Default", "recorded_future_access_key"):
-        CFGDICT['recorded_future_access_key'] = config.get("Default", "recorded_future_access_key")
-
-    if config.has_option("Default", "source-url"):
-        CFGDICT['source-url'] = config.get("Default", "source-url")
-
-    for defaultmap in DEFAULTMAP:
-        cfgkey = f'lookuptable-rf-{defaultmap}-id'
-        if config.has_option("Default", cfgkey):
-            CFGDICT[cfgkey] = config.get("Default", cfgkey)
-
-    return CFGDICT
-
-def recordedfuture_download():
-    """
-    Download Recorded Future Maps
-    """
-    session = requests.Session()
-
-    if os.path.exists(CFGDICT['recorded_future_cache_dir']):
-        if ARGS.verbose > 7:
-            print(f'Scrubbing_Cache_Directory: {CFGDICT["recorded_future_cache_dir"]}')
-        shutil.rmtree(CFGDICT['recorded_future_cache_dir'])
-
-    os.makedirs(CFGDICT['recorded_future_cache_dir'], exist_ok=True)
-
-    for map_token in CFGDICT['recorded_future_map_list']:
-        if "/" in map_token:
-            map_name, list_name = map_token.split ('/')
+class RFSLLookups:
+    def __init__(self, cfgfile):
+        if os.path.exists(cfgfile):
+            config = configparser.RawConfigParser()
+            config.optionxform = str
+            config.read(cfgfile)
         else:
-            map_name = map_token
-            list_name = 'default'
-
-        httppath = f'{URLBASE}/{map_name}/{URLTAIL}/{list_name}'
-        csv_name = f'{map_name}.{list_name}.{"csv"}'
-        csv_file = os.path.join(CFGDICT['recorded_future_cache_dir'], csv_name)
-        category = f'{SRCTAG}/{"map"}/{map_name}/{list_name}'
-
-        if list_name == 'default':
-            category = f'{SRCTAG}/{"map"}/{map_name}'
-
-        PUBLISH[csv_file] = category
-
-        headers = {
-            'X-RFToken': CFGDICT['recorded_future_access_key'],
-            'X-RF-User-Agent' : 'SumoLogic+v1.0'
+            raise ValueError(f"Config file '{cfgfile}' not found!")
+        if ARGS.verbose > 8:
+            print('Config:')
+            for key, val in dict(config.items('Default')).items():
+                print(f'    {key} = {val}')
+        self.ioc_types = ['domain', 'hash', 'ip', 'url', 'vulnerability']
+        self.sumologic_access_id = config.get("Default", "sumologic_access_id")
+        self.sumologic_access_key = config.get("Default", "sumologic_access_key")
+        self.recordedfuture_access_key = config.get("Default", "recorded_future_access_key")
+        self.source_url = config.get("Default", "source-url")
+        self.lookup_ids = {}
+        for ioc_type in self.ioc_types:
+            self.lookup_ids[ioc_type] = config.get("Default", f'lookuptable-rf-{ioc_type}-id')
+        self.sumo_api_client = SumoApiClient(self.sumologic_access_id, self.sumologic_access_key)
+        self.session = requests.Session()
+        self.headers = {
+                'X-RFToken': self.recordedfuture_access_key,
+                'User-Agent' : 'SumoLogic/1.0'
         }
-        if ARGS.verbose > 4:
-            print(f'Retrieving: {httppath}')
-        body = session.get(httppath, headers=headers)
-        getresults = body.text
+        self.risklists = {}
+
+    def recordedfuture_download(self):
+        """
+        Download Recorded Future Maps
+        """
+        for ioc_type in self.ioc_types:
+            url = f'https://api.recordedfuture.com/v2/{ioc_type}/risklist'
+            params = {'format': 'csv/splunk',
+                      'list': 'default'}
+            if ARGS.verbose > 4:
+                print(f'Retrieving: {url}')
+
+            body = self.session.get(url, headers=self.headers, params=params)
+            try:
+                body.raise_for_status()
+            except requests.exceptions.HTTPError as err:
+                print(f'{ioc_type} risklist not available: {err}')
+                continue
+            self.risklists[ioc_type] = body.text
+
+            if ARGS.verbose > 4:
+                print(f'Retrieved: {url}')
+
+
+    def split_csv(self, csv_file, ioc_type):
+        """
+        Split CSV file into chunks
+        """
+        reader = csv.DictReader(csv_file)
+        rows = list(reader)
+        output_buffer = StringIO()
+        writer = csv.DictWriter(output_buffer, fieldnames=reader.fieldnames)
+        i = 0
+        chunks = []
+        while i < len(rows):
+            total_bytes = writer.writeheader()
+            while total_bytes < MAX_BYTES_PER_CHUNK and i < len(rows):
+                row = rows[i]
+                i += 1
+                total_bytes += writer.writerow(row)
+            output_buffer.seek(0)
+            chunks.append(output_buffer.read())
+            output_buffer.seek(0)
+            output_buffer.truncate()
 
         if ARGS.verbose > 4:
-            print(f'Persisting: {csv_file}')
-        with open(csv_file, mode="w", encoding='utf8') as outputfile:
-            outputfile.write(getresults)
+            chunks_term = 'chunk' if len(chunks) == 1 else 'chunks'
+            print(f'Split {ioc_type} risklist into {len(chunks)} {chunks_term}')
+        return chunks
 
-def sumologic_populate():
-    """
-    Create collector and source for Recorded Future Content
-    """
-    source = SumoApiClient(CFGDICT['sumologic_access_id'], \
-        CFGDICT['sumologic_access_key'])
-
-    for map_token in CFGDICT['recorded_future_map_list']:
-
-        targetfile = f'{CFGDICT["recorded_future_cache_dir"]}/{map_token}.default.csv'
-        filesize = os.path.getsize(targetfile)
-
-        lookupfileid = CFGDICT[f'lookuptable-rf-{map_token}-id']
-        result = source.truncate_lookup_table(lookupfileid)
-        if ARGS.verbose > 20:
-            print(f'Lookup_File_Id: {lookupfileid}\nTruncate_Results: {result}')
-
-        if filesize <= FILELIMIT:
-            if ARGS.verbose > 2:
-                print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {targetfile}')
-            source = SumoApiClient(CFGDICT['sumologic_access_id'], \
-                CFGDICT['sumologic_access_key'])
-            result = source.upload_lookup_csv(lookupfileid, targetfile, merge='true')
-            jobid = result['id']
-            if ARGS.verbose > 9:
-                print(f'Import_Lookup_Job: {jobid}')
-            time.sleep(DELAY_TIME)
-            status = source.upload_lookup_csv_status(jobid)
-            if ARGS.verbose > 9:
-                print(f'Import_Lookup_Job: {status["status"]}')
-            while ( status['status'] != 'Success' and status['status'] != 'PartialSuccess' ):
-                status = source.upload_lookup_csv_status(jobid)
-                if ARGS.verbose > 9:
-                    print(f'Import_Lookup_Job: {status["status"]}')
-                if ARGS.verbose > 29:
-                    print(f'Import_Lookup_Job_Details:\n{status}')
-                time.sleep(DELAY_TIME)
-        else:
-            split_dir = os.path.splitext(targetfile)[0]
-            os.makedirs(split_dir, exist_ok=True)
-            filesplit = Split(targetfile, split_dir )
-            filesplit.bylinecount(linecount=LINELIMIT, includeheader=True)
-            for csv_file in sorted(glob.glob(glob.escape(split_dir) + "/*.csv")):
-                if ARGS.verbose > 2:
-                    print(f'Lookup_File_Id: {lookupfileid} Uploading_Source_File: {csv_file}')
-                source = SumoApiClient(CFGDICT['sumologic_access_id'], \
-                    CFGDICT['sumologic_access_key'])
-                result = source.upload_lookup_csv(lookupfileid, csv_file, merge='true')
-                jobid = result['id']
-                if ARGS.verbose > 9:
-                    print(f'Import_Lookup_Job: {jobid}')
-                time.sleep(DELAY_TIME)
-                status = source.upload_lookup_csv_status(jobid)
-                if ARGS.verbose > 9:
-                    print(f'Import_Lookup_Job: {status["status"]}')
-                while status['status'] != 'Success':
-                    status = source.upload_lookup_csv_status(jobid)
-                    if ARGS.verbose > 9:
-                        print(f'Import_Lookup_Job: {status["status"]}')
-                    if ARGS.verbose > 29:
-                        print(f'Import_Lookup_Job_Details:\n{status}')
-                    time.sleep(DELAY_TIME)
+    def sumologic_populate(self):
+        """
+        Create collector and source for Recorded Future Content
+        """
+        for ioc_type in self.risklists.keys():
+            if ARGS.verbose > 4:
+                print(f'Truncating {ioc_type} lookup table')
+            self.sumo_api_client.truncate_lookup_table(self.lookup_ids[ioc_type])
+            lookupfileid = self.lookup_ids[ioc_type]
+            risklist_as_file = StringIO(self.risklists[ioc_type])
+            chunks = self.split_csv(risklist_as_file, ioc_type)
+            for idx, chunk in enumerate(chunks):
+                if ARGS.verbose > 4:
+                    print(f'Uploading {ioc_type} risklist chunk {idx+1} of {len(chunks)}')
+                self.sumo_api_client.upload_lookup_csv(lookupfileid, chunk, merge=True)
 
 ###########################################################
 
-class SumoApiClient():
+class SumoApiClient:
     """
     General Sumo Logic API Client Class
     """
@@ -365,28 +251,23 @@ class SumoApiClient():
         """
         headers = {'isAdminMode': str(adminmode)}
         results = self.post(f'/v1/lookupTables/{table_id}/truncate', headers=headers)
+        results.raise_for_status()
+        if results.ok and ARGS.verbose > 4:
+            print(f'Truncate success, job ID: {results.json()["id"]}')
         return results.json()
 
-    def post_file(self, method, params, headers=None):
-        """
-        implements a post file
-        """
-        post_params = {'merge': params['merge']}
-        file_data = open(params['file_name'], 'rb').read()
-        files = {'file': (params['file_name'], file_data)}
-        results = requests.post(self.endpoint + method, files=files, params=post_params,
-                auth=(self.session.auth[0], self.session.auth[1]), headers=headers)
-        if 400 <= results.status_code < 600:
-            results.reason = results.text
-        results.raise_for_status()
-        return results
-
-    def upload_lookup_csv(self, table_id, file_name, merge='false'):
+    def upload_lookup_csv(self, table_id, file_content, merge=False):
         """
         populates a lookup file from a CSV file
         """
-        params={'file_name': file_name, 'merge': merge }
-        results = self.post_file(f'/v1/lookupTables/{table_id}/upload', params)
+        params = {'merge': merge}
+        files = {'file': file_content}
+        headers = {'Accept': 'application/json'}
+        results = requests.post(self.endpoint + f'/v1/lookupTables/{table_id}/upload', files=files, params=params,
+                auth=(self.session.auth[0], self.session.auth[1]), headers=headers)
+        results.raise_for_status()
+        if results.ok and ARGS.verbose > 4:
+            print(f'Upload success, job ID: {results.json()["id"]}')
         return results.json()
 
     def upload_lookup_csv_status(self, jobid):
@@ -402,18 +283,9 @@ def lambda_handler(event=None,context=None):
     """
     Functionality will work either being called by a lambda or standalone script
     """
-
-    if ARGS.verbose > 4:
-        print(f'ConfigFile: {CFGFILE}')
-
-    initialize_variables()
-
-    if ARGS.verbose > 9:
-        print(f'Script_Event: {event}')
-        print(f'Script_Context: {context}')
-
-    recordedfuture_download()
-    sumologic_populate()
+    controller = RFSLLookups(ARGS.cfgfile)
+    controller.recordedfuture_download()
+    controller.sumologic_populate()
 
 if __name__ == '__main__':
     lambda_handler()
