@@ -47,7 +47,7 @@ PARSER.add_argument("-v", type=int, default=0, metavar='<verbose>', \
                     dest='verbose', help="specify level of verbose output")
 ARGS = PARSER.parse_args()
 
-MAX_BYTES = 90000000
+MAX_BYTES_PER_CHUNK = 90000000
 
 class RFSLLookups:
     def __init__(self, cfgfile):
@@ -112,7 +112,7 @@ class RFSLLookups:
         chunks = []
         while i < len(rows):
             total_bytes = writer.writeheader()
-            while total_bytes < MAX_BYTES and i < len(rows):
+            while total_bytes < MAX_BYTES_PER_CHUNK and i < len(rows):
                 row = rows[i]
                 i += 1
                 total_bytes += writer.writerow(row)
