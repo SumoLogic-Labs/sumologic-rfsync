@@ -175,7 +175,7 @@ def sumologic_publish():
         if ARGS.verbose > 4:
             print(f'Publishing: {category}')
         postresponse = session.post(CFGDICT['source-url'], \
-            rf_map_payload, headers=headers).status_code
+            rf_map_payload.encode('utf-8'), headers=headers).status_code
 
         if ARGS.verbose > 8:
             print(f'Web_Status: {postresponse}')
