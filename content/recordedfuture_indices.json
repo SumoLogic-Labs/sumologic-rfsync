@@ -35,7 +35,7 @@
                 "notification": {
                     "taskType": "EmailSearchNotificationSyncDefinition",
                     "toList": [
-                        "wschmidt@sumologic.com"
+                        "support@sumologic.com"
                     ],
                     "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
                     "includeQuery": true,
@@ -81,7 +81,7 @@
                 "notification": {
                     "taskType": "EmailSearchNotificationSyncDefinition",
                     "toList": [
-                        "wschmidt@sumologic.com"
+                        "support@sumologic.com"
                     ],
                     "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
                     "includeQuery": true,
@@ -127,7 +127,7 @@
                 "notification": {
                     "taskType": "EmailSearchNotificationSyncDefinition",
                     "toList": [
-                        "wschmidt@sumologic.com"
+                        "support@sumologic.com"
                     ],
                     "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
                     "includeQuery": true,
@@ -173,7 +173,7 @@
                 "notification": {
                     "taskType": "EmailSearchNotificationSyncDefinition",
                     "toList": [
-                        "wschmidt@sumologic.com"
+                        "support@sumologic.com"
                     ],
                     "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
                     "includeQuery": true,
@@ -219,7 +219,7 @@
                 "notification": {
                     "taskType": "EmailSearchNotificationSyncDefinition",
                     "toList": [
-                        "wschmidt@sumologic.com"
+                        "support@sumologic.com"
                     ],
                     "subjectTemplate": "Search Alert: {{TriggerCondition}} found for {{SearchName}}",
                     "includeQuery": true,
