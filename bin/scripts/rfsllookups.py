@@ -137,6 +137,7 @@ class RFSLLookups:
             lookupfileid = self.lookup_ids[ioc_type]
             risklist_as_file = StringIO(self.risklists[ioc_type])
             chunks = self.split_csv(risklist_as_file, ioc_type)
+            risklist_as_file.close()
             for idx, chunk in enumerate(chunks):
                 if ARGS.verbose > 4:
                     print(f'Uploading {ioc_type} risklist chunk {idx+1} of {len(chunks)}')
